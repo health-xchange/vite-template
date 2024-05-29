@@ -32,7 +32,7 @@ export const paths = {
   newClaim: '/claims/new',
   signIn: '/login' as AuthTypes,
   register: '/register' as AuthTypes,
-  confirm: '/confirm/:email/:token' as AuthTypes,
+  confirm: '/verify/:email/:token' as AuthTypes,
   contactUs: '/contact-us',
 };
 

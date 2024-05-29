@@ -12,22 +12,38 @@ import {
   Stack,
   Anchor,
   LoadingOverlay,
-  Loader,
-  Box,
-  Center,
 } from '@mantine/core';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import { useCallback, useEffect, useState } from 'react';
 import { GoogleButton } from './GoogleButton';
 import { AuthenticationPagesProps, RegisterUser, SignInUser } from '@/interfaces/common';
-import { registerUser, signInUser } from '@/actions/auth';
+import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
 
 export function AuthenticationForm(props: AuthenticationPagesProps) {
   const { authType } = props;
   const navigate = useNavigate();
   const setLoginState = useSetRecoilState(atomAuthState);
-  const params = useParams();
+  const { email: verifyingEmail, token: verificationToken } = useParams();
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const handleVerifyEmail = useCallback(() => {
+    if (verifyingEmail && verificationToken) {
+      toast.promise(verifyUserEmail(verifyingEmail, verificationToken), {
+        pending: {
+          render: () => { setIsVerifying(true); return 'Verifying your email...'; },
+        },
+        error: 'Could not verify your email. please try again',
+        success: 'Successfully verified your email. Now you can login',
+      })
+        .finally(() => setIsVerifying(false));
+    }
+  }, [verifyingEmail, verificationToken]);
+
+  useEffect(() => {
+    handleVerifyEmail();
+  }, [verifyingEmail, verificationToken]);
 
   const form = useForm({
     initialValues: {
@@ -97,7 +113,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
 
   return (
     <Paper radius="md" p="xl" withBorder {...props} pos="relative">
-      <LoadingOverlay visible />
+      <LoadingOverlay visible={isVerifying} />
       <Text size="lg" fw={500}>
         Welcome to Mantine, {authType} with
       </Text>

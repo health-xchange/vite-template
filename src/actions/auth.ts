@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { apiClient, setReqHeader } from '@/utils/axiosClient';
 
@@ -26,6 +27,12 @@ export const signInUser = async (userData: SignInUser) =>
     .catch((error) => {
       throw error;
     });
+
+export const verifyUserEmail = async (email: string, token: string) => apiClient({
+    method: 'POST',
+    url: '/auth/verify',
+    data: { email, token },
+  });
 
 // export const signOutUser = async (userData: SignOutUser) => {
 
