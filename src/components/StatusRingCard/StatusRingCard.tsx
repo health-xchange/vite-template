@@ -1,15 +1,44 @@
-import { Text, Card, RingProgress, Group, useMantineTheme } from '@mantine/core';
+import { Text, Card, RingProgress, Group, useMantineTheme, Center, Avatar, ActionIcon, rem, Divider } from '@mantine/core';
+import React from 'react';
+import { upperFirst } from '@mantine/hooks';
+import { useNavigate } from 'react-router-dom';
+import { IconExternalLink, IconTrash } from '@tabler/icons-react';
+import { toast } from 'react-toastify';
+import { useRecoilState } from 'recoil';
 import classes from './StatsRingCard.module.css';
+import { StatsRingProps } from '@/interfaces/claims';
+import { paths } from '@/Router';
+import { sanitise } from '@/utils/functions';
+import { deleteClaim } from '@/actions/claims';
+import { atomClaimsList } from '@/state/atoms';
 
 const stats = [
   { value: 447, label: 'Remaining' },
   { value: 76, label: 'In progress' },
 ];
 
-export function StatsRingCard() {
+const StatsRingCard: React.FC<StatsRingProps> = ({ id, metadata, details }) => {
+  const [claimsList, setClaimsList] = useRecoilState(atomClaimsList);
   const theme = useMantineTheme();
+  const navigate = useNavigate();
   const completed = 1887;
   const total = 2334;
+
+  const handleClick = () => {
+    navigate(sanitise(paths.claimsDetails, { claimId: id }));
+  };
+
+  const handleDelete = () => {
+    toast.promise(deleteClaim(id), {
+      pending: 'Deleting...',
+      error: 'Failed to delete claim ',
+      success: 'Deleted successfully',
+    })
+      .then(() => {
+        setClaimsList(claimsList.filter(claim => claim.id !== id));
+      });
+  };
+
   const items = stats.map((stat) => (
     <div key={stat.label}>
       <Text className={classes.label}>{stat.value}</Text>
@@ -20,23 +49,54 @@ export function StatsRingCard() {
   ));
 
   return (
-    <Card withBorder p="xl" radius="md" className={classes.card}>
+    <Card withBorder radius="md" className={classes.card}>
+      <Group justify="space-between" className={classes.footer}>
+        <Center>
+          <Avatar
+            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
+            size={24}
+            radius="xl"
+            mr="xs"
+          />
+          <Text fz="sm" inline>
+            Bill Wormeater
+          </Text>
+        </Center>
+
+        <Group gap={8} mr={0}>
+          <ActionIcon className={classes.action} onClick={handleDelete}>
+            <IconTrash
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.red[6]}
+            />
+          </ActionIcon>
+          {/* <ActionIcon className={classes.action}>
+            <IconShare style={{ width: rem(16), height: rem(16) }} color={theme.colors.blue[6]} />
+          </ActionIcon> */}
+          <ActionIcon className={classes.action} onClick={handleClick}>
+            <IconExternalLink
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.yellow[7]}
+            />
+          </ActionIcon>
+        </Group>
+      </Group>
+      <Divider my={10} ml="-10%" w="120%" />
       <div className={classes.inner}>
         <div>
           <Text fz="xl" className={classes.label}>
-            Heart surgery
+            {details.insurance_type}
           </Text>
           <div>
             <Text className={classes.lead} mt={30}>
-              1887
+              {details.claim_amount}
             </Text>
             <Text fz="xs" c="dimmed">
-              Completed
+              {details.insurance_provider}
             </Text>
           </div>
           <Group mt="lg">{items}</Group>
         </div>
-
         <div className={classes.ring}>
           <RingProgress
             roundCaps
@@ -49,7 +109,7 @@ export function StatsRingCard() {
                   {((completed / total) * 100).toFixed(0)}%
                 </Text>
                 <Text ta="center" fz="xs" c="dimmed">
-                  Completed
+                  {upperFirst(metadata.status)}
                 </Text>
               </div>
             }
@@ -58,4 +118,6 @@ export function StatsRingCard() {
       </div>
     </Card>
   );
-}
+};
+
+export default StatsRingCard;

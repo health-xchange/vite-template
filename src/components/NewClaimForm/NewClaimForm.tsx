@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   IconBuilding,
   IconCalendar,
@@ -31,8 +31,9 @@ import {
 import { useForm } from '@mantine/form';
 import { DatePickerInput } from '@mantine/dates';
 import { STATES_LIST } from '@/utils/states';
+import { ClaimDetails } from '@/interfaces/claims';
 
-export default function NewClaimForm() {
+const NewClaimForm: React.FC<{ claimDetails: ClaimDetails | undefined }> = ({ claimDetails }) => {
   const [active, setActive] = useState(0);
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -40,24 +41,25 @@ export default function NewClaimForm() {
 
   const form = useForm({
     mode: 'controlled',
-    initialValues: {
-      first_name: '',
-      last_name: '',
-      state: '',
-      is_not_cosmetic_claim: false,
-      insurance_type: undefined,
-      insurance_provider: undefined,
-      date_of_claim_denial: undefined,
-      claim_amount: undefined,
-      reason_for_claim_denial: undefined,
-      oon_emergency_service: undefined,
-      oon_is_in_network_service: undefined,
-      oon_is_signed_consent: undefined,
-      consent_opt1: false,
-      consent_opt2: false,
-      consent_opt3: false,
-      consent_opt4: false,
-    },
+    initialValues: claimDetails,
+    //  {
+    // first_name: '',
+    // last_name: '',
+    // state: '',
+    // is_not_cosmetic_claim: false,
+    // insurance_type: undefined,
+    // insurance_provider: undefined,
+    // date_of_claim_denial: undefined,
+    // claim_amount: undefined,
+    // reason_for_claim_denial: undefined,
+    // oon_emergency_service: undefined,
+    // oon_is_in_network_service: undefined,
+    // oon_is_signed_consent: undefined,
+    // consent_opt1: false,
+    // consent_opt2: false,
+    // consent_opt3: false,
+    // consent_opt4: false,
+    // },
 
     validate: (values) => {
       if (active === 0) {
@@ -356,4 +358,6 @@ export default function NewClaimForm() {
       </Grid>
     </>
   );
-}
+};
+
+export default NewClaimForm;
