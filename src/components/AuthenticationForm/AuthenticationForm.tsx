@@ -11,8 +11,12 @@ import {
   Checkbox,
   Stack,
   Anchor,
+  LoadingOverlay,
+  Loader,
+  Box,
+  Center,
 } from '@mantine/core';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { GoogleButton } from './GoogleButton';
 import { AuthenticationPagesProps, RegisterUser, SignInUser } from '@/interfaces/common';
@@ -23,6 +27,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
   const { authType } = props;
   const navigate = useNavigate();
   const setLoginState = useSetRecoilState(atomAuthState);
+  const params = useParams();
 
   const form = useForm({
     initialValues: {
@@ -91,7 +96,8 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
   };
 
   return (
-    <Paper radius="md" p="xl" withBorder {...props}>
+    <Paper radius="md" p="xl" withBorder {...props} pos="relative">
+      <LoadingOverlay visible />
       <Text size="lg" fw={500}>
         Welcome to Mantine, {authType} with
       </Text>

@@ -2,7 +2,7 @@ import { PaperProps } from '@mantine/core';
 
 export type AuthenticationPagesProps = PaperProps & { authType: AuthTypes };
 
-export type AuthTypes = '/login' | '/register';
+export type AuthTypes = '/confirm/:email/:token' | '/login' | '/register';
 
 export interface RegisterUser extends SignInUser {
   username: string;
