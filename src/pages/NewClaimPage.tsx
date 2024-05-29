@@ -1,6 +1,6 @@
 import { Container } from '@mantine/core';
 import { PageTitle } from '@/components/PageTitle/PageTitle';
-import CheckoutButton from '@/components/Stripe/CheckoutButton';
+// import CheckoutButton from '@/components/Stripe/CheckoutButton';
 import NewClaimForm from '@/components/NewClaimForm/NewClaimForm';
 
 export default function NewClaimPage() {
@@ -8,7 +8,7 @@ export default function NewClaimPage() {
     <div>
       <Container size="md">
         <PageTitle title="New Claim" />
-        <CheckoutButton />
+        {/* <CheckoutButton /> */}
         <NewClaimForm />
       </Container>
     </div>

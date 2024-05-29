@@ -24,8 +24,10 @@ import {
   IconPlus,
   IconChevronDown,
 } from '@tabler/icons-react';
+import { useRecoilState } from 'recoil';
 import classes from './HeaderMegaMenu.module.css';
-import { useLogin } from '../atoms/hooks';
+import { atomAuthState } from '../../state/atoms';
+import ProfileMenu from '@/ReusableComps/ProfileMenu/ProfileMenu';
 
 const mockdata = [
   {
@@ -47,7 +49,7 @@ export function HeaderMegaMenu() {
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  const [loginState] = useLogin();
+  const [loginState] = useRecoilState(atomAuthState);
   const { isLoggedIn, userInfo } = loginState;
 
   const links = mockdata.map((item) => (
@@ -134,13 +136,14 @@ export function HeaderMegaMenu() {
 
           <Group visibleFrom="sm">
             {
-              isLoggedIn && userInfo ? <Text>{userInfo.username}</Text> : <>
-                <Button
-                  variant="default"
-                  onClick={() => navigate('/login')}>Sign in
-                </Button>
-                <Button onClick={() => navigate('/register')}>Register</Button>
-                                                                          </>
+              isLoggedIn && userInfo ? <ProfileMenu user={userInfo} /> :
+                <>
+                  <Button
+                    variant="default"
+                    onClick={() => navigate('/login')}>Sign in
+                  </Button>
+                  <Button onClick={() => navigate('/register')}>Register</Button>
+                </>
             }
           </Group>
 

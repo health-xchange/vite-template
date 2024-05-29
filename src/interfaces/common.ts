@@ -31,3 +31,16 @@ export interface UserDataType {
   email: string;
   phone: string;
 }
+
+export interface UserInfoState {
+  username: string;
+  email: string;
+  _id: string;
+  image?: string;
+}
+
+export interface SignInResponse {
+  refreshToken: string;
+  authToken: string;
+  user: UserInfoState;
+}

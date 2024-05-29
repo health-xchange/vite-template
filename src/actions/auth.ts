@@ -1,30 +1,32 @@
-import { RegisterUser, SignInUser } from '@/interfaces/common';
+import { RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { apiClient, setReqHeader } from '@/utils/axiosClient';
 
-export const registerUser = async (user: RegisterUser) => apiClient({
+export const registerUser = async (user: RegisterUser) =>
+  apiClient({
     method: 'POST',
     url: '/auth/register',
     data: user,
   })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => {
-      console.error('Error during registration: ', error);
       throw error;
     });
 
-export const signInUser = async (userData: SignInUser) => apiClient({
+export const signInUser = async (userData: SignInUser) =>
+  apiClient({
     method: 'POST',
     url: '/auth/login',
     data: userData,
   })
     .then((responseData) => {
-      const { user, refreshToken, authToken } = responseData.data;
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('refreshToken', refreshToken);
+      const { user, refreshToken, authToken } = responseData.data as SignInResponse;
       setReqHeader('Authorization', authToken);
-      return Promise.resolve(user);
+      return Promise.resolve({ user, refreshToken });
     })
     .catch((error) => {
-      console.error('Error during signin: ', error);
       throw error;
     });
+
+// export const signOutUser = async (userData: SignOutUser) => {
+
+// }

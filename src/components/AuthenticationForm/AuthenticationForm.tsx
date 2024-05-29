@@ -1,4 +1,3 @@
-import { upperFirst } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import { toast } from 'react-toastify';
 import {
@@ -14,13 +13,16 @@ import {
   Anchor,
 } from '@mantine/core';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { GoogleButton } from './GoogleButton';
 import { AuthenticationPagesProps, RegisterUser, SignInUser } from '@/interfaces/common';
 import { registerUser, signInUser } from '@/actions/auth';
+import { atomAuthState } from '../../state/atoms';
 
 export function AuthenticationForm(props: AuthenticationPagesProps) {
   const { authType } = props;
   const navigate = useNavigate();
+  const setLoginState = useSetRecoilState(atomAuthState);
 
   const form = useForm({
     initialValues: {
@@ -47,14 +49,14 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
         success: 'Signin successful',
         error: {
           render({ data }: { data: any }) {
-            console.log(data);
             return data?.response?.data || 'Signing failed';
           },
         },
       },
       { position: 'bottom-center' }
     )
-      .then(() => {
+      .then((response) => {
+        setLoginState({ isLoggedIn: true, userInfo: response.user });
         navigate('/claims');
       })
       .catch(() => {

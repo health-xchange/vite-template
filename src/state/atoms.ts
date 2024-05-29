@@ -5,7 +5,7 @@ import { LoginState } from '@/interfaces/common';
 const { persistAtom } = recoilPersist();
 
 export const defaultAuthState: LoginState = { isLoggedIn: false, userInfo: null };
-export const authState = atom<LoginState>({
+export const atomAuthState = atom<LoginState>({
   key: 'blue-ai-auth',
   default: defaultAuthState,
   effects_UNSTABLE: [persistAtom],
