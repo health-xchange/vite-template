@@ -5,6 +5,7 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    "linebreak-style": "off",
     'import/extensions': 'off',
   },
 };
