@@ -11,6 +11,7 @@ import {
   Divider,
   Checkbox,
   Stack,
+  Anchor,
 } from '@mantine/core';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { GoogleButton } from './GoogleButton';
@@ -141,15 +142,15 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
         </Stack>
 
         <Group justify="space-between" mt="xl">
-          <NavLink href={authType === '/register' ? '/login' : '/register'}>
-            {/* <Anchor component="a" type="button" c="dimmed" size="xs" underline="never"> */}
-            {authType === '/register'
-              ? 'Already have an account? Login'
-              : "Don't have an account? Register"}
-            {/* </Anchor> */}
+          <NavLink to={authType === '/register' ? '/login' : '/register'}>
+            <Anchor component="a" type="button" c="dimmed" size="xs" underline="never">
+              {authType === '/register'
+                ? 'Already have an account? Login'
+                : "Don't have an account? Register"}
+            </Anchor>
           </NavLink>
           <Button type="submit" radius="xl">
-            {upperFirst(authType)}
+            {authType === '/login' ? 'Login' : 'Register'}
           </Button>
         </Group>
       </form>

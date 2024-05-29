@@ -345,8 +345,8 @@ export default function NewClaimForm() {
             </Grid>
           </Stack>
         </GridCol>
-        <GridCol span={6}>
-          <Group justify="flex-end" mt="xl">
+        <GridCol span={12}>
+          <Group justify="flex-start" mt="xl">
             <Button variant="default" onClick={prevStep}>
               Back
             </Button>
