@@ -1,22 +1,32 @@
-import { Container } from '@mantine/core';
+import { Center, Container, Loader, Stack, Text } from '@mantine/core';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { useEffect } from 'react';
-import { PageTitle } from '@/components/PageTitle/PageTitle';
-// import CheckoutButton from '@/components/Stripe/CheckoutButton';
 import NewClaimForm from '@/components/NewClaimForm/NewClaimForm';
-import { getClaimById } from '@/state/atoms';
+import { useClaim } from '@/hooks/useClaim';
 
 export default function NewClaimPage() {
-  const { claimId = 'new' } = useParams();
-  const claim = useRecoilValue(getClaimById)(('new' || ''));
+  const { claimId } = useParams();
+  const { isLoading, claim, updateClaim } = useClaim(claimId);
 
   return (
     <div>
       <Container size="md">
-        <PageTitle title="New Claim" />
         {/* <CheckoutButton /> */}
-        <NewClaimForm claimDetails={claim?.details} />
+        {
+          isLoading ? (
+            <Center>
+              <Stack justify="center" align="center">
+                <Loader color="blue" />
+                <Text>Loading Claim details...</Text>
+              </Stack>
+            </Center>
+          ) : (
+            !!claim && !!updateClaim &&
+            <NewClaimForm
+              claim={claim}
+              updateClaim={updateClaim}
+            />
+          )
+        }
       </Container>
     </div>
   );

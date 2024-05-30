@@ -4,6 +4,5 @@
   font-family:
     Greycliff CF,
     var(--mantine-font-family);
-  margin-bottom: calc(var(--mantine-spacing-xl));
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }

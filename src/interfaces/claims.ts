@@ -3,10 +3,10 @@ export type ClaimStatus = 'draft' | 'waiting_for_reviewer' | 'reviewing' | 'rese
 // export type ActivityTypes = 'created' | 'reviewed' | 'status_change' | 'updated';
 
 export interface ClaimDetails {
-  first_name: string;
-  last_name: string;
-  state: string;
-  is_not_cosmetic_claim: boolean;
+  first_name?: string;
+  last_name?: string;
+  state?: string;
+  is_not_cosmetic_claim?: boolean;
   insurance_type?: string;
   insurance_provider?: string;
   date_of_claim_denial?: string;
@@ -43,3 +43,8 @@ export interface Claim {
 }
 
 export interface StatsRingProps extends Omit<Claim, 'communication'> {}
+
+export interface ClaimsListResponse {
+  claims: Claim[],
+  totalClaims: number
+}

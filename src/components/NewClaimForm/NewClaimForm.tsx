@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import {
   IconBuilding,
   IconCalendar,
+  IconCheck,
   IconCurrencyDollar,
+  IconDeviceFloppy,
   IconHealthRecognition,
   IconMan,
   IconManFilled,
   IconMapPin,
+  IconSend,
 } from '@tabler/icons-react';
 import {
   Button,
@@ -27,48 +30,39 @@ import {
   RadioGroup,
   Textarea,
   Switch,
+  useMantineTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { DatePickerInput } from '@mantine/dates';
+import { shallowEqual } from '@mantine/hooks';
 import { STATES_LIST } from '@/utils/states';
-import { ClaimDetails } from '@/interfaces/claims';
+import { Claim } from '@/interfaces/claims';
+import { PageTitle } from '../PageTitle/PageTitle';
 
-const NewClaimForm: React.FC<{ claimDetails: ClaimDetails | undefined }> = ({ claimDetails }) => {
+interface NewFormProps {
+  claim: Claim;
+  updateClaim: (updateClaim: Claim) => void;
+}
+
+const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const [active, setActive] = useState(0);
+  const theme = useMantineTheme();
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
   const form = useForm({
-    mode: 'controlled',
-    initialValues: claimDetails,
-    //  {
-    // first_name: '',
-    // last_name: '',
-    // state: '',
-    // is_not_cosmetic_claim: false,
-    // insurance_type: undefined,
-    // insurance_provider: undefined,
-    // date_of_claim_denial: undefined,
-    // claim_amount: undefined,
-    // reason_for_claim_denial: undefined,
-    // oon_emergency_service: undefined,
-    // oon_is_in_network_service: undefined,
-    // oon_is_signed_consent: undefined,
-    // consent_opt1: false,
-    // consent_opt2: false,
-    // consent_opt3: false,
-    // consent_opt4: false,
-    // },
-
+    mode: 'uncontrolled',
+    // onValuesChange: handleFormChanges,
+    initialValues: { ...claim.details },
     validate: (values) => {
       if (active === 0) {
         return {
           first_name:
-            values.first_name.trim().length < 3
+            values?.first_name?.trim?.()?.length || 0 < 3
               ? 'First name must include at least 3 characters'
               : null,
-          last_name: values.first_name.length < 1 ? 'Last name is required' : null,
+          last_name: values.last_name?.trim?.()?.length || 0 < 1 ? 'Last name is required' : null,
           date_of_claim_denial: 'if more than 5 months, we cannot help you',
         };
       }
@@ -76,7 +70,7 @@ const NewClaimForm: React.FC<{ claimDetails: ClaimDetails | undefined }> = ({ cl
       if (active === 1) {
         return {
           first_name:
-            values.first_name.trim().length < 2
+            values?.first_name?.trim?.()?.length || 0 < 2
               ? 'Last name must include at least 2 characters'
               : null,
         };
@@ -96,8 +90,22 @@ const NewClaimForm: React.FC<{ claimDetails: ClaimDetails | undefined }> = ({ cl
 
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
+  const isFormHasChanges = !shallowEqual(form.getValues(), claim.details);
+
+  const handleSaveDraft = () => {
+    updateClaim({ ...claim, details: form.getValues() });
+  };
+
   return (
     <>
+      <Group mb={5} justify="space-between" align="center">
+        <PageTitle title="New Claim" />
+        <Group justify="center">
+          <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
+          <Button disabled={claim?.metadata.status !== 'draft' && !isFormHasChanges} variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
+        </Group>
+      </Group>
+
       <Grid>
         <GridCol mt="md">
           <Divider label="Personal details" labelPosition="left" />
@@ -129,6 +137,8 @@ const NewClaimForm: React.FC<{ claimDetails: ClaimDetails | undefined }> = ({ cl
             leftSection={<IconMapPin style={{ width: rem(20), height: rem(20) }} stroke={1.5} />}
             placeholder="Pick your state"
             data={STATES_LIST}
+            key={form.key('state')}
+            {...form.getInputProps('state')}
           />
         </GridCol>
         <GridCol mt="md">

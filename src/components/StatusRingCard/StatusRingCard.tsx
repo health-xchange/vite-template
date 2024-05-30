@@ -1,4 +1,4 @@
-import { Text, Card, RingProgress, Group, useMantineTheme, Center, Avatar, ActionIcon, rem, Divider } from '@mantine/core';
+import { Text, Card, RingProgress, Group, useMantineTheme, Center, Avatar, ActionIcon, rem, Divider, Button } from '@mantine/core';
 import React from 'react';
 import { upperFirst } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -24,7 +24,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ id, metadata, details }) => {
   const completed = 1887;
   const total = 2334;
 
-  const handleClick = () => {
+  const handleViewDetails = () => {
     navigate(sanitise(paths.claimsDetails, { claimId: id }));
   };
 
@@ -63,22 +63,14 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ id, metadata, details }) => {
           </Text>
         </Center>
 
-        <Group gap={8} mr={0}>
+        <Group justify="center">
           <ActionIcon className={classes.action} onClick={handleDelete}>
             <IconTrash
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.red[6]}
             />
           </ActionIcon>
-          {/* <ActionIcon className={classes.action}>
-            <IconShare style={{ width: rem(16), height: rem(16) }} color={theme.colors.blue[6]} />
-          </ActionIcon> */}
-          <ActionIcon className={classes.action} onClick={handleClick}>
-            <IconExternalLink
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.yellow[7]}
-            />
-          </ActionIcon>
+          <Button variant="default" onClick={handleViewDetails} color={theme.colors.red[6]} leftSection={<IconExternalLink color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Open</Button>
         </Group>
       </Group>
       <Divider my={10} ml="-10%" w="120%" />
