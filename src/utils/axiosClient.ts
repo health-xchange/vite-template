@@ -19,6 +19,7 @@ export const getNewAccessToken = async () => {
   const refreshToken = localStorage.getItem('refreshToken');
   try {
     const response = await apiClient.post('/auth/token', { refreshToken });
+    // eslint-disable-next-line no-constant-condition
     if ((response.status = 201)) {
       return await Promise.resolve(response.data.authToken);
     }

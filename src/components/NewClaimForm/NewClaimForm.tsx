@@ -36,13 +36,9 @@ import { useForm } from '@mantine/form';
 import { DatePickerInput } from '@mantine/dates';
 import { shallowEqual } from '@mantine/hooks';
 import { STATES_LIST } from '@/utils/states';
-import { Claim } from '@/interfaces/claims';
 import { PageTitle } from '../PageTitle/PageTitle';
-
-interface NewFormProps {
-  claim: Claim;
-  updateClaim: (updateClaim: Claim) => void;
-}
+import { NewFormProps } from '@/interfaces/common';
+import { FormFooter } from './FormFooter';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const [active, setActive] = useState(0);
@@ -53,7 +49,6 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
 
   const form = useForm({
     mode: 'uncontrolled',
-    // onValuesChange: handleFormChanges,
     initialValues: { ...claim.details },
     validate: (values) => {
       if (active === 0) {
@@ -97,7 +92,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   };
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       <Group mb={5} justify="space-between" align="center">
         <PageTitle title="New Claim" />
         <Group justify="center">
@@ -182,7 +177,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             {...form.getInputProps('insurance_provider')}
           />
         </GridCol>
-        <GridCol span={6} mt="md">
+        {/* <GridCol span={6} mt="md">
           <DatePickerInput
             label="When were you notified of the claim denial ?"
             placeholder="Date"
@@ -190,7 +185,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             key={form.key('date_of_claim_denial')}
             {...form.getInputProps('date_of_claim_denial')}
           />
-        </GridCol>
+        </GridCol> */}
         <GridCol span={6} mt="md">
           <NumberInput
             label="Claim amount"
@@ -358,15 +353,17 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
           </Stack>
         </GridCol>
         <GridCol span={12}>
-          <Group justify="flex-start" mt="xl">
-            <Button variant="default" onClick={prevStep}>
+          <Group justify="flex-end" my="xl">
+            {/* <Button variant="default" onClick={prevStep}>
               Back
-            </Button>
+            </Button> */}
             <Button onClick={nextStep}>Next step</Button>
           </Group>
         </GridCol>
       </Grid>
-    </>
+
+      {/* <FormFooter /> */}
+    </div>
   );
 };
 

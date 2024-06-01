@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
-import { v4 as uuid4 } from 'uuid';
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { atomClaimsList } from '@/state/atoms';
 import { Claim } from '@/interfaces/claims';
 import { paths } from '@/Router';
-import { sanitise } from '@/utils/functions';
+import { sanitise, uniqSm } from '@/utils/functions';
 
 const useNewClaim = () => {
   const [claimsList, setClaimsList] = useRecoilState(atomClaimsList);
@@ -13,7 +12,7 @@ const useNewClaim = () => {
 
   const createNewClaim = useCallback(() => {
     const newClaim: Claim = {
-      id: uuid4(),
+      id: uniqSm(8),
       metadata: {
         createdAt: new Date().toISOString(),
         status: 'draft',
@@ -25,7 +24,7 @@ const useNewClaim = () => {
         is_not_cosmetic_claim: false,
         insurance_type: '',
         insurance_provider: '',
-        date_of_claim_denial: '',
+        date_of_claim_denial: new Date().toISOString(),
         claim_amount: '',
         reason_for_claim_denial: '',
         oon_emergency_service: '',
@@ -35,6 +34,8 @@ const useNewClaim = () => {
         consent_opt2: false,
         consent_opt3: false,
         consent_opt4: false,
+        _id: '',
+        createdUser: '',
       },
     };
     const newClaimsList = [newClaim, ...claimsList];

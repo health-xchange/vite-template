@@ -3,6 +3,8 @@ export type ClaimStatus = 'draft' | 'waiting_for_reviewer' | 'reviewing' | 'rese
 // export type ActivityTypes = 'created' | 'reviewed' | 'status_change' | 'updated';
 
 export interface ClaimDetails {
+  _id: string;
+  createdUser: string;
   first_name?: string;
   last_name?: string;
   state?: string;

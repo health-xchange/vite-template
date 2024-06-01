@@ -1,4 +1,5 @@
 import { PaperProps } from '@mantine/core';
+import { Claim } from './claims';
 
 export type AuthenticationPagesProps = PaperProps & { authType: AuthTypes };
 
@@ -43,4 +44,9 @@ export interface SignInResponse {
   refreshToken: string;
   authToken: string;
   user: UserInfoState;
+}
+
+export interface NewFormProps {
+  claim: Claim;
+  updateClaim: (updateClaim: Claim) => void;
 }
