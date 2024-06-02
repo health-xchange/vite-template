@@ -22,6 +22,7 @@ export interface LoginState {
     username: string;
     email: string;
     _id: string;
+    refreshToken: string;
   };
 }
 

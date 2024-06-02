@@ -33,12 +33,12 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { DatePickerInput } from '@mantine/dates';
+// import { DatePickerInput } from '@mantine/dates';
 import { shallowEqual } from '@mantine/hooks';
 import { STATES_LIST } from '@/utils/states';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
-import { FormFooter } from './FormFooter';
+// import { FormFooter } from './FormFooter';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const [active, setActive] = useState(0);
@@ -52,12 +52,13 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
     initialValues: { ...claim.details },
     validate: (values) => {
       if (active === 0) {
+        console.log('Form values', values);
         return {
           first_name:
-            values?.first_name?.trim?.()?.length || 0 < 3
+            (values?.first_name?.trim?.()?.length || 0) < 3
               ? 'First name must include at least 3 characters'
               : null,
-          last_name: values.last_name?.trim?.()?.length || 0 < 1 ? 'Last name is required' : null,
+          last_name: (values.last_name?.trim?.()?.length || 0) < 1 ? 'Last name is required' : null,
           date_of_claim_denial: 'if more than 5 months, we cannot help you',
         };
       }
@@ -83,7 +84,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
       return current < 3 ? current + 1 : current;
     });
 
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+  // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const isFormHasChanges = !shallowEqual(form.getValues(), claim.details);
 
@@ -93,16 +94,16 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <Group mb={5} justify="space-between" align="center">
-        <PageTitle title="New Claim" />
+      <PageTitle title="Let us help on your new claim" />
+      {/* <Group justify="space-between" align="center" pos="sticky" top={0} bg="gray">
         <Group justify="center">
-          <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
-          <Button disabled={claim?.metadata.status !== 'draft' && !isFormHasChanges} variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
+          <Button disabled={!isFormHasChanges} onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
+          <Button disabled={!isFormHasChanges} variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
         </Group>
-      </Group>
+      </Group> */}
 
       <Grid>
-        <GridCol mt="md">
+        <GridCol>
           <Divider label="Personal details" labelPosition="left" />
         </GridCol>
         <GridCol span={6} mt="md">
@@ -353,11 +354,9 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
           </Stack>
         </GridCol>
         <GridCol span={12}>
-          <Group justify="flex-end" my="xl">
-            {/* <Button variant="default" onClick={prevStep}>
-              Back
-            </Button> */}
-            <Button onClick={nextStep}>Next step</Button>
+          <Group justify="end" my="xl">
+            <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
+            <Button variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
           </Group>
         </GridCol>
       </Grid>

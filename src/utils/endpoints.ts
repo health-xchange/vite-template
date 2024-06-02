@@ -1,4 +1,4 @@
-export const API_ENDPOINTS: Record<string, string> = {
+export const API_ENDPOINTS = {
   GET_CLAIMS: '/claims',
   GET_CLAIM: '/claims/:claimId',
   CREATE_NEW_CLAIM: '/claims/:claimId',

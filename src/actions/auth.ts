@@ -1,6 +1,6 @@
-import axios from 'axios';
+import { AxiosResponse } from 'axios';
 import { RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
-import { apiClient, setReqHeader } from '@/utils/axiosClient';
+import { apiClient, setReqHeader } from '@/state/axios-interceptors';
 
 export const registerUser = async (user: RegisterUser) =>
   apiClient({
@@ -19,12 +19,12 @@ export const signInUser = async (userData: SignInUser) =>
     url: '/auth/login',
     data: userData,
   })
-    .then((responseData) => {
-      const { user, refreshToken, authToken } = responseData.data as SignInResponse;
+    .then((responseData: AxiosResponse<SignInResponse, any>) => {
+      const { authToken } = responseData.data;
       setReqHeader('Authorization', authToken);
-      return Promise.resolve({ user, refreshToken });
+      return Promise.resolve(responseData.data);
     })
-    .catch((error) => {
+    .catch((error: any) => {
       throw error;
     });
 

@@ -1,13 +1,39 @@
-import apiClient from '@/utils/axiosClient';
+import { Claim } from '@/interfaces/claims';
+import { apiClient } from '@/state/axios-interceptors';
+import { API_ENDPOINTS } from '@/utils/endpoints';
+import { sanitise } from '@/utils/functions';
 
 export const fetchClaimsList = () =>
   apiClient({
     method: 'GET',
-    url: '/api/claims',
+    url: API_ENDPOINTS.GET_CLAIMS,
+  });
+
+export const createNewClaimAction = (claim: Claim) =>
+  apiClient({
+    method: 'POST',
+    url: sanitise(API_ENDPOINTS.CREATE_NEW_CLAIM, { claimId: claim._id }),
+    data: claim,
+  })
+    .then((newClaim) => newClaim)
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+
+export const updateClaimAction = (claim: Claim) => apiClient({
+    method: 'PATCH',
+    url: sanitise(API_ENDPOINTS.UPDATE_CLAIM, { claimId: claim._id }),
+    data: claim,
+  })
+  .then((updatedClaim) => Promise.resolve(updatedClaim))
+  .catch((error) => {
+    console.error(error);
+    throw error;
   });
 
 export const deleteClaim = (claimId: string) =>
   apiClient({
     method: 'DELETE',
-    url: `/claim/${claimId}`,
+    url: sanitise(API_ENDPOINTS.DELETE_CLAIM, { claimId }),
   });

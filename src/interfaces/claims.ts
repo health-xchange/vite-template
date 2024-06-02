@@ -4,7 +4,7 @@ export type ClaimStatus = 'draft' | 'waiting_for_reviewer' | 'reviewing' | 'rese
 
 export interface ClaimDetails {
   _id: string;
-  createdUser: string;
+  userId: string;
   first_name?: string;
   last_name?: string;
   state?: string;
@@ -38,13 +38,17 @@ export interface Comments {
 }
 
 export interface Claim {
-  id: string;
-  metadata: ClaimMetadata;
+  _id: string;
+  status: ClaimStatus;
+  userId: string;
+  createdAt?: string;
+  updatedBy?: string;
+  updatedAt?: string;
   details: ClaimDetails;
-  communication?: Comments[]
+  // communication?: Comments[]
 }
 
-export interface StatsRingProps extends Omit<Claim, 'communication'> {}
+export interface StatsRingProps extends Omit<Claim, 'userId' | 'communication'> {}
 
 export interface ClaimsListResponse {
   claims: Claim[],

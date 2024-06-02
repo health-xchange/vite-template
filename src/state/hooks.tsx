@@ -5,5 +5,6 @@ export function useLogin() {
   const [loginState] = useRecoilState(atomAuthState);
   return {
     isLoggedIn: loginState.isLoggedIn,
+    userInfo: loginState.userInfo,
   };
 }

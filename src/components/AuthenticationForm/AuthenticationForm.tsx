@@ -17,7 +17,7 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useCallback, useEffect, useState } from 'react';
 import { GoogleButton } from './GoogleButton';
-import { AuthenticationPagesProps, RegisterUser, SignInUser } from '@/interfaces/common';
+import { AuthenticationPagesProps, RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
 
@@ -76,8 +76,11 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
       },
       { position: 'bottom-center' }
     )
-      .then((response) => {
-        setLoginState({ isLoggedIn: true, userInfo: response.user });
+      .then((response: SignInResponse) => {
+        setLoginState({
+          isLoggedIn: true,
+          userInfo: { ...response.user, refreshToken: response.refreshToken },
+        });
         navigate('/claims');
       })
       .catch(() => {

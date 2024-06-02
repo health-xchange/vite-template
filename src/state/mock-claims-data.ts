@@ -1,32 +1,35 @@
 import { Claim } from '@/interfaces/claims';
 
-export const claimsList: Claim[] = [{
-  id: '1',
-  details: {
-    first_name: 'John',
-    last_name: 'Doe',
-    state: 'CA',
-    is_not_cosmetic_claim: true,
-    insurance_type: 'Health',
-    insurance_provider: 'Blue Cross',
-    date_of_claim_denial: '2023-04-15',
-    claim_amount: '$5000',
-    reason_for_claim_denial: 'Insufficient documentation',
-    oon_emergency_service: 'Yes',
-    oon_is_in_network_service: 'No',
-    oon_is_signed_consent: 'Yes',
-    consent_opt1: true,
-    consent_opt2: false,
-    consent_opt3: true,
-    consent_opt4: false,
-  },
-  metadata: {
+export const claimsList: Claim[] = [
+  {
+    _id: '1',
+    userId: 'sri.madala',
     createdAt: new Date().toISOString(),
     status: 'draft',
     updatedAt: new Date().toISOString(),
     updatedBy: 'Sridhar Madala',
+    details: {
+      _id: '1',
+      first_name: 'John',
+      last_name: 'Doe',
+      state: 'CA',
+      is_not_cosmetic_claim: true,
+      insurance_type: 'Health',
+      insurance_provider: 'Blue Cross',
+      date_of_claim_denial: '2023-04-15',
+      claim_amount: '$5000',
+      reason_for_claim_denial: 'Insufficient documentation',
+      oon_emergency_service: 'Yes',
+      oon_is_in_network_service: 'No',
+      oon_is_signed_consent: 'Yes',
+      consent_opt1: true,
+      consent_opt2: false,
+      consent_opt3: true,
+      userId: 'sri.madala',
+      consent_opt4: false,
+    },
   },
-}];
+];
 //   ,
 //   {
 //     "id": "2",

@@ -17,7 +17,7 @@ const stats = [
   { value: 76, label: 'In progress' },
 ];
 
-const StatsRingCard: React.FC<StatsRingProps> = ({ id, metadata, details }) => {
+const StatsRingCard: React.FC<StatsRingProps> = ({ _id, status, details }) => {
   const [claimsList, setClaimsList] = useRecoilState(atomClaimsList);
   const theme = useMantineTheme();
   const navigate = useNavigate();
@@ -25,17 +25,17 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ id, metadata, details }) => {
   const total = 2334;
 
   const handleViewDetails = () => {
-    navigate(sanitise(paths.claimsDetails, { claimId: id }));
+    navigate(sanitise(paths.claimsDetails, { claimId: _id }));
   };
 
   const handleDelete = () => {
-    toast.promise(deleteClaim(id), {
+    toast.promise(deleteClaim(_id), {
       pending: 'Deleting...',
       error: 'Failed to delete claim ',
       success: 'Deleted successfully',
     })
       .then(() => {
-        setClaimsList(claimsList.filter(claim => claim.id !== id));
+        setClaimsList(claimsList.filter(claim => claim._id !== _id));
       });
   };
 
@@ -101,7 +101,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ id, metadata, details }) => {
                   {((completed / total) * 100).toFixed(0)}%
                 </Text>
                 <Text ta="center" fz="xs" c="dimmed">
-                  {upperFirst(metadata.status)}
+                  {upperFirst(status)}
                 </Text>
               </div>
             }

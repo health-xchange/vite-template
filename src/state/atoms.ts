@@ -23,6 +23,6 @@ export const getClaimById = selector({
   key: 'getClaimById',
   get: ({ get }) => {
     const claimList = get(atomClaimsList);
-    return (claimId: string) => claimList.find((claim) => claim.id === claimId);
+    return (claimId: string) => claimList.find((claim) => claim._id === claimId);
   },
 });
