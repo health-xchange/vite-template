@@ -10,7 +10,6 @@ export default function NewClaimPage() {
   return (
     <div>
       <Container size="md">
-        {/* <CheckoutButton /> */}
         {
           isLoading ? (
             <Center>

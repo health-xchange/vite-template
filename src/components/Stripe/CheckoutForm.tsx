@@ -1,65 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   PaymentElement,
   useStripe,
   useElements,
+  Elements,
 } from '@stripe/react-stripe-js';
-import { StripePaymentElementOptions } from '@stripe/stripe-js';
+import { Appearance, StripeElementsOptions, StripePaymentElementOptions, loadStripe } from '@stripe/stripe-js';
+import { Button, Text, Modal } from '@mantine/core';
 
-export default function CheckoutForm() {
+// Make sure to call loadStripe outside of a component’s render to avoid
+// recreating the Stripe object on every render.
+// This is your test publishable API key.
+const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+
+interface PaymentModalProps {
+  claimId: string;
+  isModalOpen: boolean;
+  closeModal: () => void;
+  clientSecret: string;
+}
+
+const PaymentModal: React.FC<PaymentModalProps> = ({
+  isModalOpen, closeModal, claimId, clientSecret }) => {
   const stripe = useStripe();
+  // const { claimId } = useParams();
   const elements = useElements();
-
-  const [message, setMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!stripe) {
-      return;
-    }
-
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
-
-    if (!clientSecret) {
-      return;
-    }
-
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      switch (paymentIntent?.status) {
-        case 'succeeded':
-          setMessage('Payment succeeded!');
-          break;
-        case 'processing':
-          setMessage('Your payment is processing.');
-          break;
-        case 'requires_payment_method':
-          setMessage('Your payment was not successful, please try again.');
-          break;
-        default:
-          setMessage('Something went wrong.');
-          break;
-      }
-    });
-  }, [stripe]);
+  const { origin } = window.location;
+  const [message, setMessage] = useState<string>('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-
     setIsLoading(true);
-
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
-        return_url: 'http://localhost:3000/claims/new',
+        return_url: `${origin}/claims/${claimId}/payment-confirmation`,
       },
     });
 
@@ -81,17 +61,27 @@ export default function CheckoutForm() {
     layout: 'tabs',
   };
 
-  return (
-    <form id="payment-form" onSubmit={handleSubmit}>
+  const appearance: Appearance = {
+    theme: 'stripe',
+  };
+  const options: StripeElementsOptions = {
+    clientSecret,
+    appearance,
+  };
 
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button type="submit" disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : 'Pay now'}
-        </span>
-      </button>
-      {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
-    </form>
+  return (
+    <Modal opened={isModalOpen} onClose={closeModal} title="Payment" centered>
+      <Elements options={options} stripe={stripePromise}>
+        <form id="payment-form" onSubmit={handleSubmit}>
+          <PaymentElement id="payment-element" options={paymentElementOptions} />
+          <Button loading={isLoading} type="submit" disabled={isLoading || !stripe || !elements} id="submit">
+            Pay Now
+          </Button>
+          {message && <Text>{message}</Text>}
+        </form>
+      </Elements>
+    </Modal>
   );
-}
+};
+
+export default PaymentModal;

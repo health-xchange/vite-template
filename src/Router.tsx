@@ -9,6 +9,7 @@ import Protected from './ReusableComps/Protected';
 import ContactUsPage from './pages/ContactUsPage';
 import NewClaimPage from './pages/NewClaimPage';
 import { useApiClientInterceptors } from './state/axios-interceptors';
+import PaymentConfirmation from './components/Stripe/PaymentConfirmation';
 
 const Router = () => {
   useApiClientInterceptors();
@@ -17,6 +18,10 @@ const Router = () => {
       <Route path={paths.home} element={<HomePage />} />
       <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
       <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
+      <Route
+        path={paths.claimPaymentConfirmation}
+        element={<Protected element={<PaymentConfirmation />} />}
+      />
       <Route path={paths.signIn} element={<Authentication authType={paths.signIn} />} />
       <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} />
       <Route
@@ -34,6 +39,7 @@ export const paths = {
   home: '/',
   claimsList: '/claims',
   claimsDetails: '/claims/:claimId',
+  claimPaymentConfirmation: '/claims/:claimId/payment-confirmation',
   signIn: '/login' as AuthTypes,
   register: '/register' as AuthTypes,
   confirm: '/verify/:email/:token' as AuthTypes,

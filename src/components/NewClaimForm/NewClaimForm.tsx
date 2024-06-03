@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import {
   IconBuilding,
-  IconCalendar,
-  IconCheck,
+  IconCreditCardPay,
   IconCurrencyDollar,
-  IconDeviceFloppy,
   IconHealthRecognition,
   IconMan,
   IconManFilled,
   IconMapPin,
-  IconSend,
 } from '@tabler/icons-react';
 import {
   Button,
@@ -30,19 +27,21 @@ import {
   RadioGroup,
   Textarea,
   Switch,
-  useMantineTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 // import { DatePickerInput } from '@mantine/dates';
-import { shallowEqual } from '@mantine/hooks';
+import { useDisclosure } from '@mantine/hooks';
 import { STATES_LIST } from '@/utils/states';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
-// import { FormFooter } from './FormFooter';
+import PaymentModal from '../Stripe/CheckoutForm';
+import { createNewPaymentIntent } from '@/actions/claims';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
-  const [active, setActive] = useState(0);
-  const theme = useMantineTheme();
+  const [clientSecret, setClientSecret] = useState('');
+
+  const [isModalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
@@ -50,47 +49,39 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: { ...claim.details },
-    validate: (values) => {
-      if (active === 0) {
-        console.log('Form values', values);
-        return {
-          first_name:
-            (values?.first_name?.trim?.()?.length || 0) < 3
-              ? 'First name must include at least 3 characters'
-              : null,
-          last_name: (values.last_name?.trim?.()?.length || 0) < 1 ? 'Last name is required' : null,
-          date_of_claim_denial: 'if more than 5 months, we cannot help you',
-        };
-      }
-
-      if (active === 1) {
-        return {
-          first_name:
-            values?.first_name?.trim?.()?.length || 0 < 2
-              ? 'Last name must include at least 2 characters'
-              : null,
-        };
-      }
-
-      return {};
-    },
+    // validate: (values) => ({
+    //   first_name:
+    //     (values?.first_name?.trim?.()?.length || 0) < 3
+    //       ? 'First name must include at least 3 characters'
+    //       : null,
+    //   last_name: (values.last_name?.trim?.()?.length || 0) < 1 ? 'Last name is required' : null,
+    //   date_of_claim_denial: 'if more than 5 months, we cannot help you',
+    // }),
   });
 
-  const nextStep = () =>
-    setActive((current) => {
-      if (form.validate().hasErrors) {
-        return current;
-      }
-      return current < 3 ? current + 1 : current;
-    });
+  // const handleSaveDraft = () => {
+  //   updateClaim({ ...claim, details: form.getValues() });
+  // };
+
+  const handleSaveAndPayClick = () => {
+    updateClaim({ ...claim, details: form.getValues() });
+    if (form.validate().hasErrors) {
+      console.log('Form has errors');
+      return false;
+    }
+    if (claim._id) {
+      console.log('Creating payment intent');
+      return createNewPaymentIntent(claim._id)
+        .then((secretCode: string) => setClientSecret(secretCode))
+        .then(() => openModal())
+        .catch(() => setClientSecret(''));
+    }
+    return false;
+  };
 
   // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
-  const isFormHasChanges = !shallowEqual(form.getValues(), claim.details);
-
-  const handleSaveDraft = () => {
-    updateClaim({ ...claim, details: form.getValues() });
-  };
+  // const isFormHasChanges = !shallowEqual(form.getValues(), claim.details);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -354,9 +345,19 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
           </Stack>
         </GridCol>
         <GridCol span={12}>
-          <Group justify="end" my="xl">
-            <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
-            <Button variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
+          <Group justify="center" my="xl">
+            {/* <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button> */}
+            <Button onClick={handleSaveAndPayClick} variant="filled" leftSection={<IconCreditCardPay />} size="md">Complete payment to Submit for review</Button>
+            {
+              isModalOpened && clientSecret && (
+                <PaymentModal
+                  isModalOpen={isModalOpened}
+                  claimId={claim._id}
+                  clientSecret={clientSecret}
+                  closeModal={closeModal}
+                />
+              )
+            }
           </Group>
         </GridCol>
       </Grid>

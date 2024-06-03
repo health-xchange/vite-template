@@ -21,19 +21,32 @@ export const createNewClaimAction = (claim: Claim) =>
       throw error;
     });
 
-export const updateClaimAction = (claim: Claim) => apiClient({
+export const updateClaimAction = (claim: Claim) =>
+  apiClient({
     method: 'PATCH',
     url: sanitise(API_ENDPOINTS.UPDATE_CLAIM, { claimId: claim._id }),
     data: claim,
   })
-  .then((updatedClaim) => Promise.resolve(updatedClaim))
-  .catch((error) => {
-    console.error(error);
-    throw error;
-  });
+    .then((updatedClaim) => Promise.resolve(updatedClaim))
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
 
 export const deleteClaim = (claimId: string) =>
   apiClient({
     method: 'DELETE',
     url: sanitise(API_ENDPOINTS.DELETE_CLAIM, { claimId }),
+  });
+
+export const createNewPaymentIntent = (claimId: string) =>
+  apiClient({
+    method: 'POST',
+    url: sanitise(API_ENDPOINTS.NEW_TRANSACTION, { claimId }),
+    data: { amount: 10 * 100 },
+  })
+  .then((response) => response.data)
+  .catch(error => {
+    console.error(error);
+    throw error;
   });

@@ -6,7 +6,7 @@ export const API_ENDPOINTS = {
   DELETE_CLAIM: '/claims/:claimId',
 
   GET_CLAIM_TRANSACTIONS: '/claims/:claimId/trans',
-  NEW_TRANSACTION: '/claims/:claimId/trans/:transId',
+  NEW_TRANSACTION: '/claims/:claimId/trans',
   UPDATE_TRANSACTION: '/claims/:claimId/trans/:transId',
   DELETE_TRANSACTION: '/claims/:claimId/trans/:transId',
 };
