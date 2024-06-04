@@ -2,7 +2,7 @@ import { Container, Group, Text } from '@mantine/core';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import { Appearance, StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 interface PaymentStatusProps {
   intentId: string;
@@ -11,7 +11,7 @@ interface PaymentStatusProps {
 }
 
 const PaymentStatus: React.FC<PaymentStatusProps> = (props) => {
-  const { intentId, client_secret, redirect_status } = props;
+  const { client_secret } = props;
   const stripe = useStripe();
   const [message, setMessage] = useState<string>('');
 
@@ -20,15 +20,11 @@ const PaymentStatus: React.FC<PaymentStatusProps> = (props) => {
       return;
     }
 
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
-
-    if (!clientSecret) {
+    if (!client_secret) {
       return;
     }
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+    stripe.retrievePaymentIntent(client_secret).then(({ paymentIntent }) => {
       switch (paymentIntent?.status) {
         case 'succeeded':
           setMessage('Payment succeeded!');
@@ -45,6 +41,7 @@ const PaymentStatus: React.FC<PaymentStatusProps> = (props) => {
       }
     });
   }, [stripe]);
+
   return (
     <Container>
       <Group>
