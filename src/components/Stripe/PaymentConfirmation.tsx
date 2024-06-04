@@ -1,8 +1,17 @@
 import { Container, Group, Text } from '@mantine/core';
-import { useStripe } from '@stripe/react-stripe-js';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import { Appearance, StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
 import React, { useEffect, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 
-const PaymentConfirmation: React.FC<{}> = () => {
+interface PaymentStatusProps {
+  intentId: string;
+  client_secret: string;
+  redirect_status: string;
+}
+
+const PaymentStatus: React.FC<PaymentStatusProps> = (props) => {
+  const { intentId, client_secret, redirect_status } = props;
   const stripe = useStripe();
   const [message, setMessage] = useState<string>('');
 
@@ -36,7 +45,6 @@ const PaymentConfirmation: React.FC<{}> = () => {
       }
     });
   }, [stripe]);
-
   return (
     <Container>
       <Group>
@@ -46,6 +54,37 @@ const PaymentConfirmation: React.FC<{}> = () => {
         </Text>
       </Group>
     </Container>
+  );
+};
+
+const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+
+const PaymentConfirmation: React.FC<{}> = () => {
+  const [searchParams] = useSearchParams();
+  const payment_intent = searchParams.get('payment_intent');
+  const payment_intent_client_secret = searchParams.get('payment_intent_client_secret');
+  const redirect_status = searchParams.get('redirect_status');
+
+  if (!payment_intent || !payment_intent_client_secret || !redirect_status) {
+    return <Text>Invalid payment details. You will be redirected to Claims page.</Text>;
+  }
+
+  const appearance: Appearance = {
+    theme: 'stripe',
+  };
+  const options: StripeElementsOptions = {
+    clientSecret: payment_intent_client_secret,
+    appearance,
+  };
+
+  return (
+    <Elements options={options} stripe={stripePromise}>
+      <PaymentStatus
+        intentId={payment_intent}
+        client_secret={payment_intent_client_secret}
+        redirect_status={redirect_status}
+      />
+    </Elements>
   );
 };
 

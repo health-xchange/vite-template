@@ -1,4 +1,5 @@
-import { Claim } from '@/interfaces/claims';
+import { AxiosResponse } from 'axios';
+import { Claim, NewTransactionResponse } from '@/interfaces/claims';
 import { apiClient } from '@/state/axios-interceptors';
 import { API_ENDPOINTS } from '@/utils/endpoints';
 import { sanitise } from '@/utils/functions';
@@ -45,7 +46,7 @@ export const createNewPaymentIntent = (claimId: string) =>
     url: sanitise(API_ENDPOINTS.NEW_TRANSACTION, { claimId }),
     data: { amount: 10 * 100 },
   })
-  .then((response) => response.data)
+  .then((response: AxiosResponse<NewTransactionResponse, any>) => response.data)
   .catch(error => {
     console.error(error);
     throw error;

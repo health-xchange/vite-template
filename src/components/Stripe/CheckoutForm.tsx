@@ -5,26 +5,18 @@ import {
   useElements,
   Elements,
 } from '@stripe/react-stripe-js';
-import { Appearance, StripeElementsOptions, StripePaymentElementOptions, loadStripe } from '@stripe/stripe-js';
-import { Button, Text, Modal } from '@mantine/core';
+import { Appearance, StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
+import { Button, Text, Modal, Group, useMantineTheme, Stack } from '@mantine/core';
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
 const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
-interface PaymentModalProps {
-  claimId: string;
-  isModalOpen: boolean;
-  closeModal: () => void;
-  clientSecret: string;
-}
-
-const PaymentModal: React.FC<PaymentModalProps> = ({
-  isModalOpen, closeModal, claimId, clientSecret }) => {
+const PaymentForm: React.FC<{ claimId: string }> = ({ claimId }) => {
   const stripe = useStripe();
-  // const { claimId } = useParams();
   const elements = useElements();
+  const theme = useMantineTheme();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { origin } = window.location;
   const [message, setMessage] = useState<string>('');
@@ -57,10 +49,28 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
     setIsLoading(false);
   };
 
-  const paymentElementOptions: StripePaymentElementOptions = {
-    layout: 'tabs',
-  };
+  return (
+    <form id="payment-form" onSubmit={handleSubmit}>
+      <PaymentElement id="payment-element" options={{ layout: 'auto' }} />
+      <Stack justify="center">
+        <Button mt={30} loading={isLoading} type="submit" disabled={isLoading || !stripe || !elements} id="submit">
+          Pay & Submit
+        </Button>
+        <Text fw="bold" color={theme.colors.red[8]}>{message}</Text>
+      </Stack>
+    </form>
+  );
+};
 
+interface PaymentModalProps {
+  claimId: string;
+  isModalOpen: boolean;
+  closeModal: () => void;
+  clientSecret: string;
+}
+
+const PaymentModal: React.FC<PaymentModalProps> = ({
+  isModalOpen, closeModal, claimId, clientSecret }) => {
   const appearance: Appearance = {
     theme: 'stripe',
   };
@@ -72,13 +82,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   return (
     <Modal opened={isModalOpen} onClose={closeModal} title="Payment" centered>
       <Elements options={options} stripe={stripePromise}>
-        <form id="payment-form" onSubmit={handleSubmit}>
-          <PaymentElement id="payment-element" options={paymentElementOptions} />
-          <Button loading={isLoading} type="submit" disabled={isLoading || !stripe || !elements} id="submit">
-            Pay Now
-          </Button>
-          {message && <Text>{message}</Text>}
-        </form>
+        <PaymentForm claimId={claimId} />
       </Elements>
     </Modal>
   );

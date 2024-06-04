@@ -1,4 +1,11 @@
-export type ClaimStatus = 'draft' | 'waiting_for_reviewer' | 'reviewing' | 'researching' | 'waiting_for_user' | 'success' | 'failed';
+export type ClaimStatus =
+  | 'draft'
+  | 'waiting_for_reviewer'
+  | 'reviewing'
+  | 'researching'
+  | 'waiting_for_user'
+  | 'success'
+  | 'failed';
 
 // export type ActivityTypes = 'created' | 'reviewed' | 'status_change' | 'updated';
 
@@ -34,7 +41,7 @@ export interface ClaimMetadata {
 export interface Comments {
   commentedBy: string;
   comment: string;
-  files?: string[]
+  files?: string[];
 }
 
 export interface Claim {
@@ -51,6 +58,13 @@ export interface Claim {
 export interface StatsRingProps extends Omit<Claim, 'userId' | 'communication'> {}
 
 export interface ClaimsListResponse {
-  claims: Claim[],
-  totalClaims: number
+  claims: Claim[];
+  totalClaims: number;
+}
+
+export interface NewTransactionResponse {
+  claimId: string;
+  client_secret: string;
+  paymentId: string;
+  userId: string;
 }

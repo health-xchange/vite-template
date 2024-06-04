@@ -70,9 +70,8 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
       return false;
     }
     if (claim._id) {
-      console.log('Creating payment intent');
       return createNewPaymentIntent(claim._id)
-        .then((secretCode: string) => setClientSecret(secretCode))
+        .then((response) => setClientSecret(response.client_secret))
         .then(() => openModal())
         .catch(() => setClientSecret(''));
     }
