@@ -1,9 +1,9 @@
 export type ClaimStatus =
   | 'draft'
-  | 'waiting_for_reviewer'
+  | 'waiting_for_payment'
+  | 'waiting_for_reviewer_response'
   | 'reviewing'
-  | 'researching'
-  | 'waiting_for_user'
+  | 'waiting_for_user_response'
   | 'success'
   | 'failed';
 

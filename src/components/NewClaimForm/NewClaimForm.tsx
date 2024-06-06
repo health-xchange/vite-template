@@ -60,17 +60,16 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   });
 
   // const handleSaveDraft = () => {
-  //   updateClaim({ ...claim, details: form.getValues() });
+  //   updateClaim({ ...claim, details: form.getValues() }, 'draft');
   // };
 
   const handleSaveAndPayClick = () => {
-    updateClaim({ ...claim, details: form.getValues() });
     if (form.validate().hasErrors) {
-      console.log('Form has errors');
       return false;
     }
+    updateClaim({ ...claim, details: form.getValues() }, 'waiting_for_payment');
     if (claim._id) {
-      return createNewPaymentIntent(claim._id)
+      return createNewPaymentIntent(claim._id, { ...claim, details: form.getValues() })
         .then((response) => setClientSecret(response.client_secret))
         .then(() => openModal())
         .catch(() => setClientSecret(''));

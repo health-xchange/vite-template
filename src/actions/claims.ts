@@ -30,7 +30,6 @@ export const updateClaimAction = (claim: Claim) =>
   })
     .then((updatedClaim) => Promise.resolve(updatedClaim))
     .catch((error) => {
-      console.error(error);
       throw error;
     });
 
@@ -40,11 +39,14 @@ export const deleteClaim = (claimId: string) =>
     url: sanitise(API_ENDPOINTS.DELETE_CLAIM, { claimId }),
   });
 
-export const createNewPaymentIntent = (claimId: string) =>
+export const createNewPaymentIntent = (claimId: string, claimDetails: Claim) =>
   apiClient({
     method: 'POST',
     url: sanitise(API_ENDPOINTS.NEW_TRANSACTION, { claimId }),
-    data: { amount: 10 * 100 },
+    data: {
+      amount: 10,
+      claimDetails,
+    },
   })
   .then((response: AxiosResponse<NewTransactionResponse, any>) => response.data)
   .catch(error => {
