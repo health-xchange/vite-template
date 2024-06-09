@@ -53,3 +53,18 @@ export const createNewPaymentIntent = (claimId: string, claimDetails: Claim) =>
     console.error(error);
     throw error;
   });
+
+
+export const refreshPaymentStatus = (claimId: string, transId: string) => {
+  return apiClient({
+    method: 'GET',
+    url: sanitise(API_ENDPOINTS.REFRESH_TRANSACTION_STATUS, { claimId, transId })
+  })
+  .then((response: AxiosResponse<{status: string}, any>) => {
+    return Promise.resolve(response.data.status);
+  })
+  .catch(error => {
+    console.error(error);
+    throw error;
+  })
+}

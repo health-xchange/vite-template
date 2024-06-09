@@ -65,6 +65,13 @@ export interface ClaimsListResponse {
 export interface NewTransactionResponse {
   claimId: string;
   client_secret: string;
-  paymentId: string;
+  transactionId: string;
   userId: string;
 }
+
+export interface NewTransactionResponse {
+  claimId: string;
+  client_secret: string;
+  paymentId: string;
+  userId: string;
+};

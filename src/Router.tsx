@@ -39,7 +39,7 @@ export const paths = {
   home: '/',
   claimsList: '/claims',
   claimsDetails: '/claims/:claimId',
-  claimPaymentConfirmation: '/claims/:claimId/payment-confirmation',
+  claimPaymentConfirmation: '/claims/:claimId/:transactionId',
   signIn: '/login' as AuthTypes,
   register: '/register' as AuthTypes,
   confirm: '/verify/:email/:token' as AuthTypes,

@@ -35,10 +35,11 @@ import { STATES_LIST } from '@/utils/states';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
 import PaymentModal from '../Stripe/CheckoutForm';
+import { NewTransactionResponse } from '@/interfaces/claims';
 import { createNewPaymentIntent } from '@/actions/claims';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
-  const [clientSecret, setClientSecret] = useState('');
+  const [transaction, setTransaction] = useState<NewTransactionResponse | null>(null);
 
   const [isModalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
 
@@ -70,9 +71,9 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
     updateClaim({ ...claim, details: form.getValues() }, 'waiting_for_payment');
     if (claim._id) {
       return createNewPaymentIntent(claim._id, { ...claim, details: form.getValues() })
-        .then((response) => setClientSecret(response.client_secret))
+        .then((response) => setTransaction(response))
         .then(() => openModal())
-        .catch(() => setClientSecret(''));
+        .catch(() => setTransaction(null));
     }
     return false;
   };
@@ -347,11 +348,13 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             {/* <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button> */}
             <Button onClick={handleSaveAndPayClick} variant="filled" leftSection={<IconCreditCardPay />} size="md">Complete payment to Submit for review</Button>
             {
-              isModalOpened && clientSecret && (
+              isModalOpened && transaction && transaction?.client_secret && (
                 <PaymentModal
                   isModalOpen={isModalOpened}
+                  {...transaction}
                   claimId={claim._id}
-                  clientSecret={clientSecret}
+                  transactionId={transaction.transactionId}
+                  clientSecret={transaction.client_secret}
                   closeModal={closeModal}
                 />
               )
