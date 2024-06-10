@@ -28,32 +28,37 @@ import { useRecoilState } from 'recoil';
 import classes from './HeaderMegaMenu.module.css';
 import { atomAuthState } from '../../state/atoms';
 import ProfileMenu from '@/ReusableComps/ProfileMenu/ProfileMenu';
+import useNewClaim from '@/hooks/useNewClaim';
 
-const mockdata = [
-  {
-    icon: IconList,
-    title: 'Claims',
-    href: '/claims',
-    description: 'View the list of claims',
-  },
-  {
-    icon: IconPlus,
-    title: 'New Claim',
-    href: '/claims/new',
-    description: 'Get support for your new claim',
-  },
-];
 
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
   const navigate = useNavigate();
+  const { createNewClaim } = useNewClaim();
   const [loginState] = useRecoilState(atomAuthState);
   const { isLoggedIn, userInfo } = loginState;
+  
+  const headerMenuItems = [
+    {
+      icon: IconList,
+      id: 'claims',
+      title: 'Claims',
+      href: '/claims',
+      description: 'View the list of claims',
+    },
+    {
+      icon: IconPlus,
+      id: 'new-claim',
+      title: 'New Claim',
+      onClick: createNewClaim,
+      description: 'Get support for your new claim',
+    },
+  ];
 
-  const links = mockdata.map((item) => (
-    <NavLink to={item.href} key={item.href}>
+  const links = headerMenuItems.map((item) => (
+    <NavLink to={item.href ?? '#'} onClick={item.onClick} key={item.id}>
       <UnstyledButton className={classes.subLink} key={item.title}>
         <Group wrap="nowrap" align="flex-start">
           <ThemeIcon size={34} variant="default" radius="md">

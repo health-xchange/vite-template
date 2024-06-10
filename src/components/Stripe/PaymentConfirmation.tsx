@@ -1,14 +1,22 @@
-import { refreshPaymentStatus } from '@/actions/claims';
-import { Container, Group, Text } from '@mantine/core';
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { refreshPaymentStatus } from '@/actions/claims';
+import { TransactionStatus } from '@/interfaces/claims';
+import { Button, Group, Text, useMantineTheme } from '@mantine/core';
+import ClaimLayout from '@/Layouts/ClaimLayout';
+import { IconArrowLeft, IconArrowRight, IconPencil, IconPencilPlus } from '@tabler/icons-react';
+import { paths } from '@/Router';
+import { sanitise } from '@/utils/functions';
 
 interface PaymentStatusProps {
-  paymentStatus: string;
+  paymentStatus: TransactionStatus;
 }
 
 const PaymentStatus: React.FC<PaymentStatusProps> = ({ paymentStatus }) => {
   const [message, setMessage] = useState('');
+  const { claimId } = useParams();
+  const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   useEffect(() => {
     switch (paymentStatus) {
@@ -27,30 +35,49 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ paymentStatus }) => {
     }
   }, [paymentStatus]);
 
+  const handleNextStepClick = () => {
+    if (claimId) navigate(sanitise(paths.additionalInfo, { claimId }));
+  };
+
+  const handlePrevStepClick = () => {
+    if (claimId) navigate(sanitise(paths.claimsDetails, { claimId }));
+  };
+
   return (
-    <Container>
-      <Group>
-        <Text>Your payment status is: {message}</Text>
-        <Text>
-          We will carefully study your claim detials and get back to you with more suggestions on
-          processing a successful claim
-        </Text>
+    <Group>
+      <Text>Your payment status is: {message}</Text>
+      <Text>
+        We will carefully study your claim detials and get back to you with more suggestions on
+        processing a successful claim
+      </Text>
+      <Group w={'100%'} justify="center" my="xl">
+        <Button
+          onClick={handlePrevStepClick}
+          variant="default"
+          color={theme.colors.red[6]}
+          leftSection={<IconArrowLeft />}
+          rightSection={<IconPencil />}
+          size="md"
+        >
+          Update Primary details
+        </Button>
+        <Button
+          onClick={handleNextStepClick}
+          variant="filled"
+          leftSection={<IconPencilPlus />}
+          rightSection={<IconArrowRight />}
+          size="md"
+        >
+          Provide Additional information
+        </Button>
       </Group>
-    </Container>
+    </Group>
   );
 };
 
 const PaymentConfirmation: React.FC<{}> = () => {
   const { claimId, transactionId } = useParams();
-  const [searchParams] = useSearchParams();
-  const payment_intent = searchParams.get('payment_intent');
-  const payment_intent_client_secret = searchParams.get('payment_intent_client_secret');
-  const redirect_status = searchParams.get('redirect_status');
   const [paymentStatus, setPaymentStatus] = useState('');
-
-  if (!payment_intent || !payment_intent_client_secret || !redirect_status) {
-    return <Text>Invalid payment details. You will be redirected to Claims page.</Text>;
-  }
 
   useEffect(() => {
     if (claimId && transactionId) {
@@ -62,7 +89,11 @@ const PaymentConfirmation: React.FC<{}> = () => {
     }
   }, [claimId, transactionId]);
 
-  return <PaymentStatus paymentStatus={paymentStatus} />;
+  return (
+    <ClaimLayout activeBullet={1}>
+      <PaymentStatus paymentStatus={paymentStatus} />
+    </ClaimLayout>
+  );
 };
 
 export default PaymentConfirmation;

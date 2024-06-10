@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLogin } from './hooks';
 import { paths } from '@/Router';
@@ -25,6 +25,7 @@ export const removeReqHeader = (key: string) => {
 
 export const useApiClientInterceptors = () => {
   const { userInfo } = useLogin();
+  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
 
   const getNewAccessToken = async () => {
     if (!userInfo?.refreshToken) {
@@ -68,5 +69,18 @@ export const useApiClientInterceptors = () => {
         return Promise.reject(error);
       }
     );
+    setIsAuthLoaded(false);
+    getNewAccessToken()
+      .then((accessToken) => {
+        setIsAuthLoaded(true);
+        setReqHeader('Authorization', accessToken);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsAuthLoaded(false);
+        window.location.replace(paths.signIn);
+      });
   }, []);
+
+  return { isAuthLoaded };
 };

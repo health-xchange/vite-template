@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  IconArrowRight,
   IconBuilding,
   IconCreditCardPay,
   IconCurrencyDollar,
@@ -201,7 +202,9 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             <Stack mt="md">
               <Radio
                 value="optoin_1"
-                label={'The benefit you used or are seeking is partially denied or isn\'t a “covered service”'}
+                label={
+                  "The benefit you used or are seeking is partially denied or isn't a “covered service”"
+                }
               />
               <Radio
                 value="optoin_2"
@@ -213,7 +216,9 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
               />
               <Radio
                 value="optoin_4"
-                label={'You received health services from a health provider or facility that isn\'t in your plan\'s approved network (an “out-of-network” provider)'}
+                label={
+                  "You received health services from a health provider or facility that isn't in your plan's approved network (an “out-of-network” provider)"
+                }
               />
               <Radio
                 value="optoin_5"
@@ -284,8 +289,8 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
           <Stack>
             <Text size="sm" fw={500}>
               Did you sign a &quot;notice and consent form&quot; for out-of-network
-              post-stabilization services? (you can check if you signed this by
-              calling the provider and asking for a copy)
+              post-stabilization services? (you can check if you signed this by calling the provider
+              and asking for a copy)
               <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
                 *
               </Text>
@@ -346,19 +351,35 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
         <GridCol span={12}>
           <Group justify="center" my="xl">
             {/* <Button onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button> */}
-            <Button onClick={handleSaveAndPayClick} variant="filled" leftSection={<IconCreditCardPay />} size="md">Complete payment to Submit for review</Button>
-            {
-              isModalOpened && transaction && transaction?.client_secret && (
-                <PaymentModal
-                  isModalOpen={isModalOpened}
-                  {...transaction}
-                  claimId={claim._id}
-                  transactionId={transaction.transactionId}
-                  clientSecret={transaction.client_secret}
-                  closeModal={closeModal}
-                />
-              )
-            }
+            {claim.status === 'draft' || claim.status === 'waiting_for_payment' ? (
+              <Button
+                onClick={handleSaveAndPayClick}
+                variant="filled"
+                rightSection={<IconCreditCardPay />}
+                size="md"
+              >
+                Proceed for payment
+              </Button>
+            ) : (
+              <Button
+                onClick={handleSaveAndPayClick}
+                variant="filled"
+                rightSection={<IconArrowRight />}
+                size="md"
+              >
+                Update Additional Info
+              </Button>
+            )}
+            {isModalOpened && transaction && transaction?.client_secret && (
+              <PaymentModal
+                isModalOpen={isModalOpened}
+                {...transaction}
+                claimId={claim._id}
+                transactionId={transaction.transactionId}
+                clientSecret={transaction.client_secret}
+                closeModal={closeModal}
+              />
+            )}
           </Group>
         </GridCol>
       </Grid>

@@ -1,6 +1,7 @@
 export type ClaimStatus =
   | 'draft'
   | 'waiting_for_payment'
+  | 'waiting_for_additional_info'
   | 'waiting_for_reviewer_response'
   | 'reviewing'
   | 'waiting_for_user_response'
@@ -8,6 +9,16 @@ export type ClaimStatus =
   | 'failed';
 
 // export type ActivityTypes = 'created' | 'reviewed' | 'status_change' | 'updated';
+
+export interface AdditionalInfo {
+  addl_policy_number?: string;
+  addl_already_appealed_your_denial?: boolean;
+  addl_appeal_process?: string;
+  addl_deniel_claim_number?: string;
+  addl_associated_billing_codes?: string;
+  addl_why_should_approve?: string;
+  addl_relevant_docs?: string;
+}
 
 export interface ClaimDetails {
   _id: string;
@@ -28,6 +39,7 @@ export interface ClaimDetails {
   consent_opt2?: boolean;
   consent_opt3?: boolean;
   consent_opt4?: boolean;
+  additionalInfo?: AdditionalInfo;
 }
 
 export interface ClaimMetadata {
@@ -75,3 +87,5 @@ export interface NewTransactionResponse {
   paymentId: string;
   userId: string;
 };
+
+export type TransactionStatus = 'succeeded' | 'processing' | 'requires_payment_method' | string;
