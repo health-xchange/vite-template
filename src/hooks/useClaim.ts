@@ -1,17 +1,34 @@
-import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Claim } from '@/interfaces/claims';
-import { paths } from '@/Router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createNewClaimAction, fetchClaimById, updateAndGetPaymentAction } from '@/actions/claims';
-import { sanitise, uniqSm } from '@/utils/functions';
+import {
+  createNewClaimAction,
+  fetchClaimById,
+  refreshPaymentStatus,
+  updateAndGetPaymentAction,
+} from '@/actions/claims';
+import { uniqSm } from '@/utils/functions';
 import { useLogin } from '@/state/hooks';
 
-export const useClaim = (claimId: string | undefined) => {
-  const navigate = useNavigate();
+export const useClaim = () => {
+  // const [transaction, setTransaction] = useState<NewTransactionResponse>();
+  const { claimId, transactionId } = useParams();
   const queryClient = useQueryClient();
   const { userInfo } = useLogin();
+
+  const transactionStatus = useQuery(
+    ['refreshPaymentStatus', claimId, transactionId],
+    () => refreshPaymentStatus(claimId || '', transactionId || ''),
+    {
+      retry: 1,
+      enabled: !!claimId && !!transactionId,
+      onError: (error) => {
+        console.log('Error while getting transaction status');
+      },
+    }
+  );
 
   const claimDetails = useQuery(['getClaim', claimId], () => fetchClaimById(claimId || ''), {
     retry: 1,
@@ -24,7 +41,7 @@ export const useClaim = (claimId: string | undefined) => {
   const newClaimMutation = useMutation(createNewClaimAction, {
     onSuccess: (claim) => {
       queryClient.invalidateQueries('claimsList');
-      navigate(sanitise(paths.claimsDetails, { claimId: claim._id }));
+      // navigate(sanitise(paths.claimsDetails, { claimId: claim._id }));
     },
     onError: (error: Error) => {
       console.log('Update error:', error);
@@ -37,19 +54,21 @@ export const useClaim = (claimId: string | undefined) => {
   const updateClaimMutation = useMutation(updateAndGetPaymentAction, {
     onSuccess: (newTransaction) => {
       queryClient.invalidateQueries(['getClaim', newTransaction.claimId]);
-      navigate(
-        sanitise(paths.claimPaymentConfirmation, {
-          claimId: newTransaction.claimId,
-          transactionId: newTransaction.transactionId,
-        })
-      );
+
+      // setTransaction(newTransaction);
+      // navigate(
+      //   sanitise(paths.claimPaymentConfirmation, {
+      //     claimId: newTransaction.claimId,
+      //     transactionId: newTransaction.transactionId,
+      //   })
+      // );
     },
     onError: (error: Error) => {
       toast(`Error while updating claim. ${error.message}`, { type: 'error' });
     },
   });
 
-  const createNewClaim = useCallback(() => {
+  const createNewClaim = async () => {
     const newClaim: Claim = {
       _id: uniqSm(8),
       status: 'draft',
@@ -75,8 +94,8 @@ export const useClaim = (claimId: string | undefined) => {
         consent_opt4: undefined,
       },
     };
-    newClaimMutation.mutate(newClaim);
-  }, []);
+    return await newClaimMutation.mutateAsync(newClaim);
+  };
 
   useEffect(() => {
     if (claimId) {
@@ -84,5 +103,15 @@ export const useClaim = (claimId: string | undefined) => {
     }
   }, [claimId]);
 
-  return { claimDetails, createNewClaim, updateClaim: updateClaimMutation.mutate };
+  useEffect(() => {
+    if (claimId && transactionId) {
+      queryClient.invalidateQueries(['refreshPaymentStatus', claimId, transactionId]);
+    }
+  }, [claimId, transactionId]);
+
+  return {
+    claimDetails,
+    createNewClaim,
+    updateClaim: updateClaimMutation.mutateAsync
+  };
 };

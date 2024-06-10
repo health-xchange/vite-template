@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLogin } from './hooks';
 import { paths } from '@/Router';
 
 // interface ApiContextProps {
@@ -9,7 +7,7 @@ import { paths } from '@/Router';
 // }
 
 export const apiClient = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,16 +21,17 @@ export const removeReqHeader = (key: string) => {
   apiClient.defaults.headers.common[key] = '';
 };
 
-export const useApiClientInterceptors = () => {
-  const { userInfo } = useLogin();
-  const [isAuthLoaded, setIsAuthLoaded] = useState(false);
-
-  const getNewAccessToken = async () => {
-    if (!userInfo?.refreshToken) {
+const getNewAccessToken = async () => {
+  const atomsDataStr = localStorage.getItem('recoil-persist');
+  if (atomsDataStr) {
+    const atomsDataObj = JSON.parse(atomsDataStr);
+    const userObj = atomsDataObj['blue-ai-auth'];
+    const {
+      userInfo: { refreshToken },
+    } = userObj || { userInfo: {} };
+    if (!userObj || !refreshToken) {
       return window.location.replace(paths.signIn);
-      // return navigate(paths.signIn);
     }
-    const { refreshToken } = userInfo;
     try {
       const response = await apiClient.post('/auth/token', { refreshToken });
       // eslint-disable-next-line no-constant-condition
@@ -43,44 +42,29 @@ export const useApiClientInterceptors = () => {
     } catch (error) {
       return Promise.reject(error);
     }
-  };
-
-  useEffect(() => {
-    apiClient.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        const originalRequest = error.config;
-        console.log('interceptor: ', error);
-        if (error?.response?.status === 401 && originalRequest?.url === paths.api_newToken) {
-          console.log('interceptor: navigating to signin.');
-          window.location.replace(paths.signIn);
-          return Promise.reject(error);
-        }
-
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          console.log('interceptor: retrying.');
-          originalRequest._retry = true;
-          return getNewAccessToken().then((authToken) => {
-            setReqHeader('Authorization', authToken);
-            originalRequest.headers.Authorization = `Bearer ${authToken}`;
-            return apiClient(originalRequest);
-          });
-        }
-        return Promise.reject(error);
-      }
-    );
-    setIsAuthLoaded(false);
-    getNewAccessToken()
-      .then((accessToken) => {
-        setIsAuthLoaded(true);
-        setReqHeader('Authorization', accessToken);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsAuthLoaded(false);
-        window.location.replace(paths.signIn);
-      });
-  }, []);
-
-  return { isAuthLoaded };
+  }
 };
+
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const originalRequest = error.config;
+    console.log('interceptor: ', error);
+    if (error?.response?.status === 401 && originalRequest?.url === paths.api_newToken) {
+      console.log('interceptor: navigating to signin.');
+      window.location.replace(paths.signIn);
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      console.log('interceptor: retrying.');
+      originalRequest._retry = true;
+      return getNewAccessToken().then((authToken) => {
+        setReqHeader('Authorization', authToken);
+        originalRequest.headers.Authorization = `Bearer ${authToken}`;
+        return apiClient(originalRequest);
+      });
+    }
+    return Promise.reject(error);
+  }
+);

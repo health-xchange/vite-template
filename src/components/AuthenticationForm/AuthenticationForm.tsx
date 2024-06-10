@@ -22,7 +22,7 @@ import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
 
 export function AuthenticationForm(props: AuthenticationPagesProps) {
-  const { authType } = props;
+  const { authType = '/login' } = props;
   const navigate = useNavigate();
   const setLoginState = useSetRecoilState(atomAuthState);
   const { email: verifyingEmail, token: verificationToken } = useParams();

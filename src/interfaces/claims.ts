@@ -86,6 +86,8 @@ export interface NewTransactionResponse {
   client_secret: string;
   paymentId: string;
   userId: string;
+  status: string;  
+  intentId: string;
 };
 
 export type TransactionStatus = 'succeeded' | 'processing' | 'requires_payment_method' | string;

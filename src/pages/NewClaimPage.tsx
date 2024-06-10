@@ -6,7 +6,7 @@ import { useClaim } from '@/hooks/useClaim';
 
 export default function NewClaimPage() {
   const { claimId } = useParams();
-  const { claimDetails, updateClaim } = useClaim(claimId);
+  const { claimDetails, updateClaim } = useClaim();
   return (
     <div>
       <ClaimLayout activeBullet={0}>

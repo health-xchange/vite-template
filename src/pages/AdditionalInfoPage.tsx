@@ -8,7 +8,7 @@ import { useClaim } from '@/hooks/useClaim';
 
 export default function AdditionalInfoPage() {
   const { claimId } = useParams();
-  const { claimDetails, updateClaim } = useClaim(claimId);
+  const { claimDetails, updateClaim } = useClaim();
 
   return (
     <div>

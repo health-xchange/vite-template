@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { refreshPaymentStatus } from '@/actions/claims';
 import { TransactionStatus } from '@/interfaces/claims';
 import { Button, Group, Text, useMantineTheme } from '@mantine/core';
 import ClaimLayout from '@/Layouts/ClaimLayout';
 import { IconArrowLeft, IconArrowRight, IconPencil, IconPencilPlus } from '@tabler/icons-react';
 import { paths } from '@/Router';
 import { sanitise } from '@/utils/functions';
+import { useTransaction } from '@/hooks/useTransaction';
+import PaymentModal from './CheckoutForm';
+import { useDisclosure } from '@mantine/hooks';
+import PaymentSection from './CheckoutForm';
 
 interface PaymentStatusProps {
-  paymentStatus: TransactionStatus;
+  paymentStatus: TransactionStatus | undefined;
 }
 
 const PaymentStatus: React.FC<PaymentStatusProps> = ({ paymentStatus }) => {
@@ -76,22 +79,19 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ paymentStatus }) => {
 };
 
 const PaymentConfirmation: React.FC<{}> = () => {
-  const { claimId, transactionId } = useParams();
-  const [paymentStatus, setPaymentStatus] = useState('');
-
-  useEffect(() => {
-    if (claimId && transactionId) {
-      refreshPaymentStatus(claimId, transactionId)
-        .then(setPaymentStatus)
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [claimId, transactionId]);
+  const { claimId, transactionId, transactionStatus, status, client_secret } = useTransaction();
 
   return (
     <ClaimLayout activeBullet={1}>
-      <PaymentStatus paymentStatus={paymentStatus} />
+      {status === 'requires_payment_method' && claimId && transactionId && client_secret ? (
+        <PaymentSection
+          claimId={claimId}
+          transactionId={transactionId}
+          clientSecret={client_secret}
+        />
+      ) : (
+        <PaymentStatus paymentStatus={transactionStatus.data} />
+      )}
     </ClaimLayout>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PaymentElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import { Appearance, StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
-import { Button, Text, Modal, Group, useMantineTheme, Stack } from '@mantine/core';
+import { Button, Text, useMantineTheme, Stack } from '@mantine/core';
 import { paths } from '@/Router';
 import { sanitise } from '@/utils/functions';
 
@@ -73,15 +73,11 @@ const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
 
 interface PaymentModalProps {
   claimId: string;
-  isModalOpen: boolean;
   transactionId: string;
-  closeModal: () => void;
   clientSecret: string;
 }
 
-const PaymentModal: React.FC<PaymentModalProps> = ({
-  isModalOpen,
-  closeModal,
+const PaymentSection: React.FC<PaymentModalProps> = ({
   claimId,
   transactionId,
   clientSecret,
@@ -95,12 +91,10 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   };
 
   return (
-    <Modal opened={isModalOpen} onClose={closeModal} title="Payment" centered>
-      <Elements options={options} stripe={stripePromise}>
-        <PaymentForm claimId={claimId} transactionId={transactionId} />
-      </Elements>
-    </Modal>
+    <Elements options={options} stripe={stripePromise}>
+      <PaymentForm claimId={claimId} transactionId={transactionId} />
+    </Elements>
   );
 };
 
-export default PaymentModal;
+export default PaymentSection;

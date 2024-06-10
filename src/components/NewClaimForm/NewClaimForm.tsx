@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   IconArrowRight,
   IconBuilding,
@@ -31,17 +31,15 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 // import { DatePickerInput } from '@mantine/dates';
-import { useDisclosure } from '@mantine/hooks';
 import { STATES_LIST } from '@/utils/states';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
-import PaymentModal from '../Stripe/CheckoutForm';
-import { NewTransactionResponse } from '@/interfaces/claims';
+import { useNavigate } from 'react-router-dom';
+import { sanitise } from '@/utils/functions';
+import { paths } from '@/Router';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
-  const [transaction, setTransaction] = useState<NewTransactionResponse | null>(null);
-
-  const [isModalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const navigate = useNavigate();
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -64,11 +62,28 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   //   updateClaim({ ...claim, details: form.getValues() }, 'draft');
   // };
 
-  const handleSaveAndPayClick = () => {
+  const handleSaveAndPayClick = async () => {
     if (form.validate().hasErrors) {
       return false;
     }
-    updateClaim({ ...claim, details: form.getValues(), status: 'waiting_for_payment' });
+    const response = await updateClaim({
+      ...claim,
+      details: form.getValues(),
+      status: 'waiting_for_payment',
+    });
+    console.log(response);
+    const params = new URLSearchParams({
+      client_secret: response.client_secret,
+      status: response.status,
+      intentId: response.intentId,
+    });
+
+    navigate(
+      `${sanitise(paths.claimPaymentConfirmation, {
+        claimId: response.claimId,
+        transactionId: response.transactionId,
+      })}?${params.toString()}`
+    );
   };
 
   // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -362,16 +377,9 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 Update Additional Info
               </Button>
             )}
-            {isModalOpened && transaction && transaction?.client_secret && (
-              <PaymentModal
-                isModalOpen={isModalOpened}
-                {...transaction}
-                claimId={claim._id}
-                transactionId={transaction.transactionId}
-                clientSecret={transaction.client_secret}
-                closeModal={closeModal}
-              />
-            )}
+            {/* {isModalOpened && transaction && transaction?.client_secret && (
+              
+            )} */}
           </Group>
         </GridCol>
       </Grid>
