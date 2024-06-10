@@ -1,4 +1,4 @@
-import { Container, SimpleGrid } from '@mantine/core';
+import { Container, Progress, SimpleGrid } from '@mantine/core';
 import { useRecoilState } from 'recoil';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -10,38 +10,32 @@ import { atomClaimsList } from '@/state/atoms';
 import useNewClaim from '@/hooks/useNewClaim';
 import { fetchClaimsList } from '@/actions/claims';
 import { Claim } from '@/interfaces/claims';
+import { useQuery } from 'react-query';
 
 export default function ClaimsListPage() {
-  const [claimsList, setClaimsList] = useRecoilState(atomClaimsList);
+  const { data: claimsList, error, isLoading } = useQuery('data', fetchClaimsList);
   const { createNewClaim } = useNewClaim();
-
-  useEffect(() => {
-    fetchClaimsList()
-      .then((response: AxiosResponse<Claim[], any>) => {
-        const savedClaims = response.data;
-        setClaimsList(savedClaims);
-      })
-      .catch((error: any) => {
-        console.error('Failed to fetch claims list', error);
-        toast('Failed to fetch claims', { type: 'error' });
-      });
-  }, []);
 
   return (
     <Container size="xl">
       <PageTitle title="Claims" />
-      <SimpleGrid cols={{ base: 3, xs: 3 }}>
-        <NewClaimCard onClick={createNewClaim} />
-        {
-          claimsList.map(claim =>
+      {isLoading ? (
+        <div>Loading Claims</div>
+      ) : error ? (
+        <div>Failed to fetch claims</div>
+      ) : (
+        <SimpleGrid cols={{ base: 3, xs: 3 }}>
+          <NewClaimCard onClick={createNewClaim} />
+          {claimsList?.map?.((claim: Claim) => (
             <StatsRingCard
               key={claim._id}
               _id={claim._id}
               status={claim.status}
               details={claim.details}
-            />)
-        }
-      </SimpleGrid>
+            />
+          ))}
+        </SimpleGrid>
+      )}
     </Container>
   );
 }

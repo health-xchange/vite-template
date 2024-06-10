@@ -9,19 +9,23 @@ import { ToastContainer } from 'react-toastify';
 import { theme } from './theme';
 import { HeaderMegaMenu } from './components/HeaderMegaMenu/HeaderMegaMenu';
 import Router from './Router';
+import queryClient from './state/queryClient';
+import { QueryClientProvider } from 'react-query';
 
 function App() {
   return (
     <div className="App">
       <ColorSchemeScript />
       <MantineProvider theme={theme}>
-        <BrowserRouter>
-          <RecoilRoot>
-            <HeaderMegaMenu />
-            <Router />
-            <ToastContainer />
-          </RecoilRoot>
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <RecoilRoot>
+              <HeaderMegaMenu />
+              <Router />
+              <ToastContainer />
+            </RecoilRoot>
+          </BrowserRouter>
+        </QueryClientProvider>
       </MantineProvider>
     </div>
   );

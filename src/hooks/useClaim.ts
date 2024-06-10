@@ -1,70 +1,88 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Claim, ClaimStatus, ClaimsListResponse } from '@/interfaces/claims';
-import { atomClaimsList } from '@/state/atoms';
-import { fetchClaimsList, updateClaimAction } from '@/actions/claims';
+import { Claim } from '@/interfaces/claims';
 import { paths } from '@/Router';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { createNewClaimAction, fetchClaimById, updateAndGetPaymentAction } from '@/actions/claims';
+import { sanitise, uniqSm } from '@/utils/functions';
+import { useLogin } from '@/state/hooks';
 
 export const useClaim = (claimId: string | undefined) => {
-  const [selectedClaim, setSelectedClaim] = useState<Claim | undefined>(undefined);
-  const [isFetching, setIsfetching] = useState(false);
   const navigate = useNavigate();
-  const [claimsList, setClaimsList] = useRecoilState(atomClaimsList);
+  const queryClient = useQueryClient();
+  const { userInfo } = useLogin();
 
-  const updateClaim = useCallback(
-    (updatedClaim: Claim, status: ClaimStatus = 'draft') => {
-      updateClaimAction({ ...updatedClaim, status })
-        .then(() => {
-          const updatedClaimsList = claimsList.map((item: Claim) =>
-            item._id === updatedClaim._id ? updatedClaim : item
-          );
-          setClaimsList(updatedClaimsList);
-          setSelectedClaim(updatedClaim);
-        })
-        .catch(() => {
-          throw new Error('Failed to update a claim');
-        });
+  const claimDetails = useQuery(['getClaim', claimId], () => fetchClaimById(claimId || ''), {
+    retry: 1,
+    enabled: !!claimId,
+    onError: (error) => {
+      console.error(error);
     },
-    [claimsList]
-  );
+  });
 
-  const getSelectedClaim = useCallback(() => {
-    if (!claimId) navigate(paths.claimsList);
-    let claim = claimsList.find((item) => item._id === claimId);
-    if (claim) {
-      setSelectedClaim({ ...claim });
-    } else {
-      toast
-        .promise(fetchClaimsList(), {
-          pending: {
-            render: () => {
-              setIsfetching(true);
-              return 'Please wait while we check the claim detials';
-            },
-          },
-          error: 'Could not find the claim detials',
+  const newClaimMutation = useMutation(createNewClaimAction, {
+    onSuccess: (claim) => {
+      queryClient.invalidateQueries('claimsList');
+      navigate(sanitise(paths.claimsDetails, { claimId: claim._id }));
+    },
+    onError: (error: Error) => {
+      console.log('Update error:', error);
+      toast("New Claim couldn't be created at the moment. Please try again later", {
+        type: 'error',
+      });
+    },
+  });
+
+  const updateClaimMutation = useMutation(updateAndGetPaymentAction, {
+    onSuccess: (newTransaction) => {
+      queryClient.invalidateQueries(['getClaim', newTransaction.claimId]);
+      navigate(
+        sanitise(paths.claimPaymentConfirmation, {
+          claimId: newTransaction.claimId,
+          transactionId: newTransaction.transactionId,
         })
-        .then((response) => {
-          const { claims: remoteClaims } = response.data as ClaimsListResponse;
-          claim = remoteClaims.find((item) => item._id === claimId);
-          if (!claim) {
-            toast.error('Could not find the claim details.');
-            navigate(paths.claimsList);
-          } else {
-            setClaimsList(remoteClaims);
-            setSelectedClaim({ ...claim });
-          }
-        })
-        .catch(() => navigate(paths.claimsList, { replace: true }))
-        .finally(() => setIsfetching(false));
+      );
+    },
+    onError: (error: Error) => {
+      toast(`Error while updating claim. ${error.message}`, { type: 'error' });
+    },
+  });
+
+  const createNewClaim = useCallback(() => {
+    const newClaim: Claim = {
+      _id: uniqSm(8),
+      status: 'draft',
+      userId: userInfo?._id || '',
+      details: {
+        _id: uniqSm(8),
+        userId: userInfo?._id || '',
+        first_name: '',
+        last_name: '',
+        state: '',
+        is_not_cosmetic_claim: undefined,
+        insurance_type: '',
+        insurance_provider: '',
+        date_of_claim_denial: new Date().toISOString(),
+        claim_amount: '',
+        reason_for_claim_denial: '',
+        oon_emergency_service: '',
+        oon_is_in_network_service: '',
+        oon_is_signed_consent: '',
+        consent_opt1: undefined,
+        consent_opt2: undefined,
+        consent_opt3: undefined,
+        consent_opt4: undefined,
+      },
+    };
+    newClaimMutation.mutate(newClaim);
+  }, []);
+
+  useEffect(() => {
+    if (claimId) {
+      queryClient.invalidateQueries(['getClaim', claimId]);
     }
   }, [claimId]);
 
-  useEffect(() => {
-    getSelectedClaim();
-  }, [claimId]);
-
-  return { claim: selectedClaim, updateClaim, isLoading: isFetching };
+  return { claimDetails, createNewClaim, updateClaim: updateClaimMutation.mutate };
 };

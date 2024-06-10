@@ -37,7 +37,6 @@ import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
 import PaymentModal from '../Stripe/CheckoutForm';
 import { NewTransactionResponse } from '@/interfaces/claims';
-import { createNewPaymentIntent } from '@/actions/claims';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const [transaction, setTransaction] = useState<NewTransactionResponse | null>(null);
@@ -69,14 +68,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
     if (form.validate().hasErrors) {
       return false;
     }
-    updateClaim({ ...claim, details: form.getValues() }, 'waiting_for_payment');
-    if (claim._id) {
-      return createNewPaymentIntent(claim._id, { ...claim, details: form.getValues() })
-        .then((response) => setTransaction(response))
-        .then(() => openModal())
-        .catch(() => setTransaction(null));
-    }
-    return false;
+    updateClaim({ ...claim, details: form.getValues(), status: 'waiting_for_payment' });
   };
 
   // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));

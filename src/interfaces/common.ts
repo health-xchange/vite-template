@@ -49,5 +49,5 @@ export interface SignInResponse {
 
 export interface NewFormProps {
   claim: Claim;
-  updateClaim: (updateClaim: Claim, status: ClaimStatus) => void;
+  updateClaim: (updateClaim: Claim) => void;
 }
