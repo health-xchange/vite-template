@@ -72,18 +72,19 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
       status: 'waiting_for_payment',
     });
     console.log(response);
-    const params = new URLSearchParams({
-      client_secret: response.client_secret,
-      status: response.status,
-      intentId: response.intentId,
-    });
 
-    navigate(
-      `${sanitise(paths.claimPaymentConfirmation, {
-        claimId: response.claimId,
-        transactionId: response.transactionId,
-      })}?${params.toString()}`
-    );
+    // const params = new URLSearchParams({
+    //   client_secret: response.client_secret,
+    //   status: response.status,
+    //   intentId: response.intentId,
+    // });
+
+    // navigate(
+    //   `${sanitise(paths.claimPaymentConfirmation, {
+    //     claimId: response.claimId,
+    //     transactionId: response.transactionId,
+    //   })}?${params.toString()}`
+    // );
   };
 
   // const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));

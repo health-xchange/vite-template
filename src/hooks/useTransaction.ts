@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { useQuery, useQueryClient } from 'react-query';
-import { refreshPaymentStatus } from '@/actions/claims';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { createNewTransactionAction, refreshPaymentStatus } from '@/actions/claims';
 
 export const useTransaction = () => {
   const { claimId, transactionId } = useParams();
@@ -11,6 +11,10 @@ export const useTransaction = () => {
   const status = searchParams.get('status');
 
   const queryClient = useQueryClient();
+
+  const newTransaction = useMutation(createNewTransactionAction);
+
+  const lastTransaction = useQuery('lastTransaction', )
 
   const transactionStatus = useQuery(
     ['refreshPaymentStatus', claimId, transactionId],
@@ -37,6 +41,8 @@ export const useTransaction = () => {
     transactionId,
     intent_id,
     client_secret,
-    status
+    status,
+    newTransaction,
+    createNewTransaction: newTransaction.mutateAsync
   };
 };

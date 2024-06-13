@@ -74,12 +74,12 @@ export interface ClaimsListResponse {
   totalClaims: number;
 }
 
-export interface NewTransactionResponse {
-  claimId: string;
-  client_secret: string;
-  transactionId: string;
-  userId: string;
-}
+// export interface NewTransactionResponse {
+//   claimId: string;
+//   client_secret: string;
+//   transactionId: string;
+//   userId: string;
+// }
 
 export interface NewTransactionResponse {
   claimId: string;

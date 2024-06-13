@@ -3,32 +3,14 @@ import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Claim } from '@/interfaces/claims';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import {
-  createNewClaimAction,
-  fetchClaimById,
-  refreshPaymentStatus,
-  updateAndGetPaymentAction,
-} from '@/actions/claims';
+import { createNewClaimAction, fetchClaimById, updateClaimAction } from '@/actions/claims';
 import { uniqSm } from '@/utils/functions';
 import { useLogin } from '@/state/hooks';
 
 export const useClaim = () => {
-  // const [transaction, setTransaction] = useState<NewTransactionResponse>();
   const { claimId, transactionId } = useParams();
   const queryClient = useQueryClient();
   const { userInfo } = useLogin();
-
-  const transactionStatus = useQuery(
-    ['refreshPaymentStatus', claimId, transactionId],
-    () => refreshPaymentStatus(claimId || '', transactionId || ''),
-    {
-      retry: 1,
-      enabled: !!claimId && !!transactionId,
-      onError: (error) => {
-        console.log('Error while getting transaction status');
-      },
-    }
-  );
 
   const claimDetails = useQuery(['getClaim', claimId], () => fetchClaimById(claimId || ''), {
     retry: 1,
@@ -41,7 +23,6 @@ export const useClaim = () => {
   const newClaimMutation = useMutation(createNewClaimAction, {
     onSuccess: (claim) => {
       queryClient.invalidateQueries('claimsList');
-      // navigate(sanitise(paths.claimsDetails, { claimId: claim._id }));
     },
     onError: (error: Error) => {
       console.log('Update error:', error);
@@ -51,17 +32,9 @@ export const useClaim = () => {
     },
   });
 
-  const updateClaimMutation = useMutation(updateAndGetPaymentAction, {
-    onSuccess: (newTransaction) => {
-      queryClient.invalidateQueries(['getClaim', newTransaction.claimId]);
-
-      // setTransaction(newTransaction);
-      // navigate(
-      //   sanitise(paths.claimPaymentConfirmation, {
-      //     claimId: newTransaction.claimId,
-      //     transactionId: newTransaction.transactionId,
-      //   })
-      // );
+  const updateClaimMutation = useMutation(updateClaimAction, {
+    onSuccess: (updatedClaim) => {
+      queryClient.invalidateQueries(['getClaim', updatedClaim._id]);
     },
     onError: (error: Error) => {
       toast(`Error while updating claim. ${error.message}`, { type: 'error' });
@@ -112,6 +85,6 @@ export const useClaim = () => {
   return {
     claimDetails,
     createNewClaim,
-    updateClaim: updateClaimMutation.mutateAsync
+    updateClaim: updateClaimMutation.mutateAsync,
   };
 };

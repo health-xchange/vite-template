@@ -10,7 +10,7 @@ import { sanitise } from '@/utils/functions';
 // This is your test publishable API key.
 const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
-const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
+export const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
   claimId,
   transactionId,
 }) => {
@@ -71,30 +71,3 @@ const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
   );
 };
 
-interface PaymentModalProps {
-  claimId: string;
-  transactionId: string;
-  clientSecret: string;
-}
-
-const PaymentSection: React.FC<PaymentModalProps> = ({
-  claimId,
-  transactionId,
-  clientSecret,
-}) => {
-  const appearance: Appearance = {
-    theme: 'stripe',
-  };
-  const options: StripeElementsOptions = {
-    clientSecret,
-    appearance,
-  };
-
-  return (
-    <Elements options={options} stripe={stripePromise}>
-      <PaymentForm claimId={claimId} transactionId={transactionId} />
-    </Elements>
-  );
-};
-
-export default PaymentSection;

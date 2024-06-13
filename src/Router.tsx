@@ -17,6 +17,7 @@ const Router = () => {
       <Route path={paths.home} element={<HomePage />} />
       <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
       <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
+      <Route path={paths.claimPayment} element={<Protected element={<PaymentConfirmation />} />} />
       <Route path={paths.additionalInfo} element={<Protected element={<AdditionalInfoPage />} />} />
       <Route
         path={paths.claimPaymentConfirmation}
@@ -36,6 +37,7 @@ export const paths = {
   home: '/',
   claimsList: '/claims',
   claimsDetails: '/claims/:claimId',
+  claimPayment: '/claims/:claimId/payment',
   claimPaymentConfirmation: '/claims/:claimId/:transactionId',
   additionalInfo: '/claims/:claimId/additional',
   signIn: '/login' as AuthTypes,

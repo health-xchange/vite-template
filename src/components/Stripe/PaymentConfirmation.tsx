@@ -7,9 +7,9 @@ import { IconArrowLeft, IconArrowRight, IconPencil, IconPencilPlus } from '@tabl
 import { paths } from '@/Router';
 import { sanitise } from '@/utils/functions';
 import { useTransaction } from '@/hooks/useTransaction';
-import PaymentModal from './CheckoutForm';
+import PaymentModal from './PaymentForm';
 import { useDisclosure } from '@mantine/hooks';
-import PaymentSection from './CheckoutForm';
+import PaymentSection from './PaymentForm';
 
 interface PaymentStatusProps {
   paymentStatus: TransactionStatus | undefined;
