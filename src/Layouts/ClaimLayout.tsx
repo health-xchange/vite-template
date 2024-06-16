@@ -1,3 +1,4 @@
+import { FooterSimple } from '@/components/FooterSimple/FooterSimple';
 import ClaimTimeLine from '@/components/Timeline/Timeline';
 import { Container, Grid, GridCol, Transition } from '@mantine/core';
 import { ReactNode } from 'react';
@@ -44,6 +45,7 @@ const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => 
           </Transition>
         </GridCol>
       </Grid>
+      <FooterSimple />
     </Container>
   );
 };

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   IconArrowRight,
   IconBuilding,
+  IconCalendar,
   IconCreditCardPay,
   IconCurrencyDollar,
   IconHealthRecognition,
@@ -28,6 +29,8 @@ import {
   RadioGroup,
   Textarea,
   Switch,
+  Overlay,
+  getEnv,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 // import { DatePickerInput } from '@mantine/dates';
@@ -35,19 +38,26 @@ import { STATES_LIST } from '@/utils/states';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
 import { useNavigate } from 'react-router-dom';
-import { sanitise } from '@/utils/functions';
+import { getEnvVars, sanitise } from '@/utils/functions';
 import { paths } from '@/Router';
+import { DatePickerInput } from '@mantine/dates';
+import moment from 'moment';
 
 const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
 
+  let { VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM } = getEnvVars();
+  VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM = Number(VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM);
+
+  const dateOfClaimDenial = moment(claim.details.date_of_claim_denial).isValid() ? moment(claim.details.date_of_claim_denial) : undefined;
+
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { ...claim.details },
+    initialValues: { ...claim.details, date_of_claim_denial: dateOfClaimDenial },
     // validate: (values) => ({
     //   first_name:
     //     (values?.first_name?.trim?.()?.length || 0) < 3
@@ -62,13 +72,20 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   //   updateClaim({ ...claim, details: form.getValues() }, 'draft');
   // };
 
+  const isNotCosmeticClaim = useMemo(() => {
+    console.log('isNotCosmeticClaim', form.values.is_not_cosmetic_claim);
+    return form.values.is_not_cosmetic_claim ?? false;
+  }, [form.values]);
+
+  console.log('isNotCosmeticClaim', isNotCosmeticClaim);
+
   const handleSaveAndPayClick = async () => {
     if (form.validate().hasErrors) {
       return false;
     }
     const response = await updateClaim({
       ...claim,
-      details: form.getValues(),
+      details: { ...form.values, date_of_claim_denial: form.values.date_of_claim_denial?.toISOString() },
       status: 'waiting_for_payment',
     });
     console.log(response);
@@ -166,6 +183,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             key={form.key('insurance_type')}
             {...form.getInputProps('insurance_type')}
           />
+          {isNotCosmeticClaim && <Overlay color="#000" backgroundOpacity={0.85} />}
         </GridCol>
         <GridCol span={6} mt="md">
           <TextInput
@@ -177,19 +195,23 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             {...form.getInputProps('insurance_provider')}
           />
         </GridCol>
-        {/* <GridCol span={6} mt="md">
+        <GridCol span={6} mt="md">
           <DatePickerInput
             label="When were you notified of the claim denial ?"
             placeholder="Date"
+            minDate={moment().subtract(VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM, 'days').toDate()}
+            maxDate={moment().toDate()}
             leftSection={<IconCalendar style={{ width: rem(20), height: rem(20) }} stroke={1.5} />}
             key={form.key('date_of_claim_denial')}
+            weekendDays={[]}
             {...form.getInputProps('date_of_claim_denial')}
           />
-        </GridCol> */}
+        </GridCol>
         <GridCol span={6} mt="md">
           <NumberInput
             label="Claim amount"
             placeholder="Dollars"
+            min={10}
             leftSection={
               <IconCurrencyDollar style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
             }
@@ -366,7 +388,7 @@ const NewClaimForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 rightSection={<IconCreditCardPay />}
                 size="md"
               >
-                Proceed for payment
+                Save & Proceed for payment
               </Button>
             ) : (
               <Button

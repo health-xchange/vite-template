@@ -1,20 +1,21 @@
-import { Container, Progress, SimpleGrid } from '@mantine/core';
-import { useRecoilState } from 'recoil';
-import { useEffect } from 'react';
-import { toast } from 'react-toastify';
-import { AxiosResponse } from 'axios';
+import { Container, SimpleGrid } from '@mantine/core';
+// import { useRecoilState } from 'recoil';
+// import { useEffect } from 'react';
+// import { toast } from 'react-toastify';
+// import { AxiosResponse } from 'axios';
 import NewClaimCard from '@/components/NewClaimCard/NewClaimCard';
 import { PageTitle } from '@/components/PageTitle/PageTitle';
 import StatsRingCard from '@/components/StatusRingCard/StatusRingCard';
-import { atomClaimsList } from '@/state/atoms';
-import useNewClaim from '@/hooks/useNewClaim';
+// import { atomClaimsList } from '@/state/atoms';
+// import useNewClaim from '@/hooks/useNewClaim';
 import { fetchClaimsList } from '@/actions/claims';
 import { Claim } from '@/interfaces/claims';
 import { useQuery } from 'react-query';
+import { useClaim } from '@/hooks/useClaim';
 
 export default function ClaimsListPage() {
   const { data: claimsList, error, isLoading } = useQuery('data', fetchClaimsList);
-  const { createNewClaim } = useNewClaim();
+  const { createNewClaim } = useClaim();
 
   return (
     <Container size="xl">

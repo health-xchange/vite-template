@@ -1,6 +1,5 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage/HomePage';
 import ClaimsListPage from './pages/ClaimsListPage';
 import Authentication from './pages/Authentication';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
@@ -9,7 +8,7 @@ import Protected from './ReusableComps/Protected';
 import ContactUsPage from './pages/ContactUsPage';
 import NewClaimPage from './pages/NewClaimPage';
 import PaymentConfirmation from './components/Stripe/PaymentConfirmation';
-import AdditionalInfoPage from './pages/AdditionalInfoPage';
+import CriticalInfoPage from './pages/CriticalInfoPage';
 
 const Router = () => {
   return (
@@ -18,7 +17,7 @@ const Router = () => {
       <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
       <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
       <Route path={paths.claimPayment} element={<Protected element={<PaymentConfirmation />} />} />
-      <Route path={paths.additionalInfo} element={<Protected element={<AdditionalInfoPage />} />} />
+      <Route path={paths.criticalInfo} element={<Protected element={<CriticalInfoPage />} />} />
       <Route
         path={paths.claimPaymentConfirmation}
         element={<Protected element={<PaymentConfirmation />} />}
@@ -39,7 +38,7 @@ export const paths = {
   claimsDetails: '/claims/:claimId',
   claimPayment: '/claims/:claimId/payment',
   claimPaymentConfirmation: '/claims/:claimId/:transactionId',
-  additionalInfo: '/claims/:claimId/additional',
+  criticalInfo: '/claims/:claimId/additional',
   signIn: '/login' as AuthTypes,
   register: '/register' as AuthTypes,
   confirm: '/verify/:email/:token' as AuthTypes,

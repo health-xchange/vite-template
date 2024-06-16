@@ -13,14 +13,14 @@
     height: 100%;
     background-size: contain;
     z-index: -1;
-    transform: rotate(45deg);
+    /* transform: rotate(45deg); */
   }
   min-height: rem(400px);
-  /* background-image: linear-gradient(
+  background-image: linear-gradient(
     -60deg,
     var(--mantine-color-gray-0) 0%,
-    var(--mantine-color-gray-2) 100%
-  ); */
+    var(--mantine-color-gray-0) 100%
+  );
   /* border-radius: var(--mantine-radius-md); */
   padding: calc(var(--mantine-spacing-xl) * 2.5);
 

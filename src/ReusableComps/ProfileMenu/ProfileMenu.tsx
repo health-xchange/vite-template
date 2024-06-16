@@ -59,7 +59,7 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item
+        {/* <Menu.Item
           leftSection={
             <IconHeart
               style={{ width: rem(16), height: rem(16) }}
@@ -92,7 +92,7 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
         >
           Your comments
         </Menu.Item>
-
+*/}
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item
           leftSection={
@@ -100,14 +100,14 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
           }
         >
           Account settings
-        </Menu.Item>
-        <Menu.Item
+        </Menu.Item> 
+        {/* <Menu.Item
           leftSection={
             <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
           }
         >
           Change account
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item
           color="red"
           onClick={handleSignOut}

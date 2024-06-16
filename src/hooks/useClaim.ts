@@ -1,14 +1,16 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Claim } from '@/interfaces/claims';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { createNewClaimAction, fetchClaimById, updateClaimAction } from '@/actions/claims';
-import { uniqSm } from '@/utils/functions';
+import { sanitise, uniqSm } from '@/utils/functions';
 import { useLogin } from '@/state/hooks';
+import { paths } from '@/Router';
 
 export const useClaim = () => {
   const { claimId, transactionId } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { userInfo } = useLogin();
 
@@ -21,7 +23,7 @@ export const useClaim = () => {
   });
 
   const newClaimMutation = useMutation(createNewClaimAction, {
-    onSuccess: (claim) => {
+    onSuccess: () => {
       queryClient.invalidateQueries('claimsList');
     },
     onError: (error: Error) => {
@@ -67,7 +69,15 @@ export const useClaim = () => {
         consent_opt4: undefined,
       },
     };
-    return await newClaimMutation.mutateAsync(newClaim);
+    // return await
+    newClaimMutation
+      .mutateAsync(newClaim)
+      .then((newClaim) => {
+        navigate(sanitise(paths.claimsDetails, { claimId: newClaim._id }));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   useEffect(() => {

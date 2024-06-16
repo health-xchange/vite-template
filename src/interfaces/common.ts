@@ -3,7 +3,7 @@ import { Claim, NewTransactionResponse } from './claims';
 
 export type AuthenticationPagesProps = PaperProps & { authType?: AuthTypes };
 
-export type AuthTypes = '/confirm/:email/:token' | '/login' | '/register';
+export type AuthTypes = '/verify/:email/:token' | '/login' | '/register';
 
 export interface RegisterUser extends SignInUser {
   username: string;

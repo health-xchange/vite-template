@@ -10,7 +10,7 @@ export type ClaimStatus =
 
 // export type ActivityTypes = 'created' | 'reviewed' | 'status_change' | 'updated';
 
-export interface AdditionalInfo {
+export interface CriticalInfo {
   addl_policy_number?: string;
   addl_already_appealed_your_denial?: boolean;
   addl_appeal_process?: string;
@@ -39,7 +39,7 @@ export interface ClaimDetails {
   consent_opt2?: boolean;
   consent_opt3?: boolean;
   consent_opt4?: boolean;
-  additionalInfo?: AdditionalInfo;
+  criticalInfo?: CriticalInfo;
 }
 
 export interface ClaimMetadata {

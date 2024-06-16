@@ -1,21 +1,7 @@
 import React from 'react';
 import {
-  Icon123,
-  IconAbacus,
   IconArrowLeft,
-  IconArrowLeftBar,
   IconCheck,
-  IconCreditCardPay,
-  IconFileAnalytics,
-  IconFloatRight,
-  IconManFilled,
-  IconPaperclip,
-  IconPencil,
-  IconPencilBolt,
-  IconPencilDollar,
-  IconSend,
-  IconSend2,
-  IconWallpaper,
 } from '@tabler/icons-react';
 import {
   Button,
@@ -27,21 +13,17 @@ import {
   Text,
   Stack,
   Divider,
-  rem,
   Textarea,
   Switch,
-  useMantineTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-// import { DatePickerInput } from '@mantine/dates';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps } from '@/interfaces/common';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { sanitise } from '@/utils/functions';
 import { paths } from '@/Router';
 
-const AdditionalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
-  const theme = useMantineTheme();
+const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const navigate = useNavigate();
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -49,7 +31,7 @@ const AdditionalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
 
   const form = useForm({
     mode: 'uncontrolled',
-    initialValues: { ...claim.details.additionalInfo },
+    initialValues: { ...claim.details.criticalInfo },
   });
 
   const handleSaveAndSubmitForReview = () => {
@@ -57,8 +39,7 @@ const AdditionalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
       return false;
     }
     updateClaim(
-      { ...claim, details: { ...claim.details, additionalInfo: form.getValues() } },
-      'waiting_for_reviewer_response'
+      { ...claim, details: { ...claim.details, criticalInfo: form.getValues() }, status: 'waiting_for_reviewer_response' },
     );
     return false;
   };
@@ -70,13 +51,6 @@ const AdditionalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   return (
     <div style={{ position: 'relative' }}>
       <PageTitle title="Let us help on your new claim" />
-      {/* <Group justify="space-between" align="center" pos="sticky" top={0} bg="gray">
-        <Group justify="center">
-          <Button disabled={!isFormHasChanges} onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
-          <Button disabled={!isFormHasChanges} variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
-        </Group>
-      </Group> */}
-
       <Grid>
         <GridCol>
           <Divider label="Personal details" labelPosition="left" />
@@ -216,4 +190,4 @@ const AdditionalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   );
 };
 
-export default AdditionalInfoForm;
+export default CriticalInfoForm;

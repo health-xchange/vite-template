@@ -20,6 +20,7 @@ import { GoogleButton } from './GoogleButton';
 import { AuthenticationPagesProps, RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
+import { getAuthTypeLabel } from '@/utils/functions';
 
 export function AuthenticationForm(props: AuthenticationPagesProps) {
   const { authType = '/login' } = props;
@@ -35,7 +36,11 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
           render: () => { setIsVerifying(true); return 'Verifying your email...'; },
         },
         error: 'Could not verify your email. please try again',
-        success: 'Successfully verified your email. Now you can login',
+        success: {
+          render: ({ data }) => {
+            return typeof data.data === 'string' ? data.data : 'Successfully verified your email. Now you can login';
+          },
+        }
       })
         .finally(() => setIsVerifying(false));
     }
@@ -93,7 +98,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
       registerUser(values),
       {
         pending: 'Registering...',
-        success: 'Registered successfully',
+        success: 'Registered successfully. Please check your email and verify your registration to proceed.',
         error: {
           render({ data }: { data: any }) {
             return data?.response?.data || 'Registration failed';
@@ -111,14 +116,14 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
   };
 
   const handleSubmit = (values: RegisterUser) => {
-    (authType === '/login' ? handleSignIn : handleRegister)(values);
+    (authType === '/register' ? handleRegister : handleSignIn)(values);
   };
 
   return (
     <Paper radius="md" p="xl" withBorder {...props} pos="relative">
       <LoadingOverlay visible={isVerifying} />
       <Text size="lg" fw={500}>
-        Welcome to Mantine, {authType} with
+        Welcome to Mantine, {getAuthTypeLabel(authType)} with
       </Text>
 
       <Group grow mb="md" mt="md">
@@ -177,7 +182,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
             </Anchor>
           </NavLink>
           <Button type="submit" radius="xl">
-            {authType === '/login' ? 'Login' : 'Register'}
+            {getAuthTypeLabel(authType)}
           </Button>
         </Group>
       </form>

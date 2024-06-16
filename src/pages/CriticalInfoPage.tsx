@@ -1,13 +1,9 @@
 import { Center, Loader, Stack, Text } from '@mantine/core';
-import { useParams } from 'react-router-dom';
-// import { useClaim } from '@/hooks/useClaim';
-import AdditionalInfoForm from '@/components/AdditionalInfoForm/AdditionalInfoForm';
 import ClaimLayout from '@/Layouts/ClaimLayout';
-import { useQuery } from 'react-query';
 import { useClaim } from '@/hooks/useClaim';
+import CriticalInfoForm from '@/components/CriticalInfoForm/CriticalInfoForm';
 
-export default function AdditionalInfoPage() {
-  const { claimId } = useParams();
+export default function CriticalInfoPage() {
   const { claimDetails, updateClaim } = useClaim();
 
   return (
@@ -23,7 +19,7 @@ export default function AdditionalInfoPage() {
         ) : (
           !!claimDetails.data &&
           !!updateClaim && (
-            <AdditionalInfoForm claim={claimDetails.data} updateClaim={updateClaim} />
+            <CriticalInfoForm claim={claimDetails.data} updateClaim={updateClaim} />
           )
         )}
       </ClaimLayout>

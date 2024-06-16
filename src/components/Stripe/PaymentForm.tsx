@@ -8,9 +8,9 @@ import { sanitise } from '@/utils/functions';
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
-const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+// const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
-export const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
+const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
   claimId,
   transactionId,
 }) => {
@@ -71,3 +71,4 @@ export const PaymentForm: React.FC<{ claimId: string; transactionId: string }> =
   );
 };
 
+export default PaymentForm;

@@ -7,8 +7,6 @@ import { IconArrowLeft, IconArrowRight, IconPencil, IconPencilPlus } from '@tabl
 import { paths } from '@/Router';
 import { sanitise } from '@/utils/functions';
 import { useTransaction } from '@/hooks/useTransaction';
-import PaymentModal from './PaymentForm';
-import { useDisclosure } from '@mantine/hooks';
 import PaymentSection from './PaymentForm';
 
 interface PaymentStatusProps {
@@ -39,7 +37,7 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ paymentStatus }) => {
   }, [paymentStatus]);
 
   const handleNextStepClick = () => {
-    if (claimId) navigate(sanitise(paths.additionalInfo, { claimId }));
+    if (claimId) navigate(sanitise(paths.criticalInfo, { claimId }));
   };
 
   const handlePrevStepClick = () => {

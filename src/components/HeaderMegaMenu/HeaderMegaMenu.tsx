@@ -1,11 +1,9 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  HoverCard,
   Group,
   Button,
   UnstyledButton,
   Text,
-  SimpleGrid,
   ThemeIcon,
   Divider,
   Center,
@@ -28,7 +26,8 @@ import { useRecoilState } from 'recoil';
 import classes from './HeaderMegaMenu.module.css';
 import { atomAuthState } from '../../state/atoms';
 import ProfileMenu from '@/ReusableComps/ProfileMenu/ProfileMenu';
-import useNewClaim from '@/hooks/useNewClaim';
+import { useClaim } from '@/hooks/useClaim';
+import { paths } from '@/Router';
 
 
 export function HeaderMegaMenu() {
@@ -36,10 +35,10 @@ export function HeaderMegaMenu() {
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  const { createNewClaim } = useNewClaim();
+  const { createNewClaim } = useClaim();
   const [loginState] = useRecoilState(atomAuthState);
   const { isLoggedIn, userInfo } = loginState;
-  
+
   const headerMenuItems = [
     {
       icon: IconList,
@@ -87,7 +86,7 @@ export function HeaderMegaMenu() {
             <NavLink to="/" className={classes.link}>
               Home
             </NavLink>
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+            {/* <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <a href="#" className={classes.link}>
                   <Center inline>
@@ -105,9 +104,6 @@ export function HeaderMegaMenu() {
               <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Features</Text>
-                  {/* <Anchor href="#" fz="xs">
-                    View all
-                  </Anchor> */}
                 </Group>
 
                 <Divider my="sm" />
@@ -130,13 +126,19 @@ export function HeaderMegaMenu() {
                   </Group>
                 </div>
               </HoverCard.Dropdown>
-            </HoverCard>
-            <NavLink to="/contact-us" className={classes.link}>
+            </HoverCard> */}
+            <NavLink to={paths.claimsList} className={classes.link}>
+              Claims
+            </NavLink>
+            <NavLink onClick={createNewClaim} to="#" className={classes.link}>
+              New Claim
+            </NavLink>
+            {/* <NavLink to="/contact-us" className={classes.link}>
               Contact Us
             </NavLink>
             <NavLink to="/privacy-policy" className={classes.link}>
               Privacy Statement
-            </NavLink>
+            </NavLink> */}
           </Group>
 
           <Group visibleFrom="sm">
