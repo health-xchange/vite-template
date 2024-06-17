@@ -45,7 +45,8 @@
     "react-toastify": "^10.0.5",
     "recoil": "^0.7.7",
     "recoil-persist": "^5.1.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.1.3",

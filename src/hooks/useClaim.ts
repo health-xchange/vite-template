@@ -67,6 +67,15 @@ export const useClaim = () => {
         consent_opt2: undefined,
         consent_opt3: undefined,
         consent_opt4: undefined,
+        criticalInfo: {
+          addl_already_appealed_your_denial: undefined,
+          addl_appeal_process: undefined,
+          addl_associated_billing_codes: undefined,
+          addl_deniel_claim_number: undefined,
+          addl_policy_number: undefined,
+          addl_relevant_docs: undefined,
+          addl_why_should_approve: undefined,
+        }
       },
     };
     // return await

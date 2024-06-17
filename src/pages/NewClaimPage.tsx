@@ -19,7 +19,7 @@ export default function NewClaimPage() {
           </Center>
         ) : (
           !claimDetails.error &&
-          claimDetails.data && <NewClaimForm claim={claimDetails.data} updateClaim={updateClaim} />
+          claimDetails.data && <NewClaimForm />
         )}
       </ClaimLayout>
     </div>
