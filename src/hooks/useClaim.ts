@@ -104,6 +104,7 @@ export const useClaim = () => {
   return {
     claimDetails: claimDetails,
     createNewClaim,
+    updateClaimMutation,
     updateClaim: updateClaimMutation.mutateAsync,
   };
 };

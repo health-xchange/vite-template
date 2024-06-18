@@ -17,9 +17,8 @@ export default function CriticalInfoPage() {
             </Stack>
           </Center>
         ) : (
-          !!claimDetails.data &&
-          !!updateClaim && (
-            <CriticalInfoForm claim={claimDetails.data} updateClaim={updateClaim} />
+          !!claimDetails.data && (
+            <CriticalInfoForm claim={claimDetails.data}  updateClaim={updateClaim} />
           )
         )}
       </ClaimLayout>

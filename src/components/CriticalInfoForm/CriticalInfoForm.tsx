@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IconArrowLeft,
   IconCheck,
@@ -25,6 +25,9 @@ import { paths } from '@/Router';
 
 const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const navigate = useNavigate();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
+
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
@@ -38,9 +41,13 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
     if (form.validate().hasErrors) {
       return false;
     }
+    setIsUpdating(true);
     updateClaim(
       { ...claim, details: { ...claim.details, criticalInfo: form.getValues() }, status: 'waiting_for_reviewer_response' },
-    );
+    )
+    .then(() => setIsUpdated(true))
+    .catch(() => {})
+    .finally(() => setIsUpdating(false));
     return false;
   };
 
@@ -50,7 +57,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <PageTitle title="Let us help on your new claim" />
+      <PageTitle title="Please provide below critical information" />
       <Grid>
         <GridCol>
           <Divider label="Personal details" labelPosition="left" />
@@ -176,6 +183,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             <Button
               onClick={handleSaveAndSubmitForReview}
               variant="filled"
+              loading={isUpdating}
               rightSection={<IconCheck />}
               size="md"
             >
