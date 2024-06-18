@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { PaymentElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
-import { Appearance, StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
+import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button, Text, useMantineTheme, Stack } from '@mantine/core';
 import { paths } from '@/Router';
 import { sanitise } from '@/utils/functions';
@@ -10,9 +9,10 @@ import { sanitise } from '@/utils/functions';
 // This is your test publishable API key.
 // const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
-const PaymentForm: React.FC<{ claimId: string; transactionId: string }> = ({
+const PaymentForm: React.FC<{ claimId: string; transactionId: string, clientSecret: string }> = ({
   claimId,
   transactionId,
+  clientSecret
 }) => {
   const stripe = useStripe();
   const elements = useElements();

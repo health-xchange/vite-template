@@ -102,7 +102,7 @@ export const useClaim = () => {
   }, [claimId, transactionId]);
 
   return {
-    claimDetails,
+    claimDetails: claimDetails,
     createNewClaim,
     updateClaim: updateClaimMutation.mutateAsync,
   };

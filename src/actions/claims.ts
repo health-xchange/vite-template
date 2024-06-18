@@ -1,5 +1,4 @@
-import { AxiosResponse } from 'axios';
-import { Claim, NewTransactionResponse, TransactionStatus } from '@/interfaces/claims';
+import { Claim, ClaimTransactionResponse, Transaction, TransactionStatus } from '@/interfaces/claims';
 import { apiClient } from '@/state/axios-interceptors';
 import { API_ENDPOINTS } from '@/utils/endpoints';
 import { sanitise } from '@/utils/functions';
@@ -63,7 +62,7 @@ export const deleteClaim = (claimId: string) =>
 
 export const createNewTransactionAction = async (claimId: string) => {
   try {
-    const response = await apiClient<NewTransactionResponse>({
+    const response = await apiClient<Transaction>({
       method: 'POST',
       url: sanitise(API_ENDPOINTS.NEW_TRANSACTION, { claimId }),
       data: {
@@ -77,11 +76,11 @@ export const createNewTransactionAction = async (claimId: string) => {
   }
 };
 
-export const getLastTransactionAction = async (claimId: string) => {
+export const getClaimTransaction = async (claimId: string) => {
   try {
-    const response = await apiClient<NewTransactionResponse>({
+    const response = await apiClient<ClaimTransactionResponse>({
       method: 'GET',
-      url: sanitise(API_ENDPOINTS.LAST_TRANSACTION, { claimId }),
+      url: sanitise(API_ENDPOINTS.GET_CLAIM_TRANSACTION, { claimId }),
     });
     return response.data;
   } catch (error) {
@@ -89,6 +88,18 @@ export const getLastTransactionAction = async (claimId: string) => {
     throw error;
   }
 }
+
+export const getTransaction = async (claimId: string, transId: string) => {
+  try {
+    const response = await apiClient<Transaction>({
+      method: 'GET',
+      url: sanitise(API_ENDPOINTS.GET_TRANSACTION, { claimId, transId }),
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 // export const updateClaimAction = async (claim: Claim) => {
 //   try {

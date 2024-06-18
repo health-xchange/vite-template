@@ -1,48 +1,49 @@
-import { useEffect } from 'react';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { createNewTransactionAction, refreshPaymentStatus } from '@/actions/claims';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { createNewTransactionAction, getTransaction } from '@/actions/claims';
+import { useClaim } from './useClaim';
+import { Transaction } from '@/interfaces/claims';
 
 export const useTransaction = () => {
-  const { claimId, transactionId } = useParams();
-  const [searchParams] = useSearchParams();
-  const intent_id = searchParams.get('intentId');
-  const client_secret = searchParams.get('client_secret');
-  const status = searchParams.get('status');
+  const { claimId = '' } = useParams();
+  const { claimDetails } = useClaim();
+  const [transaction, setTransaction] = useState<Transaction>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isNewTransaction, setIsNewTransaction] = useState(false);
 
-  const queryClient = useQueryClient();
-
-  const newTransaction = useMutation(createNewTransactionAction);
-
-  const lastTransaction = useQuery('lastTransaction', )
-
-  const transactionStatus = useQuery(
-    ['refreshPaymentStatus', claimId, transactionId],
-    () => refreshPaymentStatus(claimId || '', transactionId || ''),
-    {
-      retry: 1,
-      enabled: !!claimId && !!transactionId,
-      onError: (error: Error) => {
-        console.log('Error while getting transaction status', error.message);
-        throw error;
-      },
-    }
-  );
+  const createNewTransaction = () => {
+    createNewTransactionAction(claimId)
+      .then((newTrans) => {
+        setIsNewTransaction(true);
+        setTransaction(newTrans);
+      })
+      .catch(() => setTransaction(undefined))
+      .finally(() => setIsLoading(false));
+  };
 
   useEffect(() => {
-    if (claimId && transactionId) {
-      queryClient.invalidateQueries(['refreshPaymentStatus', claimId, transactionId]);
+    setIsLoading(true);
+    if (claimDetails.data) {
+      if (!claimDetails.data?.transactionId && !isNewTransaction) {
+        setIsNewTransaction(true);
+        createNewTransaction();
+      } else if (claimDetails.data.transactionId) {
+        getTransaction(claimId, claimDetails.data?.transactionId)
+          .then((oldTrans) => {
+            setTransaction(oldTrans);
+          })
+          .catch(() => {
+            setTransaction(undefined);
+          })
+          .finally(() => setIsLoading(false));
+      }
     }
-  }, [claimId, transactionId]);
+  }, [claimDetails.data]);
 
   return {
-    transactionStatus,
-    claimId,
-    transactionId,
-    intent_id,
-    client_secret,
-    status,
-    newTransaction,
-    createNewTransaction: newTransaction.mutateAsync
+    transaction: transaction,
+    isLoading,
+    isNewTransaction,
+    createNewTransaction,
   };
 };

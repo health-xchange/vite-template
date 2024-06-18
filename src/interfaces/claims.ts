@@ -64,6 +64,7 @@ export interface Claim {
   updatedBy?: string;
   updatedAt?: string;
   details: ClaimDetails;
+  transactionId?: string;
   // communication?: Comments[]
 }
 
@@ -81,13 +82,72 @@ export interface ClaimsListResponse {
 //   userId: string;
 // }
 
-export interface NewTransactionResponse {
+export interface Transaction {
+  amount: number;
   claimId: string;
-  client_secret: string;
-  paymentId: string;
-  userId: string;
-  status: string;  
+  createdAt: string;
   intentId: string;
-};
+  status: string;
+  transactionDeatils: {
+    amount: number;
+    amount_capturable: string;
+    amount_details: string;
+    amount_received: string;
+    application: string;
+    application_fee_amount: string;
+    automatic_payment_methods: string;
+    canceled_at: string;
+    cancellation_reason: string;
+    capture_method: string;
+    client_secret: string;
+    confirmation_method: string;
+    created: string;
+    currency: string;
+    customer: string;
+    description: string;
+    id: string;
+    invoice: string;
+    last_payment_error: string;
+    latest_charge: string;
+    livemode: string;
+    metadata: string;
+    next_action: string;
+    object: string;
+    on_behalf_of: string;
+    payment_method: string;
+    payment_method_configuration_details: string;
+    payment_method_options: string;
+    payment_method_types: string;
+    processing: string;
+    receipt_email: string;
+    review: string;
+    setup_future_usage: string;
+    shipping: string;
+    source: string;
+    statement_descriptor: string;
+    statement_descriptor_suffix: string;
+    status: string;
+    transfer_data: string;
+    transfer_group: string;
+  };
+  updatedAt: string;
+  userId: string;
+  _id: string;
+}
+
+// export interface Transaction {
+//   claimId: string;
+//   client_secret: string;
+//   transactionId: string;
+//   userId: string;
+//   status: string;
+//   intentId: string;
+// };
+
+export interface ClaimTransactionResponse {
+  code: string;
+  message?: string;
+  data?: Transaction;
+}
 
 export type TransactionStatus = 'succeeded' | 'processing' | 'requires_payment_method' | string;
