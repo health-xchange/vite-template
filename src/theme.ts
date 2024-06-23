@@ -6,8 +6,8 @@ export const theme = createTheme({
   components: {
     Loader: Loader.extend({
       defaultProps: {
-        loaders: { ...Loader.defaultLoaders, ring: RingLoader },
-        type: 'ring',
+        loaders: { ...Loader.defaultLoaders, blink: RingLoader },
+        type: 'oval',
       },
     }),
   },

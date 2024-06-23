@@ -136,18 +136,18 @@ export function HeaderMegaMenu() {
                 </div>
               </HoverCard.Dropdown>
             </HoverCard> */}
-            <NavLink to={paths.claimsList} className={classes.link}>
+            {/* <NavLink to={paths.claimsList} className={classes.link}>
               Claims
             </NavLink>
             <NavLink onClick={createNewClaim} to="#" className={classes.link}>
               New Claim
-            </NavLink>
-            {/* <NavLink to="/contact-us" className={classes.link}>
+            </NavLink> */}
+            <NavLink to="/contact-us" className={classes.link}>
               Contact Us
             </NavLink>
             <NavLink to="/privacy-policy" className={classes.link}>
               Privacy Statement
-            </NavLink> */}
+            </NavLink>
           </Group>
 
           <Group visibleFrom="sm">
@@ -194,18 +194,23 @@ export function HeaderMegaMenu() {
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
-          <a href="#" className={classes.link}>
+          {/* <a href="#" className={classes.link}>
             Learn
           </a>
           <a href="#" className={classes.link}>
             Academy
-          </a>
+          </a> */}
 
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Sign in</Button>
-            <Button>Sign up</Button>
+            {
+              isLoggedIn && userInfo ? <ProfileMenu user={userInfo} /> :
+                <>
+                  <Button variant="default">Sign in</Button>
+                  <Button>Sign up</Button>
+                </>
+            }
           </Group>
         </ScrollArea>
       </Drawer>

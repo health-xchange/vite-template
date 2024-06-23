@@ -17,14 +17,26 @@ import {
   IconSettings,
   IconSwitchHorizontal,
   IconChevronDown,
+  IconPlus,
+  IconEyePlus,
+  IconCirclePlus,
+  IconCubePlus,
+  IconCircleDashedPlus,
+  IconCubeSend,
+  IconCube,
 } from '@tabler/icons-react';
 import { useResetRecoilState } from 'recoil';
 import classes from './ProfileMenu.module.css';
 import { UserInfoState } from '@/interfaces/common';
 import { atomAuthState } from '@/state/atoms';
+import { useNavigate } from 'react-router-dom';
+import { paths } from '@/Router';
+import { useClaim } from '@/hooks/useClaim';
 
 const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
   const theme = useMantineTheme();
+  const navigate = useNavigate();
+  const { createNewClaim } = useClaim();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   // const [authState, setAuthState] = useRecoilState(atomAuthState);
   const resetAuthState = useResetRecoilState(atomAuthState);
@@ -59,29 +71,31 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
         </UnstyledButton>
       </Menu.Target>
       <Menu.Dropdown>
-        {/* <Menu.Item
+        <Menu.Item
+          onClick={() => navigate(paths.claimsList)}
           leftSection={
-            <IconHeart
+            <IconCube
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.red[6]}
               stroke={1.5}
             />
           }
         >
-          Liked posts
+          My Claims
         </Menu.Item>
         <Menu.Item
+          onClick={createNewClaim}
           leftSection={
-            <IconStar
+            <IconPlus
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.yellow[6]}
               stroke={1.5}
             />
           }
         >
-          Saved posts
+          New Claim
         </Menu.Item>
-        <Menu.Item
+        {/* <Menu.Item
           leftSection={
             <IconMessage
               style={{ width: rem(16), height: rem(16) }}
@@ -100,7 +114,7 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
           }
         >
           Account settings
-        </Menu.Item> 
+        </Menu.Item>
         {/* <Menu.Item
           leftSection={
             <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />

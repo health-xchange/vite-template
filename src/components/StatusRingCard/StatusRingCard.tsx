@@ -64,12 +64,12 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ _id, status, details }) => {
         </Center>
 
         <Group justify="center">
-          <ActionIcon className={classes.action} onClick={handleDelete}>
+          {/* <ActionIcon className={classes.action} onClick={handleDelete}>
             <IconTrash
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.red[6]}
             />
-          </ActionIcon>
+          </ActionIcon> */}
           <Button variant="default" onClick={handleViewDetails} color={theme.colors.red[6]} leftSection={<IconExternalLink color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Open</Button>
         </Group>
       </Group>

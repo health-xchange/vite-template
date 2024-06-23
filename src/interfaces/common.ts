@@ -6,7 +6,9 @@ export type AuthenticationPagesProps = PaperProps & { authType?: AuthTypes };
 export type AuthTypes = '/verify/:email/:token' | '/login' | '/register';
 
 export interface RegisterUser extends SignInUser {
-  username: string;
+  firstName: string;
+  lastName: string;
+  confirmPassword: string;
   terms: boolean;
   iss?: string;
 }
@@ -50,4 +52,10 @@ export interface SignInResponse {
 export interface NewFormProps {
   claim: Claim;
   updateClaim: (updateClaim: Claim) => Promise<NewTransactionResponse>;
+}
+
+export enum SaveState {
+  saving,
+  saved,
+  unsaved,
 }

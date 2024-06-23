@@ -1,4 +1,4 @@
-import { useForm } from '@mantine/form';
+import { useForm, yupResolver } from '@mantine/form';
 import { toast } from 'react-toastify';
 import {
   TextInput,
@@ -21,6 +21,42 @@ import { AuthenticationPagesProps, RegisterUser, SignInResponse, SignInUser } fr
 import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
 import { getAuthTypeLabel } from '@/utils/functions';
+import * as Yup from 'yup';
+import classes from './AuthenticationForm.module.css';
+
+const registrationSchema = Yup.object().shape({
+  firstName: Yup.string().required('First Name is required'),
+  lastName: Yup.string().required('Last Name is required'),
+  email: Yup.string()
+    .required('Email is required')
+    .email('Invalid email address')
+    .matches(/^[\w.%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/, 'Email must have a valid domain name'),
+  password: Yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters long')
+    .matches(
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    ),
+  confirmPassword: Yup
+    .string()
+    .oneOf([Yup.ref('password'), ''], 'Passwords must match')
+    .required('Confirm password is required'),
+  terms: Yup
+    .boolean()
+    .required('You need to accept terms and conditions')
+    .oneOf([true], 'You need to accept terms and conditions'),
+});
+
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .required('Email is required')
+    .email('Invalid email address')
+    .matches(/^[\w.%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/, 'Email must have a valid domain name'),
+  password: Yup.string().required('Password is required'),
+});
+
 
 export function AuthenticationForm(props: AuthenticationPagesProps) {
   const { authType = '/login' } = props;
@@ -53,17 +89,14 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
   const form = useForm({
     initialValues: {
       email: '',
-      username: '',
+      firstName: '',
+      lastName: '',
       password: '',
-      terms: true,
+      confirmPassword: '',
+      terms: false,
       iss: '',
     },
-
-    validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-      password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
-    },
-
+    validate: yupResolver(authType === '/register' ? registrationSchema : loginSchema)
   });
 
   const handleSignIn = (values: SignInUser) => {
@@ -89,7 +122,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
         navigate('/claims');
       })
       .catch(() => {
-        form.setFieldValue('password', '');
+        // form.setFieldValue('password', '');
       });
   };
 
@@ -111,7 +144,6 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
         navigate('/login');
       })
       .catch(() => {
-        form.setFieldValue('password', '');
       });
   };
 
@@ -123,34 +155,49 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
     <Paper radius="md" p="xl" withBorder {...props} pos="relative">
       <LoadingOverlay visible={isVerifying} />
       <Text size="lg" fw={500}>
-        Welcome to Mantine, {getAuthTypeLabel(authType)} with
+        Welcome to{" "}
+        <Text component="span" className={classes.highlight} inherit>
+          BlueGuard.ai
+        </Text>
+        , {getAuthTypeLabel(authType)} with
       </Text>
 
       <Group grow mb="md" mt="md">
         <GoogleButton radius="xl">Google</GoogleButton>
       </Group>
 
-      <Divider label="Or continue with email" labelPosition="center" my="lg" />
+      <Divider labelPosition="center" my="lg" />
+      label="Or continue with email"
 
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Stack>
           {authType === '/register' && (
             <TextInput
-              label="Name"
-              placeholder="Your name"
-              value={form.values.username}
-              onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}
+              label="First Name"
+              placeholder="John"
+              value={form.values.firstName}
+              error={form.errors.firstName}
+              onChange={(event) => form.setFieldValue('firstName', event.currentTarget.value)}
               radius="md"
             />
           )}
-
+          {authType === '/register' && (
+            <TextInput
+              label="Last Name"
+              placeholder="Doe"
+              value={form.values.lastName}
+              error={form.errors.lastName}
+              onChange={(event) => form.setFieldValue('lastName', event.currentTarget.value)}
+              radius="md"
+            />
+          )}
           <TextInput
             required
             label="Email"
             placeholder="hello@mantine.dev"
             value={form.values.email}
             onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-            error={form.errors.email && 'Invalid email'}
+            error={form.errors.email}
             radius="md"
           />
 
@@ -160,15 +207,28 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
             placeholder="Your password"
             value={form.values.password}
             onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-            error={form.errors.password && 'Password should include at least 6 characters'}
+            error={form.errors.password}
             radius="md"
           />
+
+          {authType === '/register' && (
+            <PasswordInput
+              required
+              label="Confirm Password"
+              placeholder="Re-enter password"
+              value={form.values.confirmPassword}
+              onChange={(event) => form.setFieldValue('confirmPassword', event.currentTarget.value)}
+              error={form.errors.confirmPassword}
+              radius="md"
+            />)
+          }
 
           {authType === '/register' && (
             <Checkbox
               label="I accept terms and conditions"
               checked={form.values.terms}
               onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
+              error={form.errors.terms}
             />
           )}
         </Stack>
