@@ -69,8 +69,6 @@ export interface Claim {
   // communication?: Comments[]
 }
 
-export interface StatsRingProps extends Omit<Claim, 'userId' | 'communication'> {}
-
 export interface ClaimsListResponse {
   claims: Claim[];
   totalClaims: number;

@@ -17,6 +17,7 @@ import {
   Switch,
   Box,
   LoadingOverlay,
+  ActionIcon,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { PageTitle } from '../PageTitle/PageTitle';
@@ -68,15 +69,17 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const renderUi = () => {
     switch (isSaved) {
       case SaveState.saved:
-        return <HeroText
-          title="We have got your"
-          titleHighlighted="Claim details"
-          description="You will receive a confirmation email on your personal email address. Any updates on your claim will be sent to your email. Please stay in touch."
-          primaryActnLabel="View Claims"
-          secondaryActnLabel="Back to Edit"
-          primaryAction={() => navigate(paths.claimsList)}
-          secondaryAction={() => setIsSaved(SaveState.unsaved)}
-        />
+        return <Stack>
+          <HeroText
+            title="We have got your"
+            titleHighlighted="Claim details"
+            description="You will receive a confirmation email on your personal email address. Any updates on your claim will be sent to your email. Please stay in touch."
+            primaryActnLabel="View Claims"
+            secondaryActnLabel="Back to Edit"
+            primaryAction={() => navigate(paths.claimsList)}
+            secondaryAction={() => setIsSaved(SaveState.unsaved)}
+          />
+        </Stack>
       case SaveState.saving:
       case SaveState.unsaved:
         return <>

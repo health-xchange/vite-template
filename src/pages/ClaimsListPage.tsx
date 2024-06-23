@@ -28,11 +28,9 @@ export default function ClaimsListPage() {
         <SimpleGrid cols={{ base: 3, xs: 3 }}>
           <NewClaimCard onClick={createNewClaim} />
           {claimsList?.map?.((claim: Claim) => (
-            <StatsRingCard
+            <StatsRingCard 
               key={claim._id}
-              _id={claim._id}
-              status={claim.status}
-              details={claim.details}
+              claim={claim}
             />
           ))}
         </SimpleGrid>

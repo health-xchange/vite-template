@@ -1,21 +1,9 @@
+import { ClaimStatus } from '@/interfaces/claims';
 import { AuthTypes } from '@/interfaces/common';
 import { customAlphabet } from 'nanoid';
 
-interface ParsedObject {
-  [key: string]: string | number | boolean;
-}
-
 export const getEnvVars = () => {
   return import.meta.env;
-  // const obj = import.meta.env;
-  // return Object.keys(obj).reduce((cum: ParsedObject, cur: string) => {
-  //   try {
-  //     cum[cur] = JSON.parse(obj[cur]);
-  //   } catch (error) {
-  //     cum[cur] = obj[cur];
-  //   }
-  //   return cum;
-  // }, {} as ParsedObject);
 };
 
 export const sanitise = (inpStr: string, inpObj: Record<string, string>): string => {
@@ -36,5 +24,26 @@ export const getAuthTypeLabel = (authType: AuthTypes): string => {
       return 'Register';
     case '/verify/:email/:token':
       return 'Login';
+  }
+};
+
+export const getClaimStatus = (status: ClaimStatus) => {
+  switch (status) {
+    case 'draft':
+      return { value: 1/7, label: 'Draft' };
+    case 'waiting_for_payment':
+      return { value: 2/7, label: 'Payment Pending' };
+    case 'waiting_for_additional_info':
+      return { value: 3/7, label: 'Waiting for Critical Info' };
+    case 'waiting_for_reviewer_response':
+      return { value: 4/7, label: 'Reviewing' };
+    case 'reviewing':
+      return { value: 5/7, label: 'Review' };
+    case 'waiting_for_user_response':
+      return { value: 6/7, label: 'Waiting on response' };
+    case 'success':
+      return { value: 7/7, label: 'Success' };
+    case 'failed':
+      return { value: 7/7, label: 'Failed' };
   }
 };

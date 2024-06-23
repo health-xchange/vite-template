@@ -1,7 +1,8 @@
-import { Title, Text, Button, Container } from '@mantine/core';
+import { Title, Text, Button, Container, ActionIcon, Box, Stack } from '@mantine/core';
 import { Dots } from './Dots';
 import classes from './HeroText.module.css';
 import React from 'react';
+import { IconCheck } from '@tabler/icons-react';
 
 interface HeroTextProps {
   title: string;
@@ -22,7 +23,10 @@ export const HeroText: React.FC<HeroTextProps> = ({ title, titleHighlighted, des
       <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
       <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
 
-      <div className={classes.inner}>
+      <Stack className={classes.inner}>
+        <ActionIcon mb={'lg'} radius={'xl'} aria-label="We have received your claim information" size="xl" color="lime.4" c={'green'}>
+          <IconCheck size={40} color='white' />
+        </ActionIcon>
         <Title className={classes.title}>
           {title}{' '}
           <Text component="span" className={classes.highlight} inherit>
@@ -44,7 +48,7 @@ export const HeroText: React.FC<HeroTextProps> = ({ title, titleHighlighted, des
             {primaryActnLabel}
           </Button>
         </div>
-      </div>
+      </Stack>
     </Container>
   );
 }
