@@ -40,7 +40,7 @@ export const getClaimStatus = (status: ClaimStatus) => {
     case 'reviewing':
       return { value: 5/7, label: 'Review' };
     case 'waiting_for_user_response':
-      return { value: 6/7, label: 'Waiting on response' };
+      return { value: 6/7, label: 'Waiting on your response' };
     case 'success':
       return { value: 7/7, label: 'Success' };
     case 'failed':
