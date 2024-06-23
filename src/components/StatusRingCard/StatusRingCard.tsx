@@ -33,7 +33,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
   };
 
   const stats = [
-    { value: `$${claim.details.claim_amount}`, label: 'Claim Amount' },
+    { value: `${claim.details.claim_amount}`, label: 'Claim Amount' },
     { value: claim.details.criticalInfo?.addl_policy_number, label: 'Policy' },
   ];
 
@@ -58,8 +58,8 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
             radius="xl"
             mr="xs"
           />
-          <Text fz="sm" inline>
-            {claim.details.first_name}{" "}{claim.details.last_name}
+          <Text fz="sm" inline c={(claim.details.first_name || claim.details.last_name) ? '' : 'dimmed'}>
+            {(claim.details.first_name + " " + claim.details.last_name).trim() || "Not Provided"}
           </Text>
         </Center>
 
@@ -85,8 +85,8 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
             </Text>
           </div>
           <div>
-            <Text fz={'md'} className={classes.lead} mt={'sm'}>
-              {claim.details.insurance_provider}
+            <Text fz={'md'} className={classes.lead} mt={'sm'} c={claim.details.insurance_provider ? '' : 'dimmed'}>
+              {claim.details.insurance_provider || 'Not Provided'}
             </Text>
             <Text fz="xs" c="dimmed">
               Insurance Provider

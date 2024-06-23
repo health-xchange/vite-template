@@ -64,7 +64,7 @@ const NewClaimForm: React.FC = () => {
         <GridCol>
           <Divider label="Personal details" labelPosition="left" />
         </GridCol>
-        <GridCol span={6} mt="md">
+        <GridCol span={{ xs: 12, sm: 6 }} mt="md">
           <TextInput
             label="First Name"
             leftSection={<IconManFilled style={{ width: rem(20), height: rem(20) }} stroke={1.5} />}
@@ -74,7 +74,7 @@ const NewClaimForm: React.FC = () => {
             {...form.getInputProps('first_name')}
           />
         </GridCol>
-        <GridCol span={6} mt="md">
+        <GridCol span={{ xs: 12, sm: 6 }} mt="md">
           <TextInput
             label="Last Name"
             placeholder="Doe"
@@ -84,7 +84,7 @@ const NewClaimForm: React.FC = () => {
             {...form.getInputProps('last_name')}
           />
         </GridCol>
-        <GridCol span={6} mt="md">
+        <GridCol span={{ xs: 12, sm: 6 }} mt="md">
           <Autocomplete
             label="What state do you live in ?"
             required
@@ -106,38 +106,38 @@ const NewClaimForm: React.FC = () => {
                 *
               </Text>
             </Text>
-            <Switch
-              size='xl'
-              onLabel={<Text pl={10}>Not cosmetic</Text>}
-              offLabel={<Text pr={10}>Cosmetic</Text>}
-              key={form.key('is_not_cosmetic_claim')}
-              required
-              thumbIcon={
-                form.values.is_not_cosmetic_claim ? (
-                  <IconThumbUp
-                    style={{ width: rem(18), height: rem(18) }}
-                    color={theme.colors.teal[6]}
-                    stroke={2}
-                  />
-                ) : (
-                  <IconThumbDown
-                    style={{ width: rem(18), height: rem(18) }}
-                    color={theme.colors.red[6]}
-                    stroke={2}
-                  />
-                )
+            <Group>
+
+              <Switch
+                size='xl'
+                onLabel={<Text w={120} pl={10}>Not cosmetic</Text>}
+                offLabel={<Text w={120} pr={10}>Cosmetic</Text>}
+                key={form.key('is_not_cosmetic_claim')}
+                required
+                thumbIcon={
+                  form.values.is_not_cosmetic_claim ? (
+                    <IconThumbUp
+                      style={{ width: rem(18), height: rem(18) }}
+                      color={theme.colors.teal[6]}
+                      stroke={2}
+                    />
+                  ) : (
+                    <IconThumbDown
+                      style={{ width: rem(18), height: rem(18) }}
+                      color={theme.colors.red[6]}
+                      stroke={2}
+                    />
+                  )
+                }
+                {...form.getInputProps('is_not_cosmetic_claim', { type: 'checkbox' })}
+              />
+              {
+                form.values.is_not_cosmetic_claim ?
+                  <Text size='sm' mt={4} c='green'>We support this claim. Please give us more details about this claim</Text> :
+                  (form.isTouched('is_not_cosmetic_claim') ?
+                    <Text size='sm' c={'red'} mt={4}>Sorry, currently we cannot support dental, vision or cosmetic claims.</Text> : '')
               }
-              {...form.getInputProps('is_not_cosmetic_claim', { type: 'checkbox' })}
-              error={form.values.is_not_cosmetic_claim ?
-                <Text size='sm' mt={4} c='green'>We support this claim. Please give us more details about this claim</Text> :
-                (form.isTouched('is_not_cosmetic_claim') ?
-                  <Text size='sm' mt={4}>Sorry, currently we cannot support dental, vision or cosmetic claims.</Text> : '')}
-            />
-            {/* <Checkbox
-              label={<>I confirm that claims were not relavant to Dental, Visison or Cosmetic</>}
-              key={form.key('is_not_cosmetic_claim')}
-              {...form.getInputProps('is_not_cosmetic_claim', { type: 'checkbox' })}
-            /> */}
+            </Group>
           </Stack>
         </GridCol>
         <GridCol mt="md">

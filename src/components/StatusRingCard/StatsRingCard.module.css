@@ -1,47 +1,48 @@
 .card {
-    background-color: var(--mantine-color-body);
-    cursor: pointer;
-  }
-  
-  .label {
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
-    font-weight: 700;
-    line-height: 1;
-  }
-  
-  .lead {
-    font-family:
-      Greycliff CF,
-      var(--mantine-font-family);
-    font-weight: 700;
-    font-size: rem(22px);
-    line-height: 1;
-  }
-  
-  .inner {
-    display: flex;
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      flex-direction: column;
-    }
-  }
-  
-  .ring {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-  
-    @media (max-width: $mantine-breakpoint-xs) {
-      justify-content: center;
-      margin-top: var(--mantine-spacing-md);
-    }
-  }
+  background-color: var(--mantine-color-body);
+  cursor: pointer;
+}
 
-  .action {
-    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
-    @mixin hover {
-      background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
-    }
+.label {
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.lead {
+  font-family:
+    Greycliff CF,
+    var(--mantine-font-family);
+  font-weight: 700;
+  font-size: rem(22px);
+  line-height: 1;
+}
+
+.inner {
+  display: flex;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    flex-direction: column;
   }
+}
+
+.ring {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+
+  @media (max-width: $mantine-breakpoint-xs) {
+    justify-content: center;
+    margin-top: var(--mantine-spacing-md);
+  }
+}
+
+.action {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  }
+}

@@ -25,7 +25,7 @@ export default function ClaimsListPage() {
       ) : error ? (
         <div>Failed to fetch claims</div>
       ) : (
-        <SimpleGrid cols={{ base: 3, xs: 3 }}>
+        <SimpleGrid cols={{ xs: 1, sm: 2, md: 3, lg: 3 }}>
           <NewClaimCard onClick={createNewClaim} />
           {claimsList?.map?.((claim: Claim) => (
             <StatsRingCard 
