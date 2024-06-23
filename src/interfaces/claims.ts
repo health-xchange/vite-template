@@ -65,6 +65,7 @@ export interface Claim {
   updatedAt?: string;
   details: ClaimDetails;
   transactionId?: string;
+  notifyUser?: boolean;
   // communication?: Comments[]
 }
 

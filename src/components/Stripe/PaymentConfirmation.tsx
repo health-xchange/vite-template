@@ -62,7 +62,7 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ transaction, createNewTra
               </Text>
             </>
           ) :
-            <Button loading={isLoading} variant='filled' onClick={() => createNewTransaction()}>Retry Payment 25$</Button>
+            <Button loading={isLoading} variant='filled' onClick={() => createNewTransaction()}>Retry Payment ${claimAmount}</Button>
         }
       </Stack>
       <Group w={'100%'} justify="center" my="xl">
@@ -95,6 +95,7 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ transaction, createNewTra
 
 
 const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+const claimAmount = import.meta.env.VITE_CLAIM_PAYMENT_AMOUNT || 25;
 
 const PaymentConfirmation: React.FC<{}> = () => {
   const { transaction, isLoading, isNewTransaction, createNewTransaction } = useTransaction();
@@ -115,7 +116,7 @@ const PaymentConfirmation: React.FC<{}> = () => {
     } else if (transaction) {
       return <PaymentStatus transaction={transaction} isLoading={isLoading} createNewTransaction={createNewTransaction} />
     } else {
-      return <Button loading={isLoading} variant='filled' onClick={createNewTransaction}>Pay 25$</Button>
+      return <Button loading={isLoading} variant='filled' onClick={createNewTransaction}>Pay ${claimAmount}</Button>
     }
   }
 

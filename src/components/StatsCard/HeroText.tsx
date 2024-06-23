@@ -37,10 +37,10 @@ export const HeroText: React.FC<HeroTextProps> = ({ title, titleHighlighted, des
         </Container>
 
         <div className={classes.controls}>
-          <Button className={classes.control} size="lg" variant="default" color="gray" onClick={secondaryAction}>
+          <Button className={classes.control} size="sm" variant="default" color="gray" onClick={secondaryAction}>
             {secondaryActnLabel}
           </Button>
-          <Button className={classes.control} size="lg" onClick={primaryAction}>
+          <Button className={classes.control} size="sm" onClick={primaryAction}>
             {primaryActnLabel}
           </Button>
         </div>

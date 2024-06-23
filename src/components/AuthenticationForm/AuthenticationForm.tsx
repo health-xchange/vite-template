@@ -36,7 +36,7 @@ const registrationSchema = Yup.object().shape({
     .required('Password is required')
     .min(8, 'Password must be at least 8 characters long')
     .matches(
-      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*/\\])/,
       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     ),
   confirmPassword: Yup
@@ -157,7 +157,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
       <Text size="lg" fw={500}>
         Welcome to{" "}
         <Text component="span" className={classes.highlight} inherit>
-          BlueGuard.ai
+          BlueGuardAI
         </Text>
         , {getAuthTypeLabel(authType)} with
       </Text>
@@ -166,8 +166,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
         <GoogleButton radius="xl">Google</GoogleButton>
       </Group>
 
-      <Divider labelPosition="center" my="lg" />
-      label="Or continue with email"
+      <Divider label="Or continue with email" labelPosition="center" my="lg" />
 
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Stack>

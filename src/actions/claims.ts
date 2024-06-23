@@ -1,4 +1,9 @@
-import { Claim, ClaimTransactionResponse, Transaction, TransactionStatus } from '@/interfaces/claims';
+import {
+  Claim,
+  ClaimTransactionResponse,
+  Transaction,
+  TransactionStatus,
+} from '@/interfaces/claims';
 import { apiClient } from '@/state/axios-interceptors';
 import { API_ENDPOINTS } from '@/utils/endpoints';
 import { sanitise } from '@/utils/functions';
@@ -41,12 +46,12 @@ export const fetchClaimById = async (claimId: string) => {
   }
 };
 
-export const updateClaimAction = async (claimDetails: Claim) => {
+export const updateClaimAction = async ({ claimDetails, notifyUser }: { claimDetails: Claim, notifyUser: boolean }) => {
   try {
     const response = await apiClient<Claim>({
       method: 'PUT',
       url: sanitise(API_ENDPOINTS.UPDATE_CLAIM, { claimId: claimDetails._id }),
-      data: claimDetails,
+      data: { ...claimDetails, notifyUser },
     });
     return response.data;
   } catch (error) {
@@ -87,7 +92,7 @@ export const getClaimTransaction = async (claimId: string) => {
     console.log(error);
     throw error;
   }
-}
+};
 
 export const getTransaction = async (claimId: string, transId: string) => {
   try {

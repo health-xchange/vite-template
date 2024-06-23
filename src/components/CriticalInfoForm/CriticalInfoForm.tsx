@@ -45,7 +45,15 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
     }
     setIsSaved(SaveState.saving);
     updateClaim(
-      { ...claim, details: { ...claim.details, criticalInfo: form.getValues() }, status: 'waiting_for_reviewer_response' },
+      {
+        claimDetails: {
+          ...claim,
+          details: { ...claim.details, criticalInfo: form.getValues() },
+          status: 'waiting_for_reviewer_response',
+          notifyUser: true,
+        },
+        notifyUser: true,
+      }
     )
       .then(() => setIsSaved(SaveState.saved))
       .catch(() => setIsSaved(SaveState.unsaved))
@@ -83,6 +91,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 label="What is your Policy Number ?"
                 placeholder="POL12323123"
                 key={form.key('addl_policy_number')}
+                maxLength={100000}
                 required
                 {...form.getInputProps('addl_policy_number')}
               />
@@ -112,6 +121,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 label="Which appeal processes have you used?"
                 placeholder="Description"
                 key={form.key('addl_appeal_process')}
+                maxLength={100000}
                 required
                 {...form.getInputProps('addl_appeal_process')}
               />
@@ -121,6 +131,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 label="What is the claim number of your denied claim?"
                 placeholder="Claim number"
                 key={form.key('addl_deniel_claim_number')}
+                maxLength={100000}
                 required
                 {...form.getInputProps('addl_deniel_claim_number')}
               />
@@ -134,6 +145,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 placeholder="Billing codes"
                 key={form.key('addl_associated_billing_codes')}
                 autosize
+                maxLength={100000}
                 minRows={3}
                 required
                 {...form.getInputProps('addl_associated_billing_codes')}
@@ -158,6 +170,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 key={form.key('addl_why_should_approve')}
                 autosize
                 minRows={3}
+                maxLength={100000}
                 required
                 {...form.getInputProps('addl_why_should_approve')}
               />
@@ -180,6 +193,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 placeholder="Description"
                 key={form.key('addl_relevant_docs')}
                 autosize
+                maxLength={100000}
                 minRows={3}
                 required
                 {...form.getInputProps('addl_relevant_docs')}

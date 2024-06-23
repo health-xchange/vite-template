@@ -52,27 +52,27 @@ const useNewClaimForm = () => {
       setIsFormSaving(false);
       return false;
     }
-    // const response = await
     updateClaim({
-      ...claim,
-      details: {
-        ...form.values,
-        date_of_claim_denial: form.values.date_of_claim_denial?.toISOString(),
+      claimDetails: {
+        ...claim,
+        details: {
+          ...form.values,
+          date_of_claim_denial: form.values.date_of_claim_denial?.toISOString(),
+        },
+        status: claim.status === 'draft' ? 'waiting_for_payment' : claim.status,
+        notifyUser: false,
       },
-      status: 'waiting_for_payment',
+      notifyUser: false,
     })
-      .then((claim) => {
-        if (claim && claim.status === 'waiting_for_payment') {
-          navigate(sanitise(paths.claimPayment, { claimId: claim._id }));
-        }
-        console.log(`There is something wrong with the update. `, claim);
-      })
-      .catch((err) => {
-        console.error(err);
-      })
-      .finally(() => {
-        setIsFormSaving(true);
-      });
+    .then((claim) => {
+      navigate(sanitise(paths.claimPayment, { claimId: claim._id }));
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      setIsFormSaving(true);
+    });
   };
 
   return {

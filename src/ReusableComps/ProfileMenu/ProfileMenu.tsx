@@ -38,11 +38,9 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
   const navigate = useNavigate();
   const { createNewClaim } = useClaim();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  // const [authState, setAuthState] = useRecoilState(atomAuthState);
   const resetAuthState = useResetRecoilState(atomAuthState);
 
-  const avatarText = user.username.split(' ').length > 1 ?
-    user.username.split(' ').splice(0, 2).map(str => str.charAt(0)).join('') : user.username.toUpperCase().substring(0, 2);
+  const avatarText = [user.firstName,user.lastName].map(str => str.charAt(0)).join('');
 
   const handleSignOut = () => {
     resetAuthState();
@@ -64,7 +62,7 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
           <Group gap={7}>
             <Avatar src={user.image} color="cyan" radius="xl">{avatarText}</Avatar>
             <Text fw={500} size="sm" lh={1} mr={3}>
-              {user.username}
+              {user.firstName + " " + user.lastName}
             </Text>
             <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
           </Group>

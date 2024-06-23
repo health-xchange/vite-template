@@ -21,7 +21,8 @@ export interface SignInUser {
 export interface LoginState {
   isLoggedIn: boolean;
   userInfo: null | {
-    username: string;
+    firstName: string;
+    lastName: string;
     email: string;
     _id: string;
     refreshToken: string;
@@ -37,7 +38,8 @@ export interface UserDataType {
 }
 
 export interface UserInfoState {
-  username: string;
+  firstName: string;
+  lastName: string;
   email: string;
   _id: string;
   image?: string;
@@ -51,7 +53,7 @@ export interface SignInResponse {
 
 export interface NewFormProps {
   claim: Claim;
-  updateClaim: (updateClaim: Claim) => Promise<NewTransactionResponse>;
+  updateClaim: (Params: { claimDetails: Claim; notifyUser: boolean }) => Promise<Claim>;
 }
 
 export enum SaveState {
