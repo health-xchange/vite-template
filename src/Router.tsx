@@ -9,11 +9,13 @@ import ContactUsPage from './pages/ContactUsPage';
 import NewClaimPage from './pages/NewClaimPage';
 import PaymentConfirmation from './components/Stripe/PaymentConfirmation';
 import CriticalInfoPage from './pages/CriticalInfoPage';
+import ProfilePage from './pages/ProfilePage';
 
 const Router = () => {
   return (
     <Routes>
       <Route path={paths.home} element={<HomePage />} />
+      <Route path={paths.profile} element={<ProfilePage />} />
       <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
       <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
       <Route path={paths.claimPayment} element={<Protected element={<PaymentConfirmation />} />} />
@@ -34,6 +36,7 @@ const Router = () => {
 
 export const paths = {
   home: '/',
+  profile: '/profile',
   claimsList: '/claims',
   claimsDetails: '/claims/:claimId',
   claimPayment: '/claims/:claimId/payment',

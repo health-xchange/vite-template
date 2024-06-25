@@ -1,11 +1,6 @@
 import axios from 'axios';
 import { paths } from '@/Router';
 
-// interface ApiContextProps {
-//   apiClient: AxiosInstance,
-//   setReqHeader?: (req: any, res: any) => void
-// }
-
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
@@ -51,6 +46,7 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     console.log('interceptor: ', error);
     if (error?.response?.status === 401 && originalRequest?.url === paths.api_newToken) {
+      localStorage.removeItem('recoil-persist');
       console.log('interceptor: navigating to signin.');
       window.location.replace(paths.signIn);
       return Promise.reject(error);

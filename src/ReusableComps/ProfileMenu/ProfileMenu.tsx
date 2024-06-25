@@ -11,18 +11,9 @@ import {
 } from '@mantine/core';
 import {
   IconLogout,
-  IconHeart,
-  IconStar,
-  IconMessage,
   IconSettings,
-  IconSwitchHorizontal,
   IconChevronDown,
   IconPlus,
-  IconEyePlus,
-  IconCirclePlus,
-  IconCubePlus,
-  IconCircleDashedPlus,
-  IconCubeSend,
   IconCube,
 } from '@tabler/icons-react';
 import { useResetRecoilState } from 'recoil';
@@ -93,33 +84,15 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
         >
           New Claim
         </Menu.Item>
-        {/* <Menu.Item
-          leftSection={
-            <IconMessage
-              style={{ width: rem(16), height: rem(16) }}
-              color={theme.colors.blue[6]}
-              stroke={1.5}
-            />
-          }
-        >
-          Your comments
-        </Menu.Item>
-*/}
         <Menu.Label>Settings</Menu.Label>
         <Menu.Item
+          onClick={() => navigate(paths.profile)}
           leftSection={
             <IconSettings style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
           }
         >
           Account settings
         </Menu.Item>
-        {/* <Menu.Item
-          leftSection={
-            <IconSwitchHorizontal style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-          }
-        >
-          Change account
-        </Menu.Item> */}
         <Menu.Item
           color="red"
           onClick={handleSignOut}

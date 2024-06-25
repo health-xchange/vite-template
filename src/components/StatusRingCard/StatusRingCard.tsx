@@ -17,8 +17,6 @@ interface StatsRingProps {
 const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
-  const completed = 1887;
-  const total = 2334;
 
   const handleViewDetails = () => {
     navigate(sanitise(paths.claimsDetails, { claimId: claim._id }));
@@ -34,14 +32,14 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
 
   const stats = [
     { value: `${claim.details.claim_amount}`, label: 'Claim Amount' },
-    { value: claim.details.criticalInfo?.addl_policy_number, label: 'Policy' },
+    { value: claim.details.criticalInfo?.addl_policy_number, label: 'Policy Number' },
   ];
 
   const items = stats.map((stat) => (
     <div key={stat.label}>
       <Text className={classes.label} c={stat.value ? '' : 'dimmed'}>{stat.value || 'Not Provided'}</Text>
       <Text size="xs" c="dimmed">
-        Claim Amount
+        {stat.label}
       </Text>
     </div>
   ));
@@ -78,7 +76,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
         <div>
           <div>
             <Text c={'cyan'} fz="md" className={classes.label}>
-              {claim.details._id}
+              {claim._id}
             </Text>
             <Text fz="xs" c="dimmed">
               Claim Id

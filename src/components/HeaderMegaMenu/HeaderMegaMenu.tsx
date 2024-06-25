@@ -14,25 +14,18 @@ import {
   ScrollArea,
   rem,
   useMantineTheme,
-  Image,
-  Title,
 } from '@mantine/core';
-import logo from '../../favicon.svg';
-// import { MantineLogo } from '@mantinex/mantine-logo';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconList,
   IconPlus,
   IconChevronDown,
-  IconHeading,
 } from '@tabler/icons-react';
 import { useRecoilState } from 'recoil';
 import classes from './HeaderMegaMenu.module.css';
 import { atomAuthState } from '../../state/atoms';
 import ProfileMenu from '@/ReusableComps/ProfileMenu/ProfileMenu';
 import { useClaim } from '@/hooks/useClaim';
-import { paths } from '@/Router';
-
 
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
@@ -95,53 +88,6 @@ export function HeaderMegaMenu() {
             <NavLink to="/" className={classes.link}>
               Home
             </NavLink>
-            {/* <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
-              <HoverCard.Target>
-                <a href="#" className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Features
-                    </Box>
-                    <IconChevronDown
-                      style={{ width: rem(16), height: rem(16) }}
-                      color={theme.colors.blue[6]}
-                    />
-                  </Center>
-                </a>
-              </HoverCard.Target>
-
-              <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
-                <Group justify="space-between" px="md">
-                  <Text fw={500}>Features</Text>
-                </Group>
-
-                <Divider my="sm" />
-
-                <SimpleGrid cols={2} spacing={0}>
-                  {links}
-                </SimpleGrid>
-
-                <div className={classes.dropdownFooter}>
-                  <Group justify="space-between">
-                    <div>
-                      <Text fw={500} fz="sm">
-                        Get started
-                      </Text>
-                      <Text size="xs" c="dimmed">
-                        Their food sources have decreased, and their numbers
-                      </Text>
-                    </div>
-                    <Button variant="default">Get started</Button>
-                  </Group>
-                </div>
-              </HoverCard.Dropdown>
-            </HoverCard> */}
-            {/* <NavLink to={paths.claimsList} className={classes.link}>
-              Claims
-            </NavLink>
-            <NavLink onClick={createNewClaim} to="#" className={classes.link}>
-              New Claim
-            </NavLink> */}
             <NavLink to="/contact-us" className={classes.link}>
               Contact Us
             </NavLink>
@@ -152,7 +98,7 @@ export function HeaderMegaMenu() {
 
           <Group visibleFrom="sm">
             {
-              isLoggedIn && userInfo ? <ProfileMenu user={userInfo} /> :
+              (isLoggedIn && userInfo) ? <ProfileMenu user={userInfo} /> :
                 <>
                   <Button
                     variant="default"
@@ -194,18 +140,11 @@ export function HeaderMegaMenu() {
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{links}</Collapse>
-          {/* <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a> */}
-
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
             {
-              isLoggedIn && userInfo ? <ProfileMenu user={userInfo} /> :
+              (isLoggedIn && userInfo) ? <ProfileMenu user={userInfo} /> :
                 <>
                   <Button variant="default">Sign in</Button>
                   <Button>Sign up</Button>

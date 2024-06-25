@@ -19,13 +19,14 @@ import {
   LoadingOverlay,
   ActionIcon,
 } from '@mantine/core';
-import { useForm } from '@mantine/form';
+import { useForm, yupResolver } from '@mantine/form';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps, SaveState } from '@/interfaces/common';
 import { useNavigate } from 'react-router-dom';
 import { sanitise } from '@/utils/functions';
 import { paths } from '@/Router';
 import { HeroText } from '../StatsCard/HeroText';
+import * as Yup from 'yup';
 
 const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const navigate = useNavigate();
@@ -36,8 +37,14 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   });
 
   const form = useForm({
-    mode: 'uncontrolled',
+    mode: 'controlled',
     initialValues: { ...claim.details.criticalInfo },
+    validate: yupResolver(Yup.object().shape({
+      addl_policy_number: Yup.string().required('Policy number is required'),
+      addl_deniel_claim_number: Yup.string().required('Claim number is required'),
+      addl_why_should_approve: Yup.string().required('Please provide the details'),
+      addl_relevant_docs: Yup.string().required('Please specify list of relevant documents you have'),
+    }))
   });
 
   const handleSaveAndSubmitForReview = () => {
@@ -106,9 +113,9 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
               <Stack>
                 <Text size="sm" fw={500}>
                   Have you already appealed your denial?
-                  <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
+                  {/* <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
                     *
-                  </Text>
+                  </Text> */}
                 </Text>
                 <Switch
                   size="lg"
@@ -125,22 +132,21 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 placeholder="Description"
                 key={form.key('addl_appeal_process')}
                 maxLength={100000}
-                required
                 {...form.getInputProps('addl_appeal_process')}
-              />
-            </GridCol>
-            <GridCol>
-              <Textarea
-                label="What is the claim number of your denied claim?"
-                placeholder="Claim number"
-                key={form.key('addl_deniel_claim_number')}
-                maxLength={100000}
-                required
-                {...form.getInputProps('addl_deniel_claim_number')}
               />
             </GridCol>
             <GridCol mt="md">
               <Divider variant="dashed" />
+            </GridCol>
+            <GridCol>
+              <TextInput
+                label="What is the claim number of your denied claim?"
+                placeholder="Claim number"
+                key={form.key('addl_deniel_claim_number')}
+                maxLength={100}
+                required
+                {...form.getInputProps('addl_deniel_claim_number')}
+              />
             </GridCol>
             <GridCol>
               <Textarea
@@ -150,7 +156,6 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 autosize
                 maxLength={100000}
                 minRows={3}
-                required
                 {...form.getInputProps('addl_associated_billing_codes')}
               />
             </GridCol>

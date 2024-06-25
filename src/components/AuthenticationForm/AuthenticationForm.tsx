@@ -104,7 +104,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
     toast.promise(
       signInUser({ email, password }),
       {
-        pending: 'Signing...',
+        pending: 'Signing In...',
         success: 'Signin successful',
         error: {
           render({ data }: { data: any }) {
