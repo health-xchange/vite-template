@@ -4,15 +4,9 @@ import { Button, Text, useMantineTheme, Stack } from '@mantine/core';
 import { paths } from '@/Router';
 import { sanitise } from '@/utils/functions';
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
-// const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
-
 const PaymentForm: React.FC<{ claimId: string; transactionId: string, clientSecret: string }> = ({
   claimId,
-  transactionId,
-  clientSecret
+  transactionId
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -32,7 +26,7 @@ const PaymentForm: React.FC<{ claimId: string; transactionId: string, clientSecr
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${origin}${redirectPath}`, // http://localhost:3000/api/claims/:claimId/:transactionId
+        return_url: `${origin}${redirectPath}`,
       },
     });
 

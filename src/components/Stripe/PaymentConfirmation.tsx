@@ -94,7 +94,7 @@ const PaymentStatus: React.FC<PaymentStatusProps> = ({ transaction, createNewTra
 };
 
 
-const stripePromise = loadStripe(import.meta.env.VITE_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 const claimAmount = import.meta.env.VITE_CLAIM_PAYMENT_AMOUNT || 25;
 
 const PaymentConfirmation: React.FC<{}> = () => {
