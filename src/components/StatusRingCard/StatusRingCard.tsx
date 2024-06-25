@@ -1,6 +1,5 @@
 import { Text, Card, RingProgress, Group, useMantineTheme, Center, Avatar, Divider, Button, ActionIcon, rem } from '@mantine/core';
 import React from 'react';
-import { upperFirst } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { IconExternalLink, IconTrash } from '@tabler/icons-react';
 import classes from './StatsRingCard.module.css';
@@ -62,12 +61,12 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
         </Center>
 
         <Group justify="center">
-          <ActionIcon className={classes.action} onClick={handleDelete}>
+          {/* <ActionIcon className={classes.action} onClick={handleDelete}>
             <IconTrash
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.red[6]}
             />
-          </ActionIcon>
+          </ActionIcon> */}
           <Button variant="default" onClick={handleViewDetails} color={theme.colors.red[6]} leftSection={<IconExternalLink color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Open</Button>
         </Group>
       </Group>
