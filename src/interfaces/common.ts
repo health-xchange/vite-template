@@ -1,5 +1,5 @@
 import { PaperProps } from '@mantine/core';
-import { Claim, NewTransactionResponse } from './claims';
+import { Claim } from './claims';
 
 export type AuthenticationPagesProps = PaperProps & { authType?: AuthTypes };
 
