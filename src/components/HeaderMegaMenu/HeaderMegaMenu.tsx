@@ -144,7 +144,7 @@ export function HeaderMegaMenu() {
 
           <Group justify="center" grow pb="xl" px="md">
             {
-              (isLoggedIn && userInfo) ? <ProfileMenu user={userInfo} /> :
+              (isLoggedIn && userInfo && userInfo.firstName && userInfo.lastName) ? <ProfileMenu user={userInfo} /> :
                 <>
                   <Button variant="default">Sign in</Button>
                   <Button>Sign up</Button>
