@@ -55,7 +55,6 @@ export const useClaim = () => {
         last_name: '',
         state: '',
         is_not_cosmetic_claim: undefined,
-        type_of_claim: undefined,
         insurance_type: '',
         insurance_provider: '',
         date_of_claim_denial: new Date().toISOString(),

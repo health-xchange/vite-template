@@ -17,7 +17,7 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { GoogleButton } from './GoogleButton';
+import LoginWithGoogle from './GoogleButton';
 import { AuthenticationPagesProps, RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
@@ -145,6 +145,31 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
       });
   };
 
+  const handleGoogleRegister = async (credential: string) => {
+    console.log(credential);
+    // setValidatingSocialSignin(true);
+    // setCredential(credential);
+    // try {
+    //   const googleUser = await getGoogleUser(credential);
+    //   if (!googleUser) return;
+    //   const { email, name, userId, picture, iss } = googleUser;
+    //   console.log(`Pre filling form for social signin`);
+    //   resetTo({
+    //     username: { touched: false, value: name },
+    //     email: { touched: false, value: email },
+    //     userId: { touched: false, value: userId },
+    //     picture: { touched: false, value: picture },
+    //     iss: { touched: false, value: iss },
+    //     credential: { touched: false, value: credential },
+    //     refCode: { touched: false, value: referralCode },
+    //   });
+    // } catch (error) {
+    //   console.log(`Failed to validate user login`);
+    // } finally {
+    //   setValidatingSocialSignin(false);
+    // }
+  };
+
   const handleSubmit = (values: RegisterUser) => {
     (authType === '/register' ? handleRegister : handleSignIn)(values);
   };
@@ -161,7 +186,8 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
       </Text>
 
       <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl">Google</GoogleButton>
+        <LoginWithGoogle dispatchSignInGoogle={handleGoogleRegister} />
+         {/* GoogleButton radius="xl">Google</GoogleButton> */}
       </Group>
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />

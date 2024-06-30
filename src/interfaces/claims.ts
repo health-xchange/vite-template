@@ -27,7 +27,6 @@ export interface ClaimDetails {
   last_name?: string;
   state?: string;
   is_not_cosmetic_claim?: boolean;
-  type_of_claim?: string;
   insurance_type?: string;
   insurance_provider?: string;
   date_of_claim_denial?: string;

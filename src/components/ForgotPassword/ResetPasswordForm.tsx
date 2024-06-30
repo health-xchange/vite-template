@@ -102,12 +102,14 @@ const ResetPasswordForm: React.FC = () => {
           <Space my={10} />
           <TextInput
             label="New Password"
+            type="password"
             required
             key={form.key('password')}
             {...form.getInputProps('password')}
           />
           <TextInput
             label="Confirm new-password"
+            type="password"
             required
             key={form.key('confirmPassword')}
             {...form.getInputProps('confirmPassword')}

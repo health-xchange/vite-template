@@ -32,7 +32,6 @@ import {
   Textarea,
   Switch,
   useMantineTheme,
-  SegmentedControl,
 } from '@mantine/core';
 // import { DatePickerInput } from '@mantine/dates';
 import { DatePickerInput } from '@mantine/dates';
@@ -45,7 +44,7 @@ import { useClaim } from '@/hooks/useClaim';
 
 const NewClaimForm: React.FC = () => {
   const { claimDetails: { data: claim } } = useClaim();
-  const { isFormSaving, claimForm: form, handleSaveAndNextClick, isNotCosmeticClaim, maxAllowedDays } = useNewClaimForm();
+  const { claimForm: form, handleSaveAndNextClick, isNotCosmeticClaim, maxAllowedDays } = useNewClaimForm();
   const theme = useMantineTheme();
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
@@ -102,8 +101,7 @@ const NewClaimForm: React.FC = () => {
         <GridCol span={12} mt="md">
           <Stack>
             <Text size="sm" fw={500}>
-              Type of treatment ?
-              {/* Please confirm your claim is not relavant to Dental, Vision or Cosmetic{' '} */}
+              Please confirm your claim is not relavant to Dental, Vision or Cosmetic{' '}
               <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
                 *
               </Text>
@@ -115,16 +113,8 @@ const NewClaimForm: React.FC = () => {
               {
                 form.values.is_not_cosmetic_claim ?
                   <Text size="sm" mt={4} c="green">We support this claim. Please give us more details about this claim</Text> :
-                  <Text size="sm" mt={4}>Currently we can support Non Cosmetic claims</Text>
+                  <Text size="sm" mt={4}>Currently we can support only <strong>non-cosmetic</strong> claims</Text>
               }
-              <SegmentedControl
-                data={[
-                  { label: 'Non Cosmetic', value: 'non-cosmetic' },
-                  { label: 'Cosmetic', value: 'cosmetic' },
-                ]}
-              // key={form.key('type_of_claim')}
-              // {...form.getInputProps('type_of_claim')}
-              />
               <Switch
                 size="xl"
                 onLabel={<Text w={100} pl={10}>Confirmed</Text>}
