@@ -1,4 +1,5 @@
 .wrapper {
+  border-radius: 10px;
   min-height: rem(400px);
   background-image: linear-gradient(
     -60deg,

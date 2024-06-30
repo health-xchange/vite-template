@@ -1,15 +1,15 @@
-import { paths } from '@/Router';
-import { useClaim } from '@/hooks/useClaim';
-import { Claim } from '@/interfaces/claims';
-import { getEnvVars, sanitise } from '@/utils/functions';
 import { useForm, yupResolver } from '@mantine/form';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { getEnvVars, sanitise } from '@/utils/functions';
+import { Claim } from '@/interfaces/claims';
+import { useClaim } from '@/hooks/useClaim';
+import { paths } from '@/Router';
 
-let { VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM } = getEnvVars();
+const { VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM } = getEnvVars();
 const maxAllowedDays = Number(VITE_MAX_ALLOWED_DAYS_TO_APPLY_CLAIM);
 
 const useNewClaimForm = () => {
@@ -45,11 +45,7 @@ const useNewClaimForm = () => {
           .test(
             'min-allowed-days',
             `Your claim was denied was on more than ${maxAllowedDays} days. we cannot deal with it now.`,
-            (value) => {
-              console.log(value);
-              console.log(moment().startOf('day').diff(moment(value), 'days'))
-              return moment().startOf('day').diff(moment(value), 'days') < maxAllowedDays;
-            }
+            (value) => moment().startOf('day').diff(moment(value), 'days') < maxAllowedDays
           ),
       })
     ),

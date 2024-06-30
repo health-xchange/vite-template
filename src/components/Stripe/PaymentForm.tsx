@@ -6,7 +6,7 @@ import { sanitise } from '@/utils/functions';
 
 const PaymentForm: React.FC<{ claimId: string; transactionId: string, clientSecret: string }> = ({
   claimId,
-  transactionId
+  transactionId,
 }) => {
   const stripe = useStripe();
   const elements = useElements();

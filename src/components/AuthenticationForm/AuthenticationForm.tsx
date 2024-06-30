@@ -16,13 +16,14 @@ import {
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { useCallback, useEffect, useState } from 'react';
+import * as Yup from 'yup';
 import { GoogleButton } from './GoogleButton';
 import { AuthenticationPagesProps, RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { registerUser, signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '../../state/atoms';
 import { getAuthTypeLabel } from '@/utils/functions';
-import * as Yup from 'yup';
 import classes from './AuthenticationForm.module.css';
+import { paths } from '@/Router';
 
 const registrationSchema = Yup.object().shape({
   firstName: Yup.string().required('First Name is required'),
@@ -57,7 +58,6 @@ const loginSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-
 export function AuthenticationForm(props: AuthenticationPagesProps) {
   const { authType = '/login' } = props;
   const navigate = useNavigate();
@@ -73,10 +73,8 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
         },
         error: 'Could not verify your email. please try again',
         success: {
-          render: ({ data }) => {
-            return typeof data.data === 'string' ? data.data : 'Successfully verified your email. Now you can login';
-          },
-        }
+          render: ({ data }) => typeof data.data === 'string' ? data.data : 'Successfully verified your email. Now you can login',
+        },
       })
         .finally(() => setIsVerifying(false));
     }
@@ -96,7 +94,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
       terms: false,
       iss: '',
     },
-    validate: yupResolver(authType === '/register' ? registrationSchema : loginSchema)
+    validate: yupResolver(authType === '/register' ? registrationSchema : loginSchema),
   });
 
   const handleSignIn = (values: SignInUser) => {
@@ -155,7 +153,7 @@ export function AuthenticationForm(props: AuthenticationPagesProps) {
     <Paper radius="md" p="xl" withBorder {...props} pos="relative">
       <LoadingOverlay visible={isVerifying} />
       <Text size="lg" fw={500}>
-        Welcome to{" "}
+        Welcome to{' '}
         <Text component="span" className={classes.highlight} inherit>
           BlueGuardAI
         </Text>

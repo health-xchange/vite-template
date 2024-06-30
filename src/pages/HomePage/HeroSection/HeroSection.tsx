@@ -1,7 +1,7 @@
 import { Image, Container, Title, Button, Group, Text } from '@mantine/core';
-import classes from './HeroSection.module.css';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import classes from './HeroSection.module.css';
 
 interface HeroSectionProps {
   title: string | ReactNode;
@@ -30,7 +30,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ title, description, actionBut
             {
               actionButton && <Button radius="xl" size="md" className={classes.control} onClick={actionButton.onClick}>
                 {actionButton.label}
-              </Button>
+                              </Button>
             }
           </Group>
         </div>

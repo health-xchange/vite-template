@@ -2,11 +2,11 @@ import { Text, Card, RingProgress, Group, useMantineTheme, Center, Avatar, Divid
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconExternalLink, IconTrash } from '@tabler/icons-react';
+import { toast } from 'react-toastify';
 import classes from './StatsRingCard.module.css';
 import { Claim } from '@/interfaces/claims';
 import { paths } from '@/Router';
 import { getClaimStatus, sanitise } from '@/utils/functions';
-import { toast } from 'react-toastify';
 import { deleteClaim } from '@/actions/claims';
 
 interface StatsRingProps {
@@ -26,7 +26,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
       pending: 'Deleting...',
       error: 'Failed to delete claim ',
       success: 'Deleted successfully',
-    })
+    });
   };
 
   const stats = [
@@ -56,17 +56,17 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
             mr="xs"
           />
           <Text fz="sm" inline c={(claim.details.first_name || claim.details.last_name) ? '' : 'dimmed'}>
-            {(claim.details.first_name + " " + claim.details.last_name).trim() || "Not Provided"}
+            {(`${claim.details.first_name} ${claim.details.last_name}`).trim() || 'Not Provided'}
           </Text>
         </Center>
 
         <Group justify="center">
-          {/* <ActionIcon className={classes.action} onClick={handleDelete}>
+          <ActionIcon className={classes.action} onClick={handleDelete}>
             <IconTrash
               style={{ width: rem(16), height: rem(16) }}
               color={theme.colors.red[6]}
             />
-          </ActionIcon> */}
+          </ActionIcon>
           <Button variant="default" onClick={handleViewDetails} color={theme.colors.red[6]} leftSection={<IconExternalLink color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Open</Button>
         </Group>
       </Group>
@@ -74,7 +74,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
       <div className={classes.inner}>
         <div>
           <div>
-            <Text c={'cyan'} fz="md" className={classes.label}>
+            <Text c="cyan" fz="md" className={classes.label}>
               {claim._id}
             </Text>
             <Text fz="xs" c="dimmed">
@@ -82,7 +82,7 @@ const StatsRingCard: React.FC<StatsRingProps> = ({ claim }) => {
             </Text>
           </div>
           <div>
-            <Text fz={'md'} className={classes.lead} mt={'sm'} c={claim.details.insurance_provider ? '' : 'dimmed'}>
+            <Text fz="md" className={classes.lead} mt="sm" c={claim.details.insurance_provider ? '' : 'dimmed'}>
               {claim.details.insurance_provider || 'Not Provided'}
             </Text>
             <Text fz="xs" c="dimmed">

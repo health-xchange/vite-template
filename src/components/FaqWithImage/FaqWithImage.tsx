@@ -1,13 +1,12 @@
 import { Image, Accordion, Grid, Container, Title, Paper } from '@mantine/core';
+import React from 'react';
 import image from './image.svg';
 import classes from './FaqWithImage.module.css';
-import React from 'react';
 
 interface FaqWithImageProps {
 }
 
-export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => {
-  return (
+export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => (
     <div className={classes.wrapper}>
       <Container size="md">
         <Grid id="faq-grid" gutter={50}>
@@ -21,7 +20,7 @@ export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => {
 
             <Accordion chevronPosition="right" defaultValue="reset-password" variant="separated">
               <Accordion.Item className={classes.item} value="reset-password">
-                <Paper shadow='xs'>
+                <Paper shadow="xs">
                   <Accordion.Control>I&#39;m not tech-savvy. Can I still use BlueGuard AI effectively?</Accordion.Control>
                   <Accordion.Panel>
                     Absolutely! BlueGuard AI is designed to be user-friendly for everyone. After you fill out a
@@ -33,7 +32,7 @@ export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => {
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="another-account">
-                <Paper shadow='xs'>
+                <Paper shadow="xs">
                   <Accordion.Control>How does BlueGuard AI help with denied medical claims?</Accordion.Control>
                   <Accordion.Panel>
                     BlueGuard AI combines the expertise of skilled human agents with advanced AI
@@ -46,7 +45,7 @@ export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => {
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="newsletter">
-                <Paper shadow='xs'>
+                <Paper shadow="xs">
                   <Accordion.Control>What makes BlueGuard AI different from other claim assistance services?</Accordion.Control>
                   <Accordion.Panel>
                     Unlike other services, BlueGuard AI focuses on leveraging AI in conjunction with
@@ -58,7 +57,7 @@ export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => {
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="credit-card">
-                <Paper shadow='xs'>
+                <Paper shadow="xs">
                   <Accordion.Control>
                     My claim appeal got denied again, how do I get a refund?
                   </Accordion.Control>
@@ -77,4 +76,3 @@ export const FaqWithImage: React.FC<FaqWithImageProps> = ({}) => {
       </Container>
     </div>
   );
-}

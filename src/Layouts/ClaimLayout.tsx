@@ -1,15 +1,14 @@
-import { FooterSimple } from '@/components/FooterSimple/FooterSimple';
-import ClaimTimeLine from '@/components/Timeline/Timeline';
 import { Container, Grid, GridCol, Transition } from '@mantine/core';
 import { ReactNode } from 'react';
+import { FooterSimple } from '@/components/FooterSimple/FooterSimple';
+import ClaimTimeLine from '@/components/Timeline/Timeline';
 
 interface ClaimLayoutProps {
   children: ReactNode;
   activeBullet: number;
 }
 
-const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => {
-  return (
+const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => (
     <Container size="md">
       <Grid>
         <GridCol span={3}>
@@ -48,6 +47,5 @@ const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => 
       <FooterSimple />
     </Container>
   );
-};
 
 export default ClaimLayout;

@@ -28,12 +28,33 @@ export const signInUser = async (userData: SignInUser) =>
       throw error;
     });
 
-export const verifyUserEmail = async (email: string, token: string) => apiClient({
+export const verifyUserEmail = async (email: string, token: string) =>
+  apiClient({
     method: 'POST',
     url: '/auth/verify',
     data: { email, token },
   });
 
-// export const signOutUser = async (userData: SignOutUser) => {
+export const sendForgotPassword = async (email: string) =>
+  apiClient({
+    method: 'POST',
+    url: '/auth/forgot',
+    data: { email },
+  });
 
-// }
+export const sendNewPassword = async (
+  referenceId: string,
+  otpToken: string,
+  password: string,
+  confirmPassword: string
+) =>
+  apiClient({
+    method: 'POST',
+    url: '/auth/reset_password',
+    data: {
+      referenceId,
+      otpToken,
+      password,
+      confirmPassword,
+    },
+  });

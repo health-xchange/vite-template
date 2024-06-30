@@ -19,26 +19,22 @@ interface ClaimTimeLine {
   activeBullet: number;
 }
 
-const ClaimTimeLine: React.FC<ClaimTimeLine> = ({ items, activeBullet }) => {
-  return (
-    <Timeline active={activeBullet} pos={'sticky'} top={56}>
-      {items.map((item) => {
-        return (
+const ClaimTimeLine: React.FC<ClaimTimeLine> = ({ items, activeBullet }) => (
+    <Timeline active={activeBullet} pos="sticky" top={56}>
+      {items.map((item) => (
           <Timeline.Item
             lineVariant={item.lineVariant}
             key={item.bulletId}
             title={item.title}
             bullet={item.icon}
-            radius={'xl'}
+            radius="xl"
           >
             <Text c="dimmed" size="sm">
               {item.description}
             </Text>
           </Timeline.Item>
-        );
-      })}
+        ))}
     </Timeline>
   );
-};
 
 export default ClaimTimeLine;

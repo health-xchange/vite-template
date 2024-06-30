@@ -10,9 +10,11 @@ import NewClaimPage from './pages/NewClaimPage';
 import PaymentConfirmation from './components/Stripe/PaymentConfirmation';
 import CriticalInfoPage from './pages/CriticalInfoPage';
 import ProfilePage from './pages/ProfilePage';
+import { ForgotPassword } from './components/ForgotPassword/ForgotPassword';
+import { SignInForm } from './components/SignInForm/SignInForm';
+import ResetPasswordForm from './components/ForgotPassword/ResetPasswordForm';
 
-const Router = () => {
-  return (
+const Router = () => (
     <Routes>
       <Route path={paths.home} element={<HomePage />} />
       <Route path={paths.profile} element={<ProfilePage />} />
@@ -24,15 +26,16 @@ const Router = () => {
         path={paths.claimPaymentConfirmation}
         element={<Protected element={<PaymentConfirmation />} />}
       />
-      <Route path={paths.signIn} element={<Authentication authType={paths.signIn} />} />
+      <Route path={paths.signIn} element={<SignInForm />} />
       <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} />
       <Route path={paths.register} element={<Authentication authType={paths.register} />} />
+      <Route path={paths.forgot_pwd} element={<ForgotPassword />} />
+      <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />
       <Route path={paths.contactUs} element={<ContactUsPage />} />
 
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
-};
 
 export const paths = {
   home: '/',
@@ -44,6 +47,8 @@ export const paths = {
   criticalInfo: '/claims/:claimId/additional',
   signIn: '/login' as AuthTypes,
   register: '/register' as AuthTypes,
+  forgot_pwd: '/forgot-password',
+  reset_pwd: '/reset-password',
   confirm: '/verify/:email/:token' as AuthTypes,
   contactUs: '/contact-us',
   api_newToken: '/auth/token',

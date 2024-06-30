@@ -32,12 +32,13 @@ import {
   Textarea,
   Switch,
   useMantineTheme,
+  SegmentedControl,
 } from '@mantine/core';
 // import { DatePickerInput } from '@mantine/dates';
-import { STATES_LIST } from '@/utils/states';
-import { PageTitle } from '../PageTitle/PageTitle';
 import { DatePickerInput } from '@mantine/dates';
 import moment from 'moment';
+import { STATES_LIST } from '@/utils/states';
+import { PageTitle } from '../PageTitle/PageTitle';
 import classes from './NewClaimForm.module.css';
 import useNewClaimForm from './useNewClaimForm';
 import { useClaim } from '@/hooks/useClaim';
@@ -101,17 +102,33 @@ const NewClaimForm: React.FC = () => {
         <GridCol span={12} mt="md">
           <Stack>
             <Text size="sm" fw={500}>
-              Please confirm your claim is not relavant to Dental, Vision or Cosmetic{' '}
+              Type of treatment ?
+              {/* Please confirm your claim is not relavant to Dental, Vision or Cosmetic{' '} */}
               <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
                 *
               </Text>
             </Text>
+            <Text size="xs">
+              Cosmetic (Dental, Vision etc)
+            </Text>
             <Group>
-
+              {
+                form.values.is_not_cosmetic_claim ?
+                  <Text size="sm" mt={4} c="green">We support this claim. Please give us more details about this claim</Text> :
+                  <Text size="sm" mt={4}>Currently we can support Non Cosmetic claims</Text>
+              }
+              <SegmentedControl
+                data={[
+                  { label: 'Non Cosmetic', value: 'non-cosmetic' },
+                  { label: 'Cosmetic', value: 'cosmetic' },
+                ]}
+              // key={form.key('type_of_claim')}
+              // {...form.getInputProps('type_of_claim')}
+              />
               <Switch
-                size='xl'
-                onLabel={<Text w={120} pl={10}>Not cosmetic</Text>}
-                offLabel={<Text w={120} pr={10}>Cosmetic</Text>}
+                size="xl"
+                onLabel={<Text w={100} pl={10}>Confirmed</Text>}
+                offLabel={<Text w={130} pr={10}>Not Confirmed</Text>}
                 key={form.key('is_not_cosmetic_claim')}
                 required
                 thumbIcon={
@@ -131,18 +148,15 @@ const NewClaimForm: React.FC = () => {
                 }
                 {...form.getInputProps('is_not_cosmetic_claim', { type: 'checkbox' })}
               />
-              {
-                form.values.is_not_cosmetic_claim ?
-                  <Text size='sm' mt={4} c='green'>We support this claim. Please give us more details about this claim</Text> :
-                  (form.isTouched('is_not_cosmetic_claim') ?
-                    <Text size='sm' c={'red'} mt={4}>Sorry, currently we cannot support dental, vision or cosmetic claims.</Text> : '')
-              }
             </Group>
           </Stack>
         </GridCol>
-        <GridCol mt="md">
-          <Divider variant="dashed" />
-        </GridCol>
+        {
+          form.values.is_not_cosmetic_claim &&
+          <GridCol mt="md">
+            <Divider variant="dashed" />
+          </GridCol>
+        }
         {
           isNotCosmeticClaim &&
           <div className={!isNotCosmeticClaim ? classes.disabled : ''}>
@@ -166,7 +180,9 @@ const NewClaimForm: React.FC = () => {
                   label="Who is your insurance provider ?"
                   placeholder="name of insurance provider"
                   disabled={!isNotCosmeticClaim}
-                  leftSection={<IconBuilding style={{ width: rem(20), height: rem(20) }} stroke={1.5} />}
+                  leftSection={
+                    <IconBuilding style={{ width: rem(20), height: rem(20) }} stroke={1.5} />
+                  }
                   required
                   key={form.key('insurance_provider')}
                   {...form.getInputProps('insurance_provider')}
@@ -257,8 +273,13 @@ const NewClaimForm: React.FC = () => {
                     disabled={!isNotCosmeticClaim}
                     label="It is revoking, or cancelling your coverage going back to the date you enrolled, because the insurer claims that you gave false or incomplete information when you applied for coverage. This action is often referred to as a rescission of coverage."
                   />
-                  <Radio value="optoin_9" disabled={!isNotCosmeticClaim} label={<Textarea
-                    disabled={!isNotCosmeticClaim} label={<Text size='sm'>Other</Text>} cols={100} />} />
+                  <Radio
+                    value="optoin_9"
+                    disabled={!isNotCosmeticClaim}
+                    label={<Textarea
+                      disabled={!isNotCosmeticClaim}
+                      label={<Text size="sm">Other</Text>}
+                      cols={100} />} />
                 </Stack>
               </RadioGroup>
             </GridCol>
@@ -397,11 +418,11 @@ const NewClaimForm: React.FC = () => {
                     rightSection={<IconArrowRight />}
                     size="md"
                   >
-                    Update Additional Info
+                    Update Critical Info
                   </Button>
                 )}
                 {/* {isModalOpened && transaction && transaction?.client_secret && (
-                
+
               )} */}
               </Group>
             </GridCol>

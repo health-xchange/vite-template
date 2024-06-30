@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Claim } from '@/interfaces/claims';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { Claim } from '@/interfaces/claims';
 import { createNewClaimAction, fetchClaimById, updateClaimAction } from '@/actions/claims';
 import { sanitise, uniqSm } from '@/utils/functions';
 import { useLogin } from '@/state/hooks';
@@ -55,6 +55,7 @@ export const useClaim = () => {
         last_name: '',
         state: '',
         is_not_cosmetic_claim: undefined,
+        type_of_claim: undefined,
         insurance_type: '',
         insurance_provider: '',
         date_of_claim_denial: new Date().toISOString(),
@@ -75,7 +76,7 @@ export const useClaim = () => {
           addl_policy_number: undefined,
           addl_relevant_docs: undefined,
           addl_why_should_approve: undefined,
-        }
+        },
       },
     };
     // return await
@@ -102,7 +103,7 @@ export const useClaim = () => {
   }, [claimId, transactionId]);
 
   return {
-    claimDetails: claimDetails,
+    claimDetails,
     createNewClaim,
     updateClaimMutation,
     updateClaim: updateClaimMutation.mutateAsync,

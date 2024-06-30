@@ -7,8 +7,7 @@ interface ProfileCardProps {
   user: UserInfoState
 }
 
-const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
-  return (
+const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => (
     <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
       <Avatar
         src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
@@ -17,15 +16,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
         mx="auto"
       />
       <Text ta="center" fz="lg" fw={500} mt="md">
-        {user.firstName + " " + user.lastName}
+        {`${user.firstName} ${user.lastName}`}
       </Text>
       <Text ta="center" c="dimmed" fz="sm">
-        <Group align='center' justify='center'>
+        <Group align="center" justify="center">
           {user.email} <Copy value={user.email} />
         </Group>
       </Text>
     </Paper>
   );
-}
 
 export default ProfileCard;

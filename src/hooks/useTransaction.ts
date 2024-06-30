@@ -41,7 +41,7 @@ export const useTransaction = () => {
   }, [claimDetails.data]);
 
   return {
-    transaction: transaction,
+    transaction,
     isLoading,
     isNewTransaction,
     createNewTransaction,

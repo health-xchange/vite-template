@@ -20,13 +20,14 @@ import {
   ActionIcon,
 } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
 import { PageTitle } from '../PageTitle/PageTitle';
 import { NewFormProps, SaveState } from '@/interfaces/common';
-import { useNavigate } from 'react-router-dom';
 import { sanitise } from '@/utils/functions';
 import { paths } from '@/Router';
 import { HeroText } from '../StatsCard/HeroText';
-import * as Yup from 'yup';
+import TransitionComp from '@/ReusableComps/TransitionComp';
 
 const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
   const navigate = useNavigate();
@@ -40,11 +41,17 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
     mode: 'controlled',
     initialValues: { ...claim.details.criticalInfo },
     validate: yupResolver(Yup.object().shape({
+      addl_already_appealed_your_denial: Yup.boolean(),
+      addl_appeal_process: Yup.string()
+        .when('addl_already_appealed_your_denial', {
+          is: true,
+          then: () => Yup.string().required('Please provide the appeal process'),
+        }),
       addl_policy_number: Yup.string().required('Policy number is required'),
       addl_deniel_claim_number: Yup.string().required('Claim number is required'),
       addl_why_should_approve: Yup.string().required('Please provide the details'),
       addl_relevant_docs: Yup.string().required('Please specify list of relevant documents you have'),
-    }))
+    })),
   });
 
   const handleSaveAndSubmitForReview = () => {
@@ -86,7 +93,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             primaryAction={() => navigate(paths.claimsList)}
             secondaryAction={() => setIsSaved(SaveState.unsaved)}
           />
-        </Stack>
+               </Stack>;
       case SaveState.saving:
       case SaveState.unsaved:
         return <>
@@ -113,9 +120,6 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
               <Stack>
                 <Text size="sm" fw={500}>
                   Have you already appealed your denial?
-                  {/* <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
-                    *
-                  </Text> */}
                 </Text>
                 <Switch
                   size="lg"
@@ -126,15 +130,21 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 />
               </Stack>
             </GridCol>
-            <GridCol>
-              <Textarea
-                label="Which appeal processes have you used?"
-                placeholder="Description"
-                key={form.key('addl_appeal_process')}
-                maxLength={100000}
-                {...form.getInputProps('addl_appeal_process')}
-              />
-            </GridCol>
+            {
+              form.values.addl_already_appealed_your_denial &&
+              <GridCol>
+                <TransitionComp transition="fade-down">
+                  <Textarea
+                    label="Which appeal processes have you used?"
+                    placeholder="Description"
+                    key={form.key('addl_appeal_process')}
+                    maxLength={100000}
+                    required={form.values.addl_already_appealed_your_denial}
+                    {...form.getInputProps('addl_appeal_process')}
+                  />
+                </TransitionComp>
+              </GridCol>
+            }
             <GridCol mt="md">
               <Divider variant="dashed" />
             </GridCol>
@@ -162,18 +172,16 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
 
             <GridCol>
               <Textarea
-                label={(() => {
-                  return (
-                    <>
-                      <span>
-                        Please describe your situation and why you think insurance should have approved
-                        your claim ?
-                      </span>
-                      <br />
-                      <span>(Please be as detailed as possible, we use this to inform our case)</span>
-                    </>
-                  );
-                })()}
+                label={(() => (
+                  <>
+                    <span>
+                      Please describe your situation and why you think insurance should have approved
+                      your claim ?
+                    </span>
+                    <br />
+                    <span>(Please be as detailed as possible, we use this to inform our case)</span>
+                  </>
+                ))()}
                 placeholder="Description"
                 key={form.key('addl_why_should_approve')}
                 autosize
@@ -186,18 +194,16 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
 
             <GridCol>
               <Textarea
-                label={(() => {
-                  return (
-                    <>
-                      <span>Please enter all the relevant documents you have and their contents?</span>
-                      <br />
-                      <span>
-                        (Please include any medical records, expert opinions, or other evidence to
-                        support your appeal)
-                      </span>
-                    </>
-                  );
-                })()}
+                label={(() => (
+                  <>
+                    <span>Please enter all the relevant documents you have and their contents?</span>
+                    <br />
+                    <span>
+                      (Please include any medical records, expert opinions, or other evidence to
+                      support your appeal)
+                    </span>
+                  </>
+                ))()}
                 placeholder="Description"
                 key={form.key('addl_relevant_docs')}
                 autosize
@@ -230,13 +236,13 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
               </Group>
             </GridCol>
           </Grid>
-        </>
+               </>;
     }
   };
 
   return (
     <div style={{ position: 'relative' }}>
-      <Box pos='relative'>{renderUi()}</Box>
+      <Box pos="relative">{renderUi()}</Box>
     </div>
   );
 };

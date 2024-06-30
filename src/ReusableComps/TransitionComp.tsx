@@ -6,7 +6,7 @@ const TransitionComp = ({ transition = 'slide-left', children }: { transition: M
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true)
+    setIsMounted(true);
   }, []);
 
   return (
@@ -19,6 +19,6 @@ const TransitionComp = ({ transition = 'slide-left', children }: { transition: M
       {(styles) => <div style={styles}>{children}</div>}
     </Transition>
   );
-}
+};
 
-export default TransitionComp
+export default TransitionComp;

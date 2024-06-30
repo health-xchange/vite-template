@@ -6,8 +6,7 @@ interface CopyProps {
   value: string;
 }
 
-const Copy: React.FC<CopyProps> = ({ value }) => {
-  return (
+const Copy: React.FC<CopyProps> = ({ value }) => (
     <CopyButton value={value} timeout={2000}>
       {({ copied, copy }) => (
         <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
@@ -22,6 +21,5 @@ const Copy: React.FC<CopyProps> = ({ value }) => {
       )}
     </CopyButton>
   );
-}
 
 export default Copy;

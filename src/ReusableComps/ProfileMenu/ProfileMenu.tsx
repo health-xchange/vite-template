@@ -17,10 +17,10 @@ import {
   IconCube,
 } from '@tabler/icons-react';
 import { useResetRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import classes from './ProfileMenu.module.css';
 import { UserInfoState } from '@/interfaces/common';
 import { atomAuthState } from '@/state/atoms';
-import { useNavigate } from 'react-router-dom';
 import { paths } from '@/Router';
 import { useClaim } from '@/hooks/useClaim';
 
@@ -31,7 +31,7 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const resetAuthState = useResetRecoilState(atomAuthState);
 
-  const avatarText = [user.firstName,user.lastName].map(str => str.charAt(0)).join('');
+  const avatarText = [user.firstName, user.lastName].map(str => str.charAt(0)).join('');
 
   const handleSignOut = () => {
     resetAuthState();
@@ -53,7 +53,7 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
           <Group gap={7}>
             <Avatar src={user.image} color="cyan" radius="xl">{avatarText}</Avatar>
             <Text fw={500} size="sm" lh={1} mr={3}>
-              {user.firstName + " " + user.lastName}
+              {`${user.firstName} ${user.lastName}`}
             </Text>
             <IconChevronDown style={{ width: rem(12), height: rem(12) }} stroke={1.5} />
           </Group>
