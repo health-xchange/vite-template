@@ -1,9 +1,9 @@
-import { PaperProps } from '@mantine/core';
+// import { PaperProps } from '@mantine/core';
 import { Claim } from './claims';
 
-export type AuthenticationPagesProps = PaperProps & { authType?: AuthTypes };
+// export type AuthenticationPagesProps = PaperProps & { authType?: AuthTypes };
 
-export type AuthTypes = '/verify/:email/:token' | '/login' | '/register';
+// export type AuthTypes = '/verify/:email/:token' | '/login' | '/register';
 
 export interface RegisterUser extends SignInUser {
   firstName: string;
@@ -14,8 +14,10 @@ export interface RegisterUser extends SignInUser {
 }
 
 export interface SignInUser {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+  authToken?: string;
+  iss?: string;
 }
 
 export interface LoginState {
@@ -60,4 +62,10 @@ export enum SaveState {
   saving,
   saved,
   unsaved,
+}
+
+export interface ApiError {
+  message: string;
+  data?: any;
+  error?: any;
 }

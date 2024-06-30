@@ -2,6 +2,23 @@ import { AxiosResponse } from 'axios';
 import { RegisterUser, SignInResponse, SignInUser } from '@/interfaces/common';
 import { apiClient, setReqHeader } from '@/state/axios-interceptors';
 
+interface GoogleUser {
+  email: string;
+  name: string;
+  iss: string;
+}
+
+export const getGoogleUser = async (authToken: string) =>
+  apiClient<GoogleUser>({
+    method: 'POST',
+    url: '/auth/validate/google',
+    data: { authToken },
+  })
+    .then((response) => Promise.resolve(response.data))
+    .catch((error) => {
+      throw error;
+    });
+
 export const registerUser = async (user: RegisterUser) =>
   apiClient({
     method: 'POST',

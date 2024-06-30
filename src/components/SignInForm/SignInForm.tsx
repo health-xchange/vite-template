@@ -9,18 +9,21 @@ import {
   Container,
   Group,
   Button,
+  Stack,
 } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { useForm, yupResolver } from '@mantine/form';
 import { useEffect } from 'react';
+import { AxiosError } from 'axios';
 import classes from './SignInForm.module.css';
 import { paths } from '@/Router';
-import { SignInResponse, SignInUser } from '@/interfaces/common';
+import { ApiError, SignInResponse } from '@/interfaces/common';
 import { signInUser } from '@/actions/auth';
 import { atomAuthState } from '@/state/atoms';
 import { loginSchema } from '@/utils/schemas';
+import LoginWithGoogle from '../AuthenticationForm/GoogleButton';
 
 export function SignInForm() {
   const navigate = useNavigate();
@@ -37,22 +40,24 @@ export function SignInForm() {
       email: '',
       password: '',
       rememberMe: false,
+      authToken: '',
+      iss: '',
       isSaving: false,
     },
     validate: yupResolver(loginSchema),
   });
 
-  const handleSignIn = (values: SignInUser) => {
+  const handleSignIn = (values: typeof form.values) => {
     form.setFieldValue('isSaving', true);
-    const { email, password } = values;
-    toast.promise(
-      signInUser({ email, password }),
+    const { isSaving, rememberMe, ...signInPayload } = values;
+    toast.promise<SignInResponse, AxiosError<ApiError>>(
+      signInUser(signInPayload),
       {
         pending: 'Signing In...',
         success: 'Signin successful',
         error: {
-          render({ data }: { data: any }) {
-            return data?.response?.data || 'Signing failed';
+          render({ data }) {
+            return data.response?.data.message || 'Signing failed';
           },
         },
       },
@@ -71,6 +76,11 @@ export function SignInForm() {
       });
   };
 
+  const handleGoogleSignIn = (authToken: string) => {
+    form.setValues({ authToken, iss: 'google' });
+    handleSignIn({ ...form.values, authToken, iss: 'google' });
+  };
+
   return (
     <form onSubmit={form.onSubmit((values) => handleSignIn(values))}>
       <Container size={420} my={40}>
@@ -84,18 +94,21 @@ export function SignInForm() {
           </Anchor>
         </Text>
 
+        <Paper withBorder shadow="md" mt={30} radius="md">
+          <LoginWithGoogle dispatchSignInGoogle={handleGoogleSignIn} />
+        </Paper>
+
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+
           <TextInput
             label="Email"
             placeholder="name@email.com"
-            required
             key={form.key('email')}
             {...form.getInputProps('email')}
           />
           <PasswordInput
             label="Password"
             placeholder="Your password"
-            required
             mt="md"
             key={form.key('password')}
             {...form.getInputProps('password')}
@@ -110,9 +123,11 @@ export function SignInForm() {
               Forgot password?
             </Anchor>
           </Group>
-          <Button loading={form.values.isSaving} type="submit" fullWidth mt="xl">
-            Sign in
-          </Button>
+          <Stack>
+            <Button loading={form.values.isSaving} type="submit" fullWidth mt="xl">
+              Sign in
+            </Button>
+          </Stack>
         </Paper>
       </Container>
     </form>

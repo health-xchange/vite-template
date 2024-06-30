@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage';
 import { ForgotPassword } from './components/ForgotPassword/ForgotPassword';
 import { SignInForm } from './components/SignInForm/SignInForm';
 import ResetPasswordForm from './components/ForgotPassword/ResetPasswordForm';
+import { RegistrationForm } from './components/AuthenticationForm/AuthenticationForm';
 
 const Router = () => (
     <Routes>
@@ -27,8 +28,8 @@ const Router = () => (
         element={<Protected element={<PaymentConfirmation />} />}
       />
       <Route path={paths.signIn} element={<SignInForm />} />
-      <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} />
-      <Route path={paths.register} element={<Authentication authType={paths.register} />} />
+      {/* <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} /> */}
+      <Route path={paths.register} element={<RegistrationForm />} />
       <Route path={paths.forgot_pwd} element={<ForgotPassword />} />
       <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />
       <Route path={paths.contactUs} element={<ContactUsPage />} />

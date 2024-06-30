@@ -6,8 +6,9 @@ export interface Window {
           initialize(options: { client_id: string; callback: Function }): void;
           renderButton(
             element: HTMLElement,
-            params: { size?: string; text?: string; width?: string; logo_alignment?: string; dataWidth?: number }
+            params: any, // { size?: string; text?: string; width?: string; logo_alignment?: string; dataWidth?: number }
           ): void;
+          signIn(): void;
         };
       };
     };

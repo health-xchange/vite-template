@@ -1,11 +1,19 @@
 import * as Yup from 'yup';
 
 export const loginSchema = Yup.object().shape({
-  email: Yup.string()
-    .required('Email is required')
-    .email('Invalid email address')
-    .matches(/^[\w.%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/, 'Please provide a valid email'),
-  password: Yup.string().required('Password is required'),
+  iss: Yup.string(),
+  email: Yup.string().when('iss', {
+    is: '',
+    then: (schema) =>
+      schema
+        .required('Email is required')
+        .email('Invalid email address')
+        .matches(/^[\w.%+-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/, 'Please provide a valid email'),
+  }),
+  password: Yup.string().when('iss', {
+    is: '',
+    then: (schema) => schema.required('Password is required'),
+  }),
 });
 
 export const forgotPasswordSchema = Yup.object().shape({

@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid';
 import { ClaimStatus } from '@/interfaces/claims';
-import { AuthTypes } from '@/interfaces/common';
+// import { AuthTypes } from '@/interfaces/common';
 
 export const getEnvVars = () => import.meta.env;
 
@@ -14,16 +14,16 @@ export const sanitise = (inpStr: string, inpObj: Record<string, string>): string
 export const uniqSm = (length = 8) =>
   customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', length)();
 
-export const getAuthTypeLabel = (authType: AuthTypes): string => {
-  switch (authType) {
-    case '/login':
-      return 'Login';
-    case '/register':
-      return 'Register';
-    case '/verify/:email/:token':
-      return 'Login';
-  }
-};
+// export const getAuthTypeLabel = (authType: AuthTypes): string => {
+//   switch (authType) {
+//     case '/login':
+//       return 'Login';
+//     case '/register':
+//       return 'Register';
+//     case '/verify/:email/:token':
+//       return 'Login';
+//   }
+// };
 
 export const getClaimStatus = (status: ClaimStatus) => {
   switch (status) {
