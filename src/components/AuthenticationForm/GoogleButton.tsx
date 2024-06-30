@@ -46,10 +46,11 @@ export const appConfig = {
 };
 
 interface LoginButtonProps {
+  label?: string;
   dispatchSignInGoogle: (credential: any) => void;
 }
 
-const LoginWithGoogle: React.FC<LoginButtonProps> = ({ dispatchSignInGoogle }) => {
+const LoginWithGoogle: React.FC<LoginButtonProps> = ({ label, dispatchSignInGoogle }) => {
   const handleCallbackResponse = useCallback((response: any) => {
     dispatchSignInGoogle(response.credential);
   }, []);
@@ -64,8 +65,8 @@ const LoginWithGoogle: React.FC<LoginButtonProps> = ({ dispatchSignInGoogle }) =
         document.getElementById('signInWithGoogle') as HTMLElement,
         {
           size: 'medium',
-          text: 'Sign In With Google',
-          width: '10%',
+          text: label,
+          width: '100%',
           logo_alignment: 'center',
           dataWidth: 400,
         }
@@ -75,11 +76,11 @@ const LoginWithGoogle: React.FC<LoginButtonProps> = ({ dispatchSignInGoogle }) =
 
   return (
     <>
-      {/* <GoogleButton onClick={handleBtnClick}>Sign In With Google</GoogleButton> */}
-      <Button className="p-0 shadow" w="100%" variant="gradient">
+      <Button className="p-0 shadow" w="100%" variant="transparent">
         <div
           id="signInWithGoogle"
         >
+          {label}
         </div>
       </Button>
     </>

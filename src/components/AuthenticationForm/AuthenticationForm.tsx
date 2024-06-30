@@ -108,7 +108,7 @@ export function RegistrationForm() {
           },
         },
       },
-      { position: 'bottom-center' }
+      { toastId: 'registration-process', position: 'bottom-center' }
     )
       .then(() => {
         navigate('/login');
@@ -155,7 +155,7 @@ export function RegistrationForm() {
         {
           !form.values.iss &&
           <Group grow mb="md" mt="md">
-            <LoginWithGoogle dispatchSignInGoogle={handleGoogleRegister} />
+            <LoginWithGoogle dispatchSignInGoogle={handleGoogleRegister} label="Sign Up With Google" />
           </Group>
         }
         {

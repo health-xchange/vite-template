@@ -61,7 +61,7 @@ export function SignInForm() {
           },
         },
       },
-      { position: 'bottom-center' }
+      { toastId: 'sign-in-process', position: 'bottom-center' }
     )
       .then((response: SignInResponse) => {
         setLoginState({
@@ -95,7 +95,6 @@ export function SignInForm() {
         </Text>
 
         <Paper withBorder shadow="md" mt={30} radius="md">
-          <LoginWithGoogle dispatchSignInGoogle={handleGoogleSignIn} />
         </Paper>
 
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -124,9 +123,10 @@ export function SignInForm() {
             </Anchor>
           </Group>
           <Stack>
-            <Button loading={form.values.isSaving} type="submit" fullWidth mt="xl">
+            <Button variant="gradient" loading={form.values.isSaving} type="submit" fullWidth mt="xl">
               Sign in
             </Button>
+            <LoginWithGoogle dispatchSignInGoogle={handleGoogleSignIn} label="Sign In With Google" />
           </Stack>
         </Paper>
       </Container>
