@@ -69,3 +69,10 @@ export interface ApiError {
   data?: any;
   error?: any;
 }
+
+export interface TocOptions {
+  label: string;
+  link: string;
+  order: number;
+  content: string;
+}

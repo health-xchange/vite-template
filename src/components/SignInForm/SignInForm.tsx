@@ -10,6 +10,7 @@ import {
   Group,
   Button,
   Stack,
+  Divider,
 } from '@mantine/core';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -93,9 +94,6 @@ export function SignInForm() {
             Create account
           </Anchor>
         </Text>
-
-        <Paper withBorder shadow="md" mt={30} radius="md">
-        </Paper>
 
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
 

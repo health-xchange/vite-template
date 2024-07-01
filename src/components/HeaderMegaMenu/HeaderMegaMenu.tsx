@@ -91,8 +91,8 @@ export function HeaderMegaMenu() {
             <NavLink to="/contact-us" className={classes.link}>
               Contact Us
             </NavLink>
-            <NavLink to="/privacy-policy" className={classes.link}>
-              Privacy Statement
+            <NavLink to="/legal-notice" className={classes.link}>
+              Legal Notice
             </NavLink>
           </Group>
 
