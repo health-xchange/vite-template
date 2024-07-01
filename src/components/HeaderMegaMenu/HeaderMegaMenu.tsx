@@ -84,17 +84,19 @@ export function HeaderMegaMenu() {
             <Text size="xl" fw="bold" c="var(--mantine-color-gray-7)">BlueGuardAI</Text>
           </Group>
 
-          <Group h="100%" gap={0} visibleFrom="sm">
-            <NavLink to="/" className={classes.link}>
-              Home
-            </NavLink>
-            <NavLink to="/contact-us" className={classes.link}>
-              Contact Us
-            </NavLink>
-            <NavLink to="/legal-notice" className={classes.link}>
-              Legal Notice
-            </NavLink>
-          </Group>
+          {(isLoggedIn && userInfo) ? '' : (
+            <Group h="100%" gap={0} visibleFrom="sm">
+              <NavLink to="/" className={classes.link}>
+                Home
+              </NavLink>
+              <NavLink to="/contact-us" className={classes.link}>
+                Contact Us
+              </NavLink>
+              <NavLink to="/legal-notice" className={classes.link}>
+                Legal Notice
+              </NavLink>
+            </Group>
+          )}
 
           <Group visibleFrom="sm">
             {
