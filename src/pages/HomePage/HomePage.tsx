@@ -1,12 +1,13 @@
 import { Container } from '@mantine/core';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TransitionComp from '@/ReusableComps/TransitionComp';
 import HeroSection from './HeroSection/HeroSection';
 import { FaqWithImage } from '@/components/FaqWithImage/FaqWithImage';
 import classes from './HeroSection/HeroSection.module.css';
 import introImage from './HeroSection/intro.svg';
-import missionImage from './HeroSection/mission.svg';
+// import missionImage from './HeroSection/mission.svg';
+import { OurHistory } from '@/components/OurHistory/OurHistory';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const HomePage = () => {
     <TransitionComp transition="slide-left">
       <HeroSection {...introHero} />
     </TransitionComp>
+    <OurHistory />
     <FaqWithImage />
          </Container>;
 };
