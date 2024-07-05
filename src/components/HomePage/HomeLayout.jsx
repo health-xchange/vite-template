@@ -1,29 +1,15 @@
 import React, { lazy } from 'react';
-import '../../../assets/plugins/nucleo/css/nucleo.css';
-// reactstrap components
 import { Container, Row } from 'reactstrap';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../../../assets/css/argon-dashboard-react.min.css';
-
-// import { useLocation } from 'react-router-dom';
 import { Styles } from './styles.js';
-
-// core components
-// import AuthNavbar from './AuthNavbar.jsx';
 import AuthFooter from './AuthFooter.jsx';
-
 import IntroContent from './content/IntroContent.json';
-// import WhitePaperContent from './content/WhitePaper.json';
 import { FaqContent } from './content/FqaContent.js';
 import Home from './Home.jsx';
-// import AuthNavbar from './AuthNavbar.jsx';
 
-const ContentBlock = lazy(() =>
-  import('./ContentBlock/index.jsx')
-);
-const MiddleBlock = lazy(() =>
-  import('./MiddleBlock/index.jsx')
-);
+const ContentBlock = lazy(() => import('./ContentBlock/index.jsx'));
+const MiddleBlock = lazy(() => import('./MiddleBlock/index.jsx'));
 
 const HomeLayout = (props) => {
   const mainContent = React.useRef(null);
@@ -55,7 +41,7 @@ const HomeLayout = (props) => {
             title={IntroContent.title}
             content={IntroContent.text}
             button={IntroContent.button}
-            icon="/assets/intro.svg"
+            icon="/assets/img/intro.svg"
             id="intro"
           />
         </Container>
@@ -69,11 +55,7 @@ const HomeLayout = (props) => {
               x="0"
               y="0"
             >
-              <polygon
-                points="2560 0 2560 600 400 0"
-                className="fill-white"
-              >
-              </polygon>
+              <polygon points="2560 0 2560 600 400 0" className="fill-white"></polygon>
             </svg>
           </div>
           <Container className="mt--8 pb-5">

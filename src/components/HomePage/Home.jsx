@@ -16,7 +16,7 @@ const Home = () => (
       content={MiddleBlockContent.text}
       titleColor={MiddleBlockContent.titleColor}
       textColor={MiddleBlockContent.textColor}
-      icon="./assets/about.svg"
+      icon="./assets/img/about.svg"
       id="about"
     />
     <ContentBlock
@@ -25,7 +25,7 @@ const Home = () => (
       textColor={MissionContent.textColor}
       title={MissionContent.title}
       content={MissionContent.text}
-      icon="./assets/mission.svg"
+      icon="./assets/img/mission.svg"
       id="mission"
     />
   </Container>
