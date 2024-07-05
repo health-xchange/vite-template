@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage/HomePage';
+// eslint-disable-next-line import/no-cycle
+import HomeLayout from './components/HomePage/HomeLayout.jsx';
 import ClaimsListPage from './pages/ClaimsListPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import Protected from './ReusableComps/Protected';
@@ -15,28 +16,28 @@ import { RegistrationForm } from './components/AuthenticationForm/Authentication
 import LegalNotice from './pages/LegalNotice';
 
 const Router = () => (
-    <Routes>
-      <Route path={paths.home} element={<HomePage />} />
-      <Route path={paths.profile} element={<ProfilePage />} />
-      <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
-      <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
-      <Route path={paths.claimPayment} element={<Protected element={<PaymentConfirmation />} />} />
-      <Route path={paths.criticalInfo} element={<Protected element={<CriticalInfoPage />} />} />
-      <Route
-        path={paths.claimPaymentConfirmation}
-        element={<Protected element={<PaymentConfirmation />} />}
-      />
-      <Route path={paths.signIn} element={<SignInForm />} />
-      {/* <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} /> */}
-      <Route path={paths.register} element={<RegistrationForm />} />
-      <Route path={paths.forgot_pwd} element={<ForgotPassword />} />
-      <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />
-      <Route path={paths.contactUs} element={<ContactUsPage />} />
-      <Route path={paths.legalNotice} element={<LegalNotice />} />
+  <Routes>
+    <Route path={paths.profile} element={<ProfilePage />} />
+    <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
+    <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
+    <Route path={paths.claimPayment} element={<Protected element={<PaymentConfirmation />} />} />
+    <Route path={paths.criticalInfo} element={<Protected element={<CriticalInfoPage />} />} />
+    <Route
+      path={paths.claimPaymentConfirmation}
+      element={<Protected element={<PaymentConfirmation />} />}
+    />
+    <Route path={paths.signIn} element={<SignInForm />} />
+    {/* <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} /> */}
+    <Route path={paths.register} element={<RegistrationForm />} />
+    <Route path={paths.forgot_pwd} element={<ForgotPassword />} />
+    <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />
+    <Route path={paths.contactUs} element={<ContactUsPage />} />
+    <Route path={paths.legalNotice} element={<LegalNotice />} />
+    <Route path={paths.home} element={<HomeLayout />} />
 
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
-  );
+    <Route path="*" element={<NotFoundPage />} />
+  </Routes>
+);
 
 export const paths = {
   home: '/',

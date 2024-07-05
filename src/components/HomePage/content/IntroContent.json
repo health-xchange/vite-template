@@ -1,0 +1,15 @@
+{
+  "title": "Fight your unfair insurance denials for just $25",
+  "note": "your claim, or get your money back - GUARANTEED!",
+  "text": ["At BlueGuard AI, we're dedicated to fighting for your medical insurance claims at a price you can afford. For just $25, our expert case managers, backed by powerful AI, steps into the ring to challenge unjust claim denials on your behalf!"],
+  "button": [
+    {
+      "title": "Sign Up!",
+      "className": "py-3 border-info",
+      "link": {
+        "type": "internal",
+        "to": "/register"
+      }
+    }
+  ]
+}
