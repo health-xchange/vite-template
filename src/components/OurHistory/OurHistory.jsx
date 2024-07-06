@@ -13,7 +13,7 @@ const data = [
     description: '13% more compared to last month, 97% satisfaction rate',
   },
   {
-    title: 'strain for avg american',
+    title: 'bankrupts an avg american',
     stats: '$1000 bill',
     description: '100 orders were completed this month, 97% satisfaction rate',
   },

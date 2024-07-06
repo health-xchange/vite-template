@@ -6,10 +6,12 @@ import { atomAuthState } from '@/state/atoms';
 export default function ProfilePage() {
   const [loginState] = useRecoilState(atomAuthState);
   const { userInfo } = loginState;
-  return <Container size="sm">
-    {userInfo ?
-      <ProfileCard user={userInfo} /> :
-      <div>Loading...</div>
-    }
-         </Container>;
+  return (
+    <Container size="sm">
+      {userInfo ?
+        <ProfileCard user={userInfo} /> :
+        <div>Loading...</div>
+      }
+    </Container>
+  );
 }
