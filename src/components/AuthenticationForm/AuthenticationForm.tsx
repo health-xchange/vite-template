@@ -143,7 +143,7 @@ export function RegistrationForm() {
     <Container size="xs">
       <Paper radius="md" p="xl" withBorder pos="relative">
         <LoadingOverlay visible={isVerifying} />
-        <Text size="lg" fw={500} mb={form.values.iss ? 'xl' : ''}>
+        <Text size="lg" ta="center" fw={500} mb={form.values.iss ? 'xl' : ''}>
           Welcome to{' '}
           <Text component="span" className={classes.highlight} inherit>
             BlueGuardAI
@@ -213,7 +213,8 @@ export function RegistrationForm() {
               />
             }
             <Checkbox
-              label="I accept terms and conditions"
+              style={{ alignContent: 'center' }}
+              label={<NavLink to={paths.legalNotice}>I accept terms and conditions</NavLink>}
               checked={form.values.terms}
               onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
               error={form.errors.terms}
