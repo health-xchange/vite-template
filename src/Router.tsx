@@ -14,6 +14,7 @@ import { SignInForm } from './components/SignInForm/SignInForm';
 import ResetPasswordForm from './components/ForgotPassword/ResetPasswordForm';
 import { RegistrationForm } from './components/AuthenticationForm/AuthenticationForm';
 import LegalNotice from './pages/LegalNotice';
+import PublicOnly from './ReusableComps/PublicOnly.js';
 
 const Router = () => (
   <Routes>
@@ -33,7 +34,7 @@ const Router = () => (
     <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />
     <Route path={paths.contactUs} element={<ContactUsPage />} />
     <Route path={paths.legalNotice} element={<LegalNotice />} />
-    <Route path={paths.home} element={<HomeLayout />} />
+    <Route path={paths.home} element={<PublicOnly element={<HomeLayout />} />} />
 
     <Route path="*" element={<NotFoundPage />} />
   </Routes>
