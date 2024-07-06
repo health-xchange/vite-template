@@ -2,8 +2,10 @@
   padding-top: calc(var(--mantine-spacing-xl) * 2);
   padding-bottom: calc(var(--mantine-spacing-xl) * 2);
 }
+
 .wrapper {
-    position: relative;
+  position: relative;
+
   ::before {
     content: '';
     position: absolute;
@@ -15,12 +17,11 @@
     z-index: -1;
     /* transform: rotate(45deg); */
   }
+
   min-height: rem(400px);
-  background-image: linear-gradient(
-    -60deg,
+  /* background-image: linear-gradient(-60deg,
     var(--mantine-color-gray-0) 0%,
-    var(--mantine-color-gray-0) 100%
-  );
+    var(--mantine-color-gray-0) 100%); */
   /* border-radius: var(--mantine-radius-md); */
   padding: calc(var(--mantine-spacing-xl) * 2.5);
 

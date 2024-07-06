@@ -20,7 +20,7 @@ const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, s
     <RightBlockContainer style={style}>
       <Fade direction="right">
         <Row justify="space-between" id={id}>
-          <Col lg={6} md={6} sm={6} xs={12}>
+          <Col lg={6} md={6} sm={12} xs={12}>
             <ContentWrapper>
               <h6 className={titleColor}>{title}</h6>
               {Array.isArray(content) ? (
@@ -53,15 +53,14 @@ const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, s
                   ))}
               </ButtonWrapper>
               {note && (
-                <Content>
-                  <Highlight highlight="money back - GUARANTEED!">
-                    Win your claim, or get your money back - GUARANTEED!
-                  </Highlight>
+                <Content style={{ fontSize: 30 }}>
+                  Win your claim, or <br />
+                  Get your money back - GUARANTEED!
                 </Content>
               )}
             </ContentWrapper>
           </Col>
-          <Col lg={6} md={6} sm={6} xs={12}>
+          <Col lg={6} md={6} sm={12} xs={12}>
             <SvgIcon src={icon} width="100%" height="100%" />
           </Col>
         </Row>
