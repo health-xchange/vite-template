@@ -17,7 +17,6 @@ import {
   Switch,
   Box,
   LoadingOverlay,
-  ActionIcon,
 } from '@mantine/core';
 import { useForm, yupResolver } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';

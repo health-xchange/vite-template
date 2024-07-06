@@ -1,21 +1,19 @@
-import { Container, Group, Anchor, Box, Title, Text } from '@mantine/core';
-// import { MantineLogo } from '@mantinex/mantine-logo';
+import { Container, Group, Anchor, Box, Text } from '@mantine/core';
+import { NavLink } from 'react-router-dom';
 import classes from './FooterSimple.module.css';
 
 const links = [
-  { link: '/contact-us', label: 'Contact' },
-  { link: '#', label: 'Privacy' },
-  // { link: '#', label: 'Blog' },
-  // { link: '#', label: 'Careers' },
+  { link: 'contact-us', label: 'Contact' },
+  { link: 'legal-notice', label: 'Privacy' },
 ];
 
 export function FooterSimple() {
   const items = links.map((link) => (
-    <Anchor<'a'>
+    <Anchor
+      component={NavLink}
       c="dimmed"
       key={link.label}
-      href={link.link}
-      // onClick={(event) => event.preventDefault()}
+      to={link.link}
       size="sm"
     >
       {link.label}
@@ -31,7 +29,6 @@ export function FooterSimple() {
           </Box>
           <Text fw="bold" c="var(--mantine-color-gray-5)">BlueGuardAI</Text>
         </Group>
-        {/* <MantineLogo size={28} /> */}
         <Group className={classes.links}>{items}</Group>
       </Container>
     </div>

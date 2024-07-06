@@ -1,5 +1,4 @@
-import { ThemeIcon, Text, Avatar, Timeline } from '@mantine/core';
-import { IconNode, IconSun, IconVideo } from '@tabler/icons-react';
+import { Text, Timeline } from '@mantine/core';
 import React, { ReactNode } from 'react';
 
 type TimeLineItemStatus = 'completed' | 'disabled' | 'pending';
