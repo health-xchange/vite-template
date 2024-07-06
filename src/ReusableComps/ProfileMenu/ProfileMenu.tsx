@@ -15,6 +15,8 @@ import {
   IconChevronDown,
   IconPlus,
   IconCube,
+  IconPhone,
+  IconGavel,
 } from '@tabler/icons-react';
 import { useResetRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
@@ -92,6 +94,29 @@ const ProfileMenu: React.FC<{ user: UserInfoState }> = ({ user }) => {
           }
         >
           Account settings
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => navigate(paths.contactUs)}
+          leftSection={
+            <IconPhone
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.red[6]}
+              stroke={1.5}
+            />
+          }>
+          Contact Us
+        </Menu.Item>
+        <Menu.Item
+          onClick={() => navigate(paths.legalNotice)}
+          leftSection={
+            <IconGavel
+              style={{ width: rem(16), height: rem(16) }}
+              color={theme.colors.red[6]}
+              stroke={1.5}
+            />
+          }
+        >
+          Legal Notice
         </Menu.Item>
         <Menu.Item
           color="red"

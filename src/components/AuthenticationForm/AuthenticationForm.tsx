@@ -221,11 +221,9 @@ export function RegistrationForm() {
           </Stack>
 
           <Group justify="space-between" mt="xl">
-            <NavLink to={paths.signIn}>
-              <Anchor component="a" type="button" c="dimmed" size="xs" underline="never">
-                Already have an account? Login
-              </Anchor>
-            </NavLink>
+            <Anchor component={NavLink} to={paths.signIn} type="button" size="xs">
+              Already have an account? Login
+            </Anchor>
             <Button type="submit" radius="xl">
               Register {form.values.iss ? `with ${upperFirst(form.values.iss)}` : ''}
             </Button>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Button, ButtonProps } from '@mantine/core';
+import { Button, ButtonProps, Group } from '@mantine/core';
 import type { Window } from '@/interfaces/google-auth';
 
 function GoogleIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
@@ -75,15 +75,13 @@ const LoginWithGoogle: React.FC<LoginButtonProps> = ({ label, dispatchSignInGoog
   }, []);
 
   return (
-    <>
-      <Button className="p-0 shadow" w="100%" variant="transparent">
-        <div
-          id="signInWithGoogle"
-        >
-          {label}
-        </div>
-      </Button>
-    </>
+    <Group justify="center">
+      <div
+        id="signInWithGoogle"
+      >
+        {label}
+      </div>
+    </Group>
   );
 };
 

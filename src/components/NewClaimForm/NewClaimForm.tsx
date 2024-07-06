@@ -106,19 +106,16 @@ const NewClaimForm: React.FC = () => {
                 *
               </Text>
             </Text>
-            <Text size="xs">
-              Cosmetic (Dental, Vision etc)
-            </Text>
-            <Group>
+            <Group align="center">
               {
                 form.values.is_not_cosmetic_claim ?
-                  <Text size="sm" mt={4} c="green">We support this claim. Please give us more details about this claim</Text> :
-                  <Text size="sm" mt={4}>Currently we can support only <strong>non-cosmetic</strong> claims</Text>
+                  <Text size="sm" c="green">We support this claim. Please give us more details about this claim</Text> :
+                  <Text size="sm">Currently we can support only <strong>non-cosmetic</strong> claims</Text>
               }
               <Switch
                 size="xl"
-                onLabel={<Text w={100} pl={10}>Confirmed</Text>}
-                offLabel={<Text w={130} pr={10}>Not Confirmed</Text>}
+                onLabel={<Text mb={0} w={100} pl={10}>Confirmed</Text>}
+                offLabel={<Text mb={0} w={130} pr={10}>Not Confirmed</Text>}
                 key={form.key('is_not_cosmetic_claim')}
                 required
                 thumbIcon={

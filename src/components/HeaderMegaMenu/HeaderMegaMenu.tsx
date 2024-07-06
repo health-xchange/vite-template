@@ -6,11 +6,9 @@ import {
   Text,
   ThemeIcon,
   Divider,
-  Center,
   Box,
   Burger,
   Drawer,
-  Collapse,
   ScrollArea,
   rem,
   useMantineTheme,
@@ -19,17 +17,16 @@ import { useDisclosure } from '@mantine/hooks';
 import {
   IconList,
   IconPlus,
-  IconChevronDown,
 } from '@tabler/icons-react';
 import { useRecoilState } from 'recoil';
 import classes from './HeaderMegaMenu.module.css';
 import { atomAuthState } from '../../state/atoms';
 import ProfileMenu from '@/ReusableComps/ProfileMenu/ProfileMenu';
 import { useClaim } from '@/hooks/useClaim';
+import { paths } from '@/Router';
 
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const { createNewClaim } = useClaim();
@@ -127,29 +124,42 @@ export function HeaderMegaMenu() {
         <ScrollArea h={`calc(100vh - ${rem(80)})`} mx="-md">
           <Divider my="sm" />
 
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown
-                style={{ width: rem(16), height: rem(16) }}
-                color={theme.colors.blue[6]}
-              />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
+          {(isLoggedIn && userInfo) ? '' : (
+            <Group h="100%" gap={0} visibleFrom="sm">
+              <NavLink to="/" className={classes.link}>
+                Home
+              </NavLink>
+              <NavLink to="/contact-us" className={classes.link}>
+                Contact Us
+              </NavLink>
+              <NavLink to="/legal-notice" className={classes.link}>
+                Legal Notice
+              </NavLink>
+            </Group>
+          )}
+
+          {links}
+
           <Divider my="sm" />
 
           <Group justify="center" grow pb="xl" px="md">
             {
-              (isLoggedIn && userInfo && userInfo.firstName && userInfo.lastName) ? <ProfileMenu user={userInfo} /> :
+              (isLoggedIn && userInfo) ? <ProfileMenu user={userInfo} /> :
                 <>
-                  <Button variant="default">Sign in</Button>
-                  <Button>Sign up</Button>
+                  <Button
+                    variant="default"
+                    onClick={() => {
+                      navigate(paths.signIn, { unstable_flushSync: true });
+                      closeDrawer();
+                    }}>
+                    Sign in
+                  </Button>
+                  <Button onClick={() => {
+                    navigate(paths.register, { unstable_flushSync: true });
+                    closeDrawer();
+                  }}>
+                    Register
+                  </Button>
                 </>
             }
           </Group>
