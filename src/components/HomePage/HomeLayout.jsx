@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Container, Row } from 'reactstrap';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import '../../../assets/css/argon-dashboard-react.min.css';
+import '../../../assets/css/argon-dashboard-react.min.scss';
 import { Styles } from './styles.js';
 import AuthFooter from './AuthFooter.jsx';
 import IntroContent from './content/IntroContent.json';
@@ -11,28 +11,13 @@ import Home from './Home.jsx';
 const ContentBlock = lazy(() => import('./ContentBlock/index.jsx'));
 const MiddleBlock = lazy(() => import('./MiddleBlock/index.jsx'));
 
-const HomeLayout = (props) => {
+const HomeLayout = () => {
   const mainContent = React.useRef(null);
-  // const location = useLocation();
-
-  // React.useEffect(() => {
-  //   document.body.classList.add('bg-white');
-  //   return () => {
-  //     document.body.classList.remove('bg-white');
-  //   };
-  // }, []);
-
-  // React.useEffect(() => {
-  //   document.documentElement.scrollTop = 0;
-  //   document.scrollingElement.scrollTop = 0;
-  //   mainContent.current.scrollTop = 0;
-  // }, [location]);
 
   return (
     <>
-      <div className="main-content" ref={mainContent}>
+      <div id="home-layout-content" className="main-content" ref={mainContent}>
         <Styles />
-        {/* <AuthNavbar /> */}
         <Container>
           <ContentBlock
             style={{ paddingTop: '1rem' }}
@@ -77,21 +62,12 @@ const HomeLayout = (props) => {
           </div>
         </div>
         <Container>
-          {/* <ContentBlock
-            type="right"
-            title={WhitePaperContent.title}
-            content={WhitePaperContent.text}
-            button={WhitePaperContent.button}
-            icon="cdd368_a0b534c4b24a4b849d9bfa1a178150a6~mv2.webp"
-            id="whitepaper"
-          /> */}
           <MiddleBlock
             title={FaqContent.title}
             content={FaqContent.text}
             accordion={FaqContent.accordion}
           />
         </Container>
-        {/* Page content */}
       </div>
       <AuthFooter />
     </>

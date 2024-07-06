@@ -15,9 +15,7 @@ export const Styles = createGlobalStyle`
     }
 
 
-    body,
-    html,
-    a {
+    #home-layout-content {
         font-family: 'Motiva Sans Light', sans-serif;
     }
 
