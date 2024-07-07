@@ -32,6 +32,7 @@ export interface ClaimDetails {
   date_of_claim_denial?: string;
   claim_amount?: string;
   reason_for_claim_denial?: string;
+  reason_for_claim_denial_other_option?: string,
   oon_emergency_service?: string;
   oon_is_in_network_service?: string;
   oon_is_signed_consent?: string;

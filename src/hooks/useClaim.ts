@@ -60,6 +60,7 @@ export const useClaim = () => {
         date_of_claim_denial: new Date().toISOString(),
         claim_amount: '',
         reason_for_claim_denial: '',
+        reason_for_claim_denial_other_option: '',
         oon_emergency_service: '',
         oon_is_in_network_service: '',
         oon_is_signed_consent: '',
@@ -81,8 +82,8 @@ export const useClaim = () => {
     // return await
     newClaimMutation
       .mutateAsync(newClaim)
-      .then((newClaim) => {
-        navigate(sanitise(paths.claimsDetails, { claimId: newClaim._id }));
+      .then((createdClaim) => {
+        navigate(sanitise(paths.claimsDetails, { claimId: createdClaim._id }));
       })
       .catch((err) => {
         console.error(err);

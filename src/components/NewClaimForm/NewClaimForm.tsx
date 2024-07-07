@@ -53,13 +53,6 @@ const NewClaimForm: React.FC = () => {
   return (
     <div style={{ position: 'relative' }}>
       <PageTitle title="Let us help on your new claim" />
-      {/* <Group justify="space-between" align="center" pos="sticky" top={0} bg="gray">
-        <Group justify="center">
-          <Button disabled={!isFormHasChanges} onClick={handleSaveDraft} variant="default" color={theme.colors.red[6]} leftSection={isFormHasChanges ? <IconDeviceFloppy color={theme.colors.dark[7]} size={14} /> : <IconCheck color={theme.colors.green[3]} size={14} />} size="compact-sm">Save as Draft</Button>
-          <Button disabled={!isFormHasChanges} variant="default" color={theme.colors.red[6]} leftSection={<IconSend color={theme.colors.yellow[7]} size={14} />} size="compact-sm">Submit for review</Button>
-        </Group>
-      </Group> */}
-
       <Grid>
         <GridCol>
           <Divider label="Personal details" labelPosition="left" />
@@ -217,56 +210,60 @@ const NewClaimForm: React.FC = () => {
               >
                 <Stack mt="md">
                   <Radio
-                    value="optoin_1"
+                    value="The benefit you used or are seeking is partially denied or isn't a “covered service”"
                     disabled={!isNotCosmeticClaim}
                     label={
                       "The benefit you used or are seeking is partially denied or isn't a “covered service”"
                     }
                   />
                   <Radio
-                    value="optoin_2"
+                    value="Your medical problem required a “prior authoriation”"
                     disabled={!isNotCosmeticClaim}
                     label="Your medical problem required a “prior authoriation”"
                   />
                   <Radio
-                    value="optoin_3"
+                    value="Your medical problem began before you joined the plan"
                     disabled={!isNotCosmeticClaim}
                     label="Your medical problem began before you joined the plan"
                   />
                   <Radio
-                    value="optoin_4"
+                    value="You received health services from a health provider or facility that isn't in your plan's approved network (an “out-of-network” provider)"
                     disabled={!isNotCosmeticClaim}
                     label={
                       "You received health services from a health provider or facility that isn't in your plan's approved network (an “out-of-network” provider)"
                     }
                   />
                   <Radio
-                    value="optoin_5"
+                    value="The requested service or treatment is “not medically necessary”"
                     disabled={!isNotCosmeticClaim}
                     label="The requested service or treatment is “not medically necessary”"
                   />
                   <Radio
-                    value="optoin_6"
+                    value="The requested service or treatment is an “experimental” or “investigative” treatment"
                     disabled={!isNotCosmeticClaim}
                     label="The requested service or treatment is an “experimental” or “investigative” treatment"
                   />
                   <Radio
-                    value="optoin_7"
+                    value="You are no longer enrolled or eligible to be enrolled in the health plan"
                     disabled={!isNotCosmeticClaim}
                     label="You are no longer enrolled or eligible to be enrolled in the health plan"
                   />
                   <Radio
-                    value="optoin_8"
+                    value="It is revoking, or cancelling your coverage going back to the date you enrolled, because the insurer claims that you gave false or incomplete information when you applied for coverage. This action is often referred to as a rescission of coverage."
                     disabled={!isNotCosmeticClaim}
                     label="It is revoking, or cancelling your coverage going back to the date you enrolled, because the insurer claims that you gave false or incomplete information when you applied for coverage. This action is often referred to as a rescission of coverage."
                   />
                   <Radio
-                    value="optoin_9"
+                    value="others"
                     disabled={!isNotCosmeticClaim}
                     label={<Textarea
                       disabled={!isNotCosmeticClaim}
+                      hidden={form.values.reason_for_claim_denial !== 'others'}
+                      key={form.key('reason_for_claim_denial_other_option')}
+                      {...form.getInputProps('reason_for_claim_denial_other_option')}
                       label={<Text size="sm">Other</Text>}
-                      cols={100} />} />
+                      cols={100}
+                    />} />
                 </Stack>
               </RadioGroup>
             </GridCol>

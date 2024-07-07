@@ -29,6 +29,14 @@ const useNewClaimForm = () => {
   const form = useForm({
     mode: 'controlled',
     initialValues: { ...claim?.details, date_of_claim_denial: dateOfClaimDenial },
+    onValuesChange: (values, previous) => {
+      if (
+        values.reason_for_claim_denial !== previous.reason_for_claim_denial &&
+        values.reason_for_claim_denial !== 'others'
+      ) {
+        values.reason_for_claim_denial_other_option = '';
+      }
+    },
     validate: yupResolver(
       Yup.object().shape({
         first_name: Yup.string()
@@ -40,6 +48,10 @@ const useNewClaimForm = () => {
         insurance_provider: Yup.string().required('Insurance Provider is required'),
         claim_amount: Yup.string().required('Amount is required'),
         reason_for_claim_denial: Yup.string().required('Please provide the reason for denial'),
+        reason_for_claim_denial_other_option: Yup.string().when('reason_for_claim_denial', {
+          is: 'others',
+          then: (schema) => schema.required('Please provide a reason stated on denial response'),
+        }),
         date_of_claim_denial: Yup.string()
           .required('Let us know when your claim was denied')
           .test(
@@ -56,7 +68,7 @@ const useNewClaimForm = () => {
     [form.values]
   );
 
-  const handleSaveAndPayClick = async () => {
+  const handleSaveAndPayClick = () => {
     setIsFormSaving(true);
     if (form.validate().hasErrors) {
       setIsFormSaving(false);
@@ -74,8 +86,8 @@ const useNewClaimForm = () => {
       },
       notifyUser: false,
     })
-      .then((claim) => {
-        navigate(sanitise(paths.claimPayment, { claimId: claim._id }));
+      .then((updatedClaim) => {
+        navigate(sanitise(paths.claimPayment, { claimId: updatedClaim._id }));
       })
       .catch((err) => {
         console.error(err);
@@ -83,6 +95,7 @@ const useNewClaimForm = () => {
       .finally(() => {
         setIsFormSaving(true);
       });
+    return false;
   };
 
   return {

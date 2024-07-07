@@ -46,17 +46,19 @@ export const fetchClaimById = async (claimId: string) => {
   }
 };
 
-export const updateClaimAction = async ({ claimDetails, notifyUser }: { claimDetails: Claim, notifyUser: boolean }) => {
-  try {
-    const response = await apiClient<Claim>({
-      method: 'PUT',
-      url: sanitise(API_ENDPOINTS.UPDATE_CLAIM, { claimId: claimDetails._id }),
-      data: { ...claimDetails, notifyUser },
-    });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+export const updateClaimAction = async ({
+  claimDetails,
+  notifyUser,
+}: {
+  claimDetails: Claim;
+  notifyUser: boolean;
+}) => {
+  const response = await apiClient<Claim>({
+    method: 'PUT',
+    url: sanitise(API_ENDPOINTS.UPDATE_CLAIM, { claimId: claimDetails._id }),
+    data: { ...claimDetails, notifyUser },
+  });
+  return response.data;
 };
 
 export const deleteClaim = (claimId: string) =>
