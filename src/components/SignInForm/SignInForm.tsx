@@ -10,24 +10,46 @@ import {
   Group,
   Button,
   Stack,
-  Divider,
+  LoadingOverlay,
 } from '@mantine/core';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 import { useForm, yupResolver } from '@mantine/form';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import classes from './SignInForm.module.css';
 import { paths } from '@/Router';
 import { ApiError, SignInResponse } from '@/interfaces/common';
-import { signInUser } from '@/actions/auth';
+import { signInUser, verifyUserEmail } from '@/actions/auth';
 import { atomAuthState } from '@/state/atoms';
 import { loginSchema } from '@/utils/schemas';
 import LoginWithGoogle from '../AuthenticationForm/GoogleButton';
 
-export function SignInForm() {
+export function SignInForm({ type }: { type: 'verify' | 'signin' }) {
   const navigate = useNavigate();
+  const { email: verifyingEmail, token: verificationToken } = useParams();
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const handleVerifyEmail = useCallback(() => {
+    if (type === 'verify' && verifyingEmail && verificationToken) {
+      toast.promise(verifyUserEmail(verifyingEmail, verificationToken), {
+        pending: {
+          render: () => { setIsVerifying(true); return 'Verifying your email...'; },
+        },
+        error: 'Could not verify your email. please try again',
+        success: {
+          render: ({ data }) => typeof data.data === 'string' ? data.data : 'Successfully verified your email. Now you can login',
+        },
+      })
+        .finally(() => setIsVerifying(false));
+    }
+  }, [type, verifyingEmail, verificationToken]);
+
+  useEffect(() => {
+    handleVerifyEmail();
+  }, [type, verifyingEmail, verificationToken]);
+
   const setLoginState = useSetRecoilState(atomAuthState);
   const hasLastVisisted = !!localStorage.getItem('last-visited');
 
@@ -96,7 +118,7 @@ export function SignInForm() {
         </Text>
 
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-
+          <LoadingOverlay visible={isVerifying} />
           <TextInput
             label="Email"
             placeholder="name@email.com"
@@ -121,7 +143,7 @@ export function SignInForm() {
             </Anchor>
           </Group>
           <Stack>
-            <Button variant="gradient" loading={form.values.isSaving} type="submit" fullWidth mt="xl">
+            <Button variant="gradient" loading={isVerifying || form.values.isSaving} type="submit" fullWidth mt="xl">
               Sign in
             </Button>
             <LoginWithGoogle dispatchSignInGoogle={handleGoogleSignIn} label="Sign In With Google" />

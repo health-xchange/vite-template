@@ -26,8 +26,8 @@ const Router = () => (
       path={paths.claimPaymentConfirmation}
       element={<Protected element={<PaymentConfirmation />} />}
     />
-    <Route path={paths.signIn} element={<SignInForm />} />
-    {/* <Route path={paths.confirm} element={<Authentication authType={paths.confirm} />} /> */}
+    <Route path={paths.signIn} element={<SignInForm type="signin" />} />
+    <Route path={paths.confirm} element={<SignInForm type="verify" />} />
     <Route path={paths.register} element={<RegistrationForm />} />
     <Route path={paths.forgot_pwd} element={<ForgotPassword />} />
     <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />

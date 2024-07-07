@@ -11,19 +11,15 @@ import {
   Checkbox,
   Stack,
   Anchor,
-  LoadingOverlay,
   Container,
 } from '@mantine/core';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
-// import { useSetRecoilState } from 'recoil';
-import { useCallback, useEffect, useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { upperFirst } from '@mantine/hooks';
 import { AxiosError, AxiosResponse } from 'axios';
 import LoginWithGoogle from './GoogleButton';
 import { ApiError, RegisterUser } from '@/interfaces/common';
-import { getGoogleUser, registerUser, verifyUserEmail } from '@/actions/auth';
-// import { atomAuthState } from '../../state/atoms';
+import { getGoogleUser, registerUser } from '@/actions/auth';
 import classes from './AuthenticationForm.module.css';
 import { paths } from '@/Router';
 
@@ -57,27 +53,6 @@ const registrationSchema = Yup.object().shape({
 
 export function RegistrationForm() {
   const navigate = useNavigate();
-  const { email: verifyingEmail, token: verificationToken } = useParams();
-  const [isVerifying, setIsVerifying] = useState(false);
-
-  const handleVerifyEmail = useCallback(() => {
-    if (verifyingEmail && verificationToken) {
-      toast.promise(verifyUserEmail(verifyingEmail, verificationToken), {
-        pending: {
-          render: () => { setIsVerifying(true); return 'Verifying your email...'; },
-        },
-        error: 'Could not verify your email. please try again',
-        success: {
-          render: ({ data }) => typeof data.data === 'string' ? data.data : 'Successfully verified your email. Now you can login',
-        },
-      })
-        .finally(() => setIsVerifying(false));
-    }
-  }, [verifyingEmail, verificationToken]);
-
-  useEffect(() => {
-    handleVerifyEmail();
-  }, [verifyingEmail, verificationToken]);
 
   const form = useForm({
     initialValues: {
@@ -139,8 +114,7 @@ export function RegistrationForm() {
 
   return (
     <Container size="xs">
-      <Paper radius="md" p="xl" withBorder pos="relative">
-        <LoadingOverlay visible={isVerifying} />
+      <Paper shadow="md" radius="md" p={30} mb="lg" withBorder pos="relative">
         <Text size="lg" ta="center" fw={500} mb={form.values.iss ? 'xl' : ''}>
           Welcome to{' '}
           <Text component="span" className={classes.highlight} inherit>
