@@ -1,11 +1,10 @@
 import { Container } from '@mantine/core';
-import { AuthenticationForm } from '@/components/AuthenticationForm/AuthenticationForm';
-import { AuthenticationPagesProps } from '@/interfaces/common';
+import { RegistrationForm } from '@/components/AuthenticationForm/AuthenticationForm';
 
-const Authentication: React.FC<AuthenticationPagesProps> = ({ authType }) => (
+const Authentication: React.FC = () => (
       <Container size="xl">
         <Container size="xs">
-          <AuthenticationForm authType={authType} />
+          <RegistrationForm />
         </Container>
       </Container>
   );

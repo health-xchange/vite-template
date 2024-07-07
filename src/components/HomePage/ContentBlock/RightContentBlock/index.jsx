@@ -3,19 +3,12 @@ import React from 'react';
 import { Row, Col } from 'reactstrap';
 import { Fade } from 'react-awesome-reveal';
 import { useNavigate } from 'react-router-dom';
-import { Highlight } from '@mantine/core';
-import { SvgIcon } from '../../common/SvgIcon';
+import { Image } from '@mantine/core';
 import { Button } from '../../common/Button';
 import { RightBlockContainer, Content, ContentWrapper, ButtonWrapper } from './styles';
 
 const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, style, note }) => {
   const navigate = useNavigate();
-  // const scrollTo = (idx) => {
-  //   const element = document.getElementById(idx);
-  //   element.scrollIntoView({
-  //     behavior: 'smooth',
-  //   });
-  // };
   return (
     <RightBlockContainer style={style}>
       <Fade direction="right">
@@ -53,7 +46,7 @@ const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, s
                   ))}
               </ButtonWrapper>
               {note && (
-                <Content style={{ fontSize: 30 }}>
+                <Content className="text-white" style={{ fontSize: 30 }}>
                   Win your claim, or <br />
                   Get your money back - GUARANTEED!
                 </Content>
@@ -61,7 +54,7 @@ const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, s
             </ContentWrapper>
           </Col>
           <Col lg={6} md={6} sm={12} xs={12}>
-            <SvgIcon src={icon} width="100%" height="100%" />
+            <Image src={icon} />
           </Col>
         </Row>
       </Fade>

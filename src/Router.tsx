@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-// eslint-disable-next-line import/no-cycle
-import HomeLayout from './components/HomePage/HomeLayout.jsx';
+import HomeLayout from './components/HomePage/HomeLayout';
 import ClaimsListPage from './pages/ClaimsListPage';
 import NotFoundPage from './pages/NotFound/NotFoundPage';
 import Protected from './ReusableComps/Protected';

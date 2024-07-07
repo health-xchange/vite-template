@@ -8,6 +8,8 @@ import IntroContent from './content/IntroContent.json';
 import { FaqWithImage } from '../FaqWithImage/FaqWithImage.jsx';
 import { OurHistory } from '../OurHistory/OurHistory.jsx';
 import { MissionContent } from './content/MissionContent.jsx';
+import introImage from './common/img/intro.svg';
+import missionImage from './common/img/mission.svg';
 
 const ContentBlock = lazy(() => import('./ContentBlock/index.jsx'));
 
@@ -30,11 +32,13 @@ const HomeLayout = () => {
             <ContentBlock
               style={{ paddingTop: '3rem', paddingBottom: '3rem' }}
               type="right"
+              titleColor="text-white"
+              textColor="text-white"
               note={IntroContent.note}
               title={IntroContent.title}
               content={IntroContent.text}
               button={IntroContent.button}
-              icon="/assets/img/intro.svg"
+              icon={introImage}
               id="intro"
             />
           </Container>
@@ -42,18 +46,6 @@ const HomeLayout = () => {
         <Container>
           <div style={{ padding: '8rem 0' }}>
             <OurHistory />
-            {/* <div className="separator separator-top zindex-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              preserveAspectRatio="none"
-              version="1.1"
-              viewBox="0 0 2560 100"
-              x="0"
-              y="0"
-            >
-              <polygon points="2560 0 2560 600 400 0" className="fill-white"></polygon>
-            </svg>
-          </div> */}
           </div>
         </Container>
         <div className="header bg-gradient-info py-7 py-lg-8">
@@ -77,7 +69,7 @@ const HomeLayout = () => {
                 content={MissionContent.text}
                 titleColor={MissionContent.titleColor}
                 textColor={MissionContent.textColor}
-                icon="./assets/img/mission.svg"
+                icon={missionImage}
                 id="mission"
               />
             </Row>
@@ -98,11 +90,6 @@ const HomeLayout = () => {
       </div>
       <Container>
         <FaqWithImage />
-        {/* <MiddleBlock
-            title={FaqContent.title}
-            content={FaqContent.text}
-            accordion={FaqContent.accordion}
-          /> */}
       </Container>
       <AuthFooter />
     </>

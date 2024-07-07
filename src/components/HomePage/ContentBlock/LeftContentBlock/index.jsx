@@ -1,5 +1,6 @@
 import { Row, Col } from 'reactstrap';
 import { Fade } from 'react-awesome-reveal';
+import { Image } from '@mantine/core';
 import { SvgIcon } from '../../common/SvgIcon';
 import {
   LeftContentSection,
@@ -24,7 +25,7 @@ const LeftContentBlock = ({
       <Fade direction="left">
         <Row className="d-flex" justify="space-between" id={id}>
           <Col lg={6} md={6} sm={12} xs={12}>
-            <SvgIcon src={icon} width="100%" height="100%" />
+            <Image src={icon} />
           </Col>
           <Col lg={6} md={6} sm={12} xs={12}>
             <ContentWrapper>

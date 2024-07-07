@@ -9,7 +9,7 @@ const PublicOnly: React.FC<{ element: React.ReactNode }> = ({ element }) => {
   return (
     <>
       {isLoggedIn ? (
-        <Navigate to={paths.home} replace />
+        <Navigate to={paths.claimsList} replace />
       ) : (
         element
       )}

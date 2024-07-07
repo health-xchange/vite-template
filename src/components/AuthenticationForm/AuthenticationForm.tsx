@@ -56,9 +56,7 @@ const registrationSchema = Yup.object().shape({
 });
 
 export function RegistrationForm() {
-  // const { authType = '/login' } = props;
   const navigate = useNavigate();
-  // const setLoginState = useSetRecoilState(atomAuthState);
   const { email: verifyingEmail, token: verificationToken } = useParams();
   const [isVerifying, setIsVerifying] = useState(false);
 

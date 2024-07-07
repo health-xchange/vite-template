@@ -3,9 +3,6 @@ import { Image, Accordion, Grid, Container, Title, Paper } from '@mantine/core';
 import image from './image.svg';
 import classes from './FaqWithImage.module.css';
 
-// interface FaqWithImageProps {
-// }
-
 export const FaqWithImage = () => (
   <div className={classes.wrapper}>
     <Container size="md">
