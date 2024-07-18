@@ -21,7 +21,7 @@ const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => 
                 icon: <IconPencil />,
                 title: 'Primary details',
                 time: new Date(),
-                description: 'Provide information about your declined claim',
+                description: 'Provide information about your denied claim',
               },
               {
                 bulletId: 2,
@@ -29,7 +29,7 @@ const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => 
                 icon: <IconCurrencyDollar />,
                 time: new Date(),
                 lineVariant: 'dashed',
-                description: "You will get full refund if we couldn't get your claim approved.",
+                description: "You will get a full refund if we don't win your case!",
               },
               {
                 bulletId: 3,
@@ -37,7 +37,7 @@ const ClaimLayout: React.FC<ClaimLayoutProps> = ({ children, activeBullet }) => 
                 icon: <IconPennant />,
                 time: new Date(),
                 description:
-                  'Provide as much information as you have. It will be helpful for us to understand more.',
+                  'Provide as much information as you can. It will be helpful for us to understand more.',
               },
             ]}
           />

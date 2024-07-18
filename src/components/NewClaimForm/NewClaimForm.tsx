@@ -89,12 +89,13 @@ const NewClaimForm: React.FC = () => {
           />
         </GridCol>
         <GridCol mt="md">
-          <Divider label="Insurence details" labelPosition="left" />
+          <Divider label="Insurance details" labelPosition="left" />
         </GridCol>
         <GridCol span={12} mt="md">
           <Stack>
-            <Text size="sm" fw={500}>
-              Please confirm your claim is not relavant to Dental, Vision or Cosmetic{' '}
+            <Text size="sm">
+              {/* {fw=500} */}
+              Please confirm your claim is a <strong>MEDICAL</strong> claim. <strong>We DO NOT support dental, vision, or cosmetic claims.</strong>{' '}
               <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
                 *
               </Text>
@@ -102,8 +103,8 @@ const NewClaimForm: React.FC = () => {
             <Group align="center">
               {
                 form.values.is_not_cosmetic_claim ?
-                  <Text size="sm" c="green">We support this claim. Please give us more details about this claim</Text> :
-                  <Text size="sm">Currently we can support only <strong>non-cosmetic</strong> claims</Text>
+                  <Text size="sm" c="green">We support this claim; please give us more details.</Text> :
+                  <Text size="sm">Apologies, we currently only support <strong>MEDICAL</strong> claims</Text>
               }
               <Switch
                 size="xl"
@@ -323,6 +324,8 @@ const NewClaimForm: React.FC = () => {
                   <Text span c="var(--input-asterisk-color, var(--mantine-color-error))" inherit>
                     *
                   </Text>
+                  <br></br><br></br>
+                  <Text size="xs" c="dimmed">Please make sure that you meet all below conditions when the form was given to you.</Text>
                 </Text>
                 <Switch
                   size="lg"

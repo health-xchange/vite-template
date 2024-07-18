@@ -174,11 +174,11 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                 label={(() => (
                   <>
                     <span>
-                      Please describe your situation and why you think insurance should have approved
-                      your claim ?
+                      Describe your situation and why you think insurance should have approved
+                      your claim?
                     </span>
                     <br />
-                    <span>(Please be as detailed as possible, we use this to inform our case)</span>
+                    <span>(Please be as detailed as possible! This information is critical to fighting your case)</span>
                   </>
                 ))()}
                 placeholder="Description"
@@ -195,15 +195,12 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
               <Textarea
                 label={(() => (
                   <>
-                    <span>Please enter all the relevant documents you have and their contents?</span>
-                    <br />
-                    <span>
-                      (Please include any medical records, expert opinions, or other evidence to
-                      support your appeal)
-                    </span>
+                    <span>Please list and describe the contents of any relevant documents, test results, or expert opinions that may help your case.</span>
                   </>
                 ))()}
-                placeholder="Description"
+                placeholder={`1. Record of EKG - shows that I was having heart issues before I had the surgery 
+2. Blood test for BNP  - tests show that I was at risk for heart failure
+3. Cardiologist referral in my Medical Records - my old doctor referred me to this specialist since I was at risk, and insurance still denied me!`}
                 key={form.key('addl_relevant_docs')}
                 autosize
                 maxLength={100000}
@@ -237,6 +234,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
           </Grid>
                </>;
     }
+    return '';
   };
 
   return (

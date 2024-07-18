@@ -30,6 +30,12 @@ const useNewClaimForm = () => {
     mode: 'controlled',
     initialValues: { ...claim?.details, date_of_claim_denial: dateOfClaimDenial },
     onValuesChange: (values, previous) => {
+      if (values.oon_is_signed_consent !== previous.oon_is_signed_consent) {
+        values.consent_opt1 = values.oon_is_signed_consent;
+        values.consent_opt2 = values.oon_is_signed_consent;
+        values.consent_opt3 = values.oon_is_signed_consent;
+        values.consent_opt4 = values.oon_is_signed_consent;
+      }
       if (
         values.reason_for_claim_denial !== previous.reason_for_claim_denial &&
         values.reason_for_claim_denial !== 'others'
@@ -41,8 +47,10 @@ const useNewClaimForm = () => {
       Yup.object().shape({
         first_name: Yup.string()
           .required('First Name is required')
-          .min(3, 'First Name should have 3 characters'),
-        last_name: Yup.string().required('Last Name is required'),
+          .min(2, 'First Name should have at least 2 characters'),
+        last_name: Yup.string()
+          .required('Last Name is required')
+          .min(2, 'Last Name should have at least 2 characters'),
         state: Yup.string().required('State is required'),
         insurance_type: Yup.string().required('Insurance Type is required'),
         insurance_provider: Yup.string().required('Insurance Provider is required'),

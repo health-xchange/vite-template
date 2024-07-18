@@ -36,10 +36,10 @@ export interface ClaimDetails {
   oon_emergency_service?: string;
   oon_is_in_network_service?: string;
   oon_is_signed_consent?: string;
-  consent_opt1?: boolean;
-  consent_opt2?: boolean;
-  consent_opt3?: boolean;
-  consent_opt4?: boolean;
+  consent_opt1?: string;
+  consent_opt2?: string;
+  consent_opt3?: string;
+  consent_opt4?: string;
   criticalInfo?: CriticalInfo;
 }
 

@@ -3,17 +3,17 @@ import classes from './OurHistory.module.css';
 
 const data = [
   {
-    title: 'Denied claims in Medicare',
+    title: 'Denied Medicare claims',
     stats: '~50M',
     description: '24% more than in the same month last year, 33% more that two years ago',
   },
   {
-    title: 'were appealed again',
+    title: 'were fought by patients',
     stats: 'less than 1%',
     description: '13% more compared to last month, 97% satisfaction rate',
   },
   {
-    title: 'bankrupts an avg american',
+    title: 'bankrupts the avg american',
     stats: '$1000 bill',
     description: '100 orders were completed this month, 97% satisfaction rate',
   },

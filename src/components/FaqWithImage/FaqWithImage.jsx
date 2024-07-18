@@ -37,7 +37,7 @@ export const FaqWithImage = () => (
                 </Accordion.Control>
                 <Accordion.Panel>
                   BlueGuard AI combines the expertise of skilled human agents with advanced AI
-                  technology to review and contest unfair medical insurance claim denials. For a
+                  technology to review and contest medical insurance claim denials. For a
                   flat fee of $25, we meticulously analyze your claim, identify errors or
                   oversights, and advocate on your behalf to get your claim approved. If we
                   don&#39;t succeed, you receive a full refund.

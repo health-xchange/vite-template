@@ -16,6 +16,11 @@ const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, s
           <Col lg={6} md={6} sm={12} xs={12}>
             <ContentWrapper>
               <h6 className={titleColor}>{title}</h6>
+              {note && (
+                <Content className="text-white" style={{ fontSize: 30 }}>
+                  Win or get your money back - GUARANTEED!
+                </Content>
+              )}
               {Array.isArray(content) ? (
                 content.map((txt) => (
                   <Content className={textColor} key={1}>
@@ -45,12 +50,6 @@ const RightBlock = ({ title, content, button, icon, titleColor, textColor, id, s
                     </Button>
                   ))}
               </ButtonWrapper>
-              {note && (
-                <Content className="text-white" style={{ fontSize: 30 }}>
-                  Win your claim, or <br />
-                  Get your money back - GUARANTEED!
-                </Content>
-              )}
             </ContentWrapper>
           </Col>
           <Col lg={6} md={6} sm={12} xs={12}>
