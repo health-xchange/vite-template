@@ -27,21 +27,26 @@ export const uniqSm = (length = 8) =>
 
 export const getClaimStatus = (status: ClaimStatus) => {
   switch (status) {
-    case 'draft': return 'New';
+    case 'draft': return {
+      percent: 10,
+      label: 'New',
+    };
     case 'waiting_for_payment':
-      return 'Payment Pending';
+      return { percent: 30, label: 'Payment Pending' };
     case 'waiting_for_additional_info':
-      return 'Waiting for Critical Info';
+      return { percent: 50, label: 'Critical Info required' };
+    case 'reviewing':
     case 'waiting_for_reviewer_response':
-      return 'Reviewing';
-    // case 'reviewing':
-    //   return 'Review';
-    // case 'waiting_for_user_response':
-    //   return 'Waiting on your response';
-    // case 'success':
-    //   return 'Success';
-    // case 'failed':
-    //   return 'Failed';
-    default: return '';
+      return { percent: 100, label: 'Reviewing' };
+    case 'waiting_for_user_response':
+      return { percent: 100, label: 'Waiting your response' };
+    case 'success':
+      return { percent: 100, label: 'Closed successfully' };
+    case 'failed':
+      return { percent: 100, label: 'Claim failed' };
+    default: return {
+      percent: 10,
+      label: 'New',
+    };
   }
 };

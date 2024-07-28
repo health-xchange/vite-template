@@ -66,3 +66,7 @@
 .claim_status.closed {
   top: 0;
 }
+.inner {
+  display: flex;
+  justify-content: space-between;
+}
