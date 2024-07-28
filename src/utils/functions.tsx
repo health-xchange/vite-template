@@ -27,21 +27,21 @@ export const uniqSm = (length = 8) =>
 
 export const getClaimStatus = (status: ClaimStatus) => {
   switch (status) {
-    case 'draft':
-      return { value: 1 / 7, label: 'Draft' };
+    case 'draft': return 'New';
     case 'waiting_for_payment':
-      return { value: 2 / 7, label: 'Payment Pending' };
+      return 'Payment Pending';
     case 'waiting_for_additional_info':
-      return { value: 3 / 7, label: 'Waiting for Critical Info' };
+      return 'Waiting for Critical Info';
     case 'waiting_for_reviewer_response':
-      return { value: 4 / 7, label: 'Reviewing' };
-    case 'reviewing':
-      return { value: 5 / 7, label: 'Review' };
-    case 'waiting_for_user_response':
-      return { value: 6 / 7, label: 'Waiting on your response' };
-    case 'success':
-      return { value: 7 / 7, label: 'Success' };
-    case 'failed':
-      return { value: 7 / 7, label: 'Failed' };
+      return 'Reviewing';
+    // case 'reviewing':
+    //   return 'Review';
+    // case 'waiting_for_user_response':
+    //   return 'Waiting on your response';
+    // case 'success':
+    //   return 'Success';
+    // case 'failed':
+    //   return 'Failed';
+    default: return '';
   }
 };

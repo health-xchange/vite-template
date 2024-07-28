@@ -74,7 +74,9 @@ export function RegistrationForm() {
       registerUser(values),
       {
         pending: 'Registering...',
-        success: 'Registered successfully. Please check your email and verify your registration to proceed.',
+        success: {
+          render: () => values.iss ? `You are successfully registered. Please use your ${upperFirst(values.iss)} account to sign in...` : 'Registered successfully. Please check your email and verify your registration to proceed.',
+        },
         error: {
           render({ data }) {
             return data.response?.data.message || 'Registration failed';

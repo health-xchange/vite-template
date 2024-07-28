@@ -46,3 +46,23 @@
     background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
   }
 }
+
+.claim_status {
+  width: 100%;
+  background-color: var(--mantine-color-gray-4);
+  border-top-left-radius: rem(10px);
+  border-top-right-radius: rem(10px);
+  margin-bottom: rem(10px);
+  border: calc(0.0625rem * var(--mantine-scale)) solid var(--mantine-color-gray-3);
+  padding: rem(10px) rem(10px) rem(20px);
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  transition: all 500ms;
+}
+.claim_status.open {
+  top: rem(-30px);
+}
+.claim_status.closed {
+  top: 0;
+}

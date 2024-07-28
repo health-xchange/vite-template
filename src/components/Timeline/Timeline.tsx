@@ -19,7 +19,7 @@ interface ClaimTimeLine {
 }
 
 const ClaimTimeLine: React.FC<ClaimTimeLine> = ({ items, activeBullet }) => (
-    <Timeline active={activeBullet} pos="sticky" top={56}>
+    <Timeline active={activeBullet} pos="sticky" top={86}>
       {items.map((item) => (
           <Timeline.Item
             lineVariant={item.lineVariant}

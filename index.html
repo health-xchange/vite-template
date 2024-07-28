@@ -10,6 +10,7 @@
       src: url("./assets/fonts/Motiva-Sans-Light.ttf") format("truetype");
       font-style: normal;
     }
+
     @font-face {
       font-family: "Motiva Sans Bold";
       src: url("./assets/fonts/Motiva-Sans-Bold.ttf") format("truetype");
@@ -19,11 +20,20 @@
   <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no" />
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <title>BlueguardAI</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HPHB9616BE"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-HPHB9616BE');
+  </script>
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
+  <!-- Google tag (gtag.js) -->
+
 </body>
 
 </html>

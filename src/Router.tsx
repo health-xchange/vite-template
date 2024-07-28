@@ -14,33 +14,36 @@ import ResetPasswordForm from './components/ForgotPassword/ResetPasswordForm';
 import { RegistrationForm } from './components/AuthenticationForm/AuthenticationForm';
 import LegalNotice from './pages/LegalNotice';
 import PublicOnly from './ReusableComps/PublicOnly.js';
+import { AdminLayout } from './AdminDashboard/AdminLayout';
+import UserPageLayout from './Layouts/UserContentLayout';
 
 const Router = () => (
   <Routes>
-    <Route path={paths.profile} element={<ProfilePage />} />
-    <Route path={paths.claimsList} element={<Protected element={<ClaimsListPage />} />} />
-    <Route path={paths.claimsDetails} element={<Protected element={<NewClaimPage />} />} />
-    <Route path={paths.claimPayment} element={<Protected element={<PaymentConfirmation />} />} />
-    <Route path={paths.criticalInfo} element={<Protected element={<CriticalInfoPage />} />} />
+    <Route path={paths.profile} element={<UserPageLayout><ProfilePage /></UserPageLayout>} />
+    <Route path={paths.claimsList} element={<UserPageLayout><Protected element={<ClaimsListPage />} /></UserPageLayout>} />
+    <Route path={paths.claimsDetails} element={<UserPageLayout><Protected element={<NewClaimPage />} /></UserPageLayout>} />
+    <Route path={paths.claimPayment} element={<UserPageLayout><Protected element={<PaymentConfirmation />} /></UserPageLayout>} />
+    <Route path={paths.criticalInfo} element={<UserPageLayout><Protected element={<CriticalInfoPage />} /></UserPageLayout>} />
     <Route
       path={paths.claimPaymentConfirmation}
-      element={<Protected element={<PaymentConfirmation />} />}
+      element={<UserPageLayout><Protected element={<PaymentConfirmation />} /></UserPageLayout>}
     />
-    <Route path={paths.signIn} element={<SignInForm type="signin" />} />
-    <Route path={paths.confirm} element={<SignInForm type="verify" />} />
-    <Route path={paths.register} element={<RegistrationForm />} />
-    <Route path={paths.forgot_pwd} element={<ForgotPassword />} />
-    <Route path={paths.reset_pwd} element={<ResetPasswordForm />} />
-    <Route path={paths.contactUs} element={<ContactUsPage />} />
-    <Route path={paths.legalNotice} element={<LegalNotice />} />
-    <Route path={paths.home} element={<PublicOnly element={<HomeLayout />} />} />
-
+    <Route path={paths.signIn} element={<UserPageLayout><SignInForm type="signin" /></UserPageLayout>} />
+    <Route path={paths.confirm} element={<UserPageLayout><SignInForm type="verify" /></UserPageLayout>} />
+    <Route path={paths.register} element={<UserPageLayout><RegistrationForm /></UserPageLayout>} />
+    <Route path={paths.forgot_pwd} element={<UserPageLayout><ForgotPassword /></UserPageLayout>} />
+    <Route path={paths.reset_pwd} element={<UserPageLayout><ResetPasswordForm /></UserPageLayout>} />
+    <Route path={paths.contactUs} element={<UserPageLayout><ContactUsPage /></UserPageLayout>} />
+    <Route path={paths.legalNotice} element={<UserPageLayout><LegalNotice /></UserPageLayout>} />
+    <Route path={paths.home} element={<UserPageLayout><PublicOnly element={<HomeLayout />} /></UserPageLayout>} />
+    <Route path={paths.admin} element={<Protected element={<AdminLayout />} />} />
     <Route path="*" element={<NotFoundPage />} />
   </Routes>
 );
 
 export const paths = {
   home: '/',
+  admin: '/admin',
   profile: '/profile',
   legalNotice: '/legal-notice',
   claimsList: '/claims',

@@ -1,5 +1,11 @@
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
   height: rem(60px);
+  background-color: white;
+  z-index: 1000;
   padding-left: var(--mantine-spacing-md);
   padding-right: var(--mantine-spacing-md);
   border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));

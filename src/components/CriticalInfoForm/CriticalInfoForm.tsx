@@ -160,7 +160,7 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
             <GridCol>
               <Textarea
                 label="What are the billing codes associated with your claim?"
-                placeholder="Billing codes"
+                placeholder="Eg: 93000 - Electrocardiogram, routine ECG with at least 12 leads; with interpretation and report."
                 key={form.key('addl_associated_billing_codes')}
                 autosize
                 maxLength={100000}
@@ -181,7 +181,9 @@ const CriticalInfoForm: React.FC<NewFormProps> = ({ claim, updateClaim }) => {
                     <span>(Please be as detailed as possible! This information is critical to fighting your case)</span>
                   </>
                 ))()}
-                placeholder="Description"
+                placeholder="Eg: I was having emergency cardiac services at an in-network provider. However, apparently the doctor who did the ECG on me was out of network. It was an emergency and he was the only one available. After the whole event, I got charged for the ECG! Makes no sense because it was an in-network hospital and I can't control who does my ECG!!!
+
+I have evidence that this was an emergency since I ended up needing surgery - which was covered. So was hoping you could help me fight this denied ECG claim."
                 key={form.key('addl_why_should_approve')}
                 autosize
                 minRows={3}
