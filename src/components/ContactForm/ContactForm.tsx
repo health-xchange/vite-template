@@ -7,6 +7,7 @@ import {
   Button,
   Group,
   ActionIcon,
+  Anchor,
 } from '@mantine/core';
 import { IconBrandTwitter, IconBrandDiscord } from '@tabler/icons-react';
 import { useForm, yupResolver } from '@mantine/form';
@@ -17,7 +18,13 @@ import { contactFormSchema } from '@/utils/schemas';
 import { sendContactQuery } from '@/actions/contact';
 import { useLogin } from '@/state/hooks';
 
-const social = [IconBrandTwitter, IconBrandDiscord];
+const social = [{
+  icon: IconBrandTwitter,
+  link: 'https://x.com/BlueGuardAI',
+}, {
+  icon: IconBrandDiscord,
+  link: 'https://discord.gg/ZyC7UuHFXk',
+}];
 
 export function ContactForm() {
   const { userInfo } = useLogin();
@@ -62,10 +69,12 @@ export function ContactForm() {
   };
 
   const icons = social.map((Icon, index) => (
-    <ActionIcon key={index} size={28} className={classes.social} variant="transparent">
-      <Icon size="1.4rem" stroke={1.5} />
-    </ActionIcon>
-  ));
+      <Anchor href={Icon.link} target="#">
+        <ActionIcon key={index} size={28} className={classes.social} variant="transparent">
+          <Icon.icon size="1.4rem" stroke={1.5} />
+        </ActionIcon>
+      </Anchor>
+    ));
 
   return (
     <div className={classes.wrapper}>

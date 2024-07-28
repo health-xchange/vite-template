@@ -3,8 +3,8 @@ import { NavLink } from 'react-router-dom';
 import classes from './FooterSimple.module.css';
 
 const links = [
-  { link: 'contact-us', label: 'Contact' },
-  { link: 'legal-notice', label: 'Privacy' },
+  { link: '/contact-us', label: 'Contact' },
+  { link: '/legal-notice', label: 'Privacy' },
 ];
 
 export function FooterSimple() {

@@ -25,8 +25,8 @@ const data = [
   {
     title: 'Community',
     links: [
-      { label: 'Join Discord', link: '#' },
-      { label: 'Follow on Twitter', link: '#' },
+      { label: 'Join Discord', link: 'https://discord.gg/ZyC7UuHFXk' },
+      { label: 'Follow on Twitter', link: 'https://x.com/BlueGuardAI' },
       { label: 'Email newsletter', link: '#' },
       { label: 'GitHub discussions', link: '#' },
     ],
