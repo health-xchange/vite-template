@@ -51,7 +51,7 @@ export function ContactForm() {
           },
         },
         error: 'Failed to send your query',
-        success: 'Your query has been sent. Please expect a response with in 2 working days.',
+        success: 'Your query has been sent. Please expect a response with in 24 hours.',
       },
       {
         position: 'bottom-center',
